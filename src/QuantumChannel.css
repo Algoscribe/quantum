@@ -1,0 +1,453 @@
+/* src/QuantumChannel.css */
+/* Theme: dark, full-bleed-like proportions for the central hero */
+
+/* Root layout for the QuantumChannel area:
+   - left column reserved for controls (your page's sidebar)
+   - main column is the channel + table
+   - right column reserved (empty)
+*/
+.qc-root {
+  display: grid;
+  grid-template-columns: 320px 1fr 80px; /* left controls width / main / right gutter */
+  gap: 28px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 18px 26px; /* small page padding; outer page navbar will remain above */
+}
+
+/* If you need full-bleed under navbar, make sure parent header doesn't add extra padding.
+   You asked blocks to start under navbar edge — integrate by making parent container full width. */
+
+/* Left column (empty placeholder here — your real controls live outside this component in the sidebar) */
+.qc-left-column {
+  /* keep as visual spacer */
+}
+
+/* Right column (spare) */
+.qc-right-column {
+}
+
+/* Main column (channel + table) */
+.qc-main-column {
+  display: flex;
+  justify-content: center;
+}
+
+/* Inner container that holds the channel card and the table */
+.mock-container {
+  width: 100%;
+  max-width: 1160px; /* similar proportions you liked */
+  background: transparent;
+  box-sizing: border-box;
+  padding: 14px 0 40px 0;
+}
+
+/* Channel card (hero) */
+.quantum-channel-section {
+  border-radius: 14px;
+  padding: 22px;
+  background: linear-gradient(180deg, rgba(10, 12, 14, 0.9), rgba(6,6,6,0.95));
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.75);
+}
+
+/* Title */
+.channel-title {
+  display: block;
+  text-align: center;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  padding: 8px 18px;
+  border-radius: 12px;
+  width: fit-content;
+  margin: 0 auto 14px auto;
+  letter-spacing: 0.06em;
+}
+
+/* Channel container proportions */
+.quantum-channel-container {
+  min-height: 220px;    /* hero height you liked */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.45));
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* flow area */
+.quantum-channel-flow {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(10,10,10,0.6), rgba(20,20,20,0.3));
+  box-shadow: inset 0 10px 40px rgba(0,0,0,0.7);
+  overflow: hidden;
+}
+
+/* flow items */
+.flow-station {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Move Alice/Bob labels ABOVE the polarizers */
+.channel-label-stack {
+  position: absolute;
+  top: -90px;        /* moved higher so it's ABOVE the polarizer */
+  left: 50%;
+  transform: translateX(-50%);
+  color: #e6e6e6;
+  width: 120px;
+  text-align: center;
+  pointer-events: none;
+}
+/* Move the POLARIZER labels (Alice's Polarizer, Bob's Polarizer) above the icon */
+.polarizer-label-stack {
+  position: absolute;
+  top: -40px;    /* adjust to your liking */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+
+.polarizer {
+  width: 86px;
+  height: 86px;
+  background: rgba(255,255,255,0.03);
+  border: 2px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+.polarizer::before { /* the little line indicating basis */
+  content: '';
+  width: 72%;
+  height: 4px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 3px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+}
+
+/* photon track */
+.photon-track {
+  position: absolute;
+  top: 50%;
+  left: 6%;
+  right: 6%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(to right, rgba(255,255,255,0.06) 0 8px, rgba(255,255,255,0.0) 8px 16px);
+  z-index: 2;
+  border-radius: 2px;
+}
+
+/* photon visual */
+.photon {
+  position: absolute;
+  top: 48%;
+  transform: translateY(-50%);
+  left: 5%;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  z-index: 12;
+  transition: transform 0.18s linear;
+}
+
+/* action buttons (centered under channel) */
+.action-section {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+/* button appearance */
+.btn {
+  border-radius: 26px;
+  padding: 10px 20px;
+  font-weight: 700;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.04);
+  cursor: pointer;
+}
+.btn:disabled { opacity: 0.45; cursor: default; transform: none; }
+
+.table-responsive {
+  margin-top: 22px;
+  background: #000 !important;              /* <-- BLACK background */
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.6);
+  max-height: 360px;                        /* scrolling enabled after 360px */
+  overflow-y: auto;                         /* vertical scroll */
+  overflow-x: hidden;                       /* no horizontal scroll */
+}
+
+/* TABLE contents transparent so black background shows */
+.table-responsive .data-table,
+.table-responsive .data-table thead,
+.table-responsive .data-table tbody {
+  background: transparent !important;
+}
+
+/* ===== WHITE SCROLLBAR ===== */
+.table-responsive::-webkit-scrollbar {
+  width: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.9);  /* WHITE scroll handle */
+  border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #fff;
+}
+
+/* Firefox */
+.table-responsive {
+  scrollbar-color: #ffffff #222;   /* thumb | track */
+  scrollbar-width: thin;
+}
+
+/* table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #eaeaea;
+  font-weight: 700;
+}
+.data-table thead th {
+  background: rgba(255,255,255,0.04);
+  padding: 12px 10px;
+  text-align: left;
+  font-size: 0.92rem;
+  color: #ddd;
+}
+.data-table tbody td {
+  padding: 12px 10px;
+  border-top: 1px solid rgba(255,255,255,0.02);
+  color: #fff;
+  font-family: monospace;
+  font-weight: 600;
+}
+.data-table tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.01);
+}
+.data-table tbody tr:hover {
+  background: rgba(255,255,255,0.02);
+  cursor: pointer;
+}
+
+/* small screens: stack columns */
+@media (max-width: 1024px) {
+  .qc-root {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+  .qc-left-column, .qc-right-column { display: none; }
+  .mock-container { max-width: 100%; }
+  .quantum-channel-container { min-height: 200px; }
+  .table-responsive { max-height: 320px; }
+}
+/* === Polarizer basis rotation (add to end of QuantumChannel.css) === */
+/* default line (horizontal) */
+.polarizer::before {
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: center;
+  transition: transform 360ms cubic-bezier(.22,.9,.3,1);
+}
+
+/* rectilinear / plus (horizontal) */
+.polarizer[data-basis="+"]::before,
+.polarizer[data-basis="-"]::before {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* diagonal / cross — rotate 45deg */
+.polarizer[data-basis="×"]::before,
+.polarizer[data-basis="x"]::before,
+.polarizer[data-basis="X"]::before,
+.polarizer[data-basis="\\"]::before,
+.polarizer[data-basis="/"]::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* alternate diagonal direction (if you want backslash vs forward slash different) */
+.polarizer[data-basis="backslash"]::before,
+.polarizer[data-basis="\\"]::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+/* Match channel size to the old .channel-hero block */
+.quantum-channel-container {
+  min-height: 520px !important;
+}
+
+.quantum-channel-flow {
+  height: 520px !important;
+}
+
+.channel-stage {
+  min-height: 520px !important;
+}
+/* Make all QuantumChannel buttons white */
+.action-section .btn,
+.btn-primary,
+.btn-warning,
+#btn-send-photon,
+#btn-send-burst {
+  background: #ffffff !important;
+  color: #000 !important;
+  border: 1px solid #ffffff !important;
+}
+/* Center the Ready / Status message */
+#transmission-status {
+  text-align: center !important;
+  display: block !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+/* Bigger photon */
+.photon {
+  width: 70px !important;     /* was 48px */
+  height: 70px !important;    /* was 48px */
+  font-size: 40px !important; /* symbol size */
+}
+/* Bigger glow around photon */
+.photon {
+  box-shadow: 0 0 25px rgba(255,255,255,0.6),
+              0 0 45px rgba(255,255,255,0.4) !important;
+}
+/* Bigger angle label */
+.photon-angle {
+  font-size: 18px !important;  /* was 12px */
+  top: -20px !important;        /* move upward so it doesn't overlap */
+  padding: 2px 6px;
+  border-radius: 6px;
+}/* Remove background behind the degree label */
+.photon-angle {
+  background: transparent !important;
+  padding: 0 !important;    /* remove padding so no box appears */
+  border-radius: 0 !important;
+}
+
+.quantum-channel-container {
+  min-height: 350px !important;  /* smaller */
+  padding-bottom: 4px !important;
+}
+
+/* ===== Remove glow / luminous effects from polarizers ===== */
+.polarizer,
+.polarizer-icon,
+.alice-polarizer,
+.bob-polarizer {
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  text-shadow: none !important;
+}
+
+/* If inline glow styles are injected, override them */
+.polarizer[style*="box-shadow"],
+.polarizer-icon[style*="box-shadow"],
+.alice-polarizer[style*="box-shadow"],
+.bob-polarizer[style*="box-shadow"] {
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Remove glow from surrounding container if any */
+.polarizer-wrapper,
+.polarizer-box {
+  box-shadow: none !important;
+  filter: none !important;
+  background: transparent !important;
+}
+/* --- EVE layout: boxes below dotted line + labels below boxes --- */
+.eve-container { display:flex; align-items:center; gap:18px; pointer-events: none; }
+
+/* polarizer boxes used by Eve (size + drop slightly below line) */
+.eve-device {
+  width: 90px;             /* increase size */
+  height: 90px;
+  border-radius: 14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transform: translateY(10px); /* move below the dotted line */
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  border: 2px solid rgba(255,255,255,0.06) !important;
+}
+
+/* small alternative offsets (if you want different vertical offset) */
+#eve-detector-box { transform: translateY(35px); }
+#eve-reencoder-box { transform: translateY(35px); }
+
+/* sub-labels now sit BELOW their boxes */
+.eve-sub-label {
+  font-weight: 800;
+  font-size: 15px;
+  color: rgba(255,255,255,0.9);
+  margin-top: 55px;         /* spacing between box and label */
+  text-align: center;
+}
+
+/* center EVE label moved below dotted line */
+.eve-center-label {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  transform: translateY(-75px); /* move EVE label downward */
+  pointer-events: none;
+}
+
+/* role text inside center label — use a class if you move inline styles to CSS */
+.eve-center-label div {
+  font-weight: 600;
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+}
+
+/* subtle active pulse for Eve boxes (added/removed by JS via .active) */
+.eve-device.active {
+  box-shadow: 0 8px 28px rgba(255,80,80,0.12), inset 0 0 6px rgba(255,255,255,0.02);
+  transform: translateY(6px) scale(1.02);
+}
+
+/* responsive shrink */
+@media (max-width: 900px) {
+  .eve-device { width: 84px; height: 84px; transform: translateY(8px); }
+  .eve-center-label { transform: translateY(12px); }
+  .eve-sub-label { margin-top: 6px; font-size: 11px; }
+}

@@ -1,0 +1,389 @@
+/* ===== PAGE OVERRIDES ===== */
+
+.virtual-lab-page {
+  background: transparent;
+  color: #ffffff;
+}
+
+/* override the global section style so this page can breathe */
+.virtual-lab-page section {
+  min-height: auto;
+  padding: 80px 24px 40px;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== HERO ===== */
+
+.vl-hero {
+  padding-top: 120px;
+  padding-bottom: 32px;
+}
+
+.vl-hero-inner {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.vl-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.vl-hero-inner h1 {
+  font-size: 52px;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.vl-hero-accent {
+  color: rgba(249, 250, 251, 0.8);
+  font-weight: 400;
+}
+
+.vl-hero-sub {
+  max-width: 760px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(249, 250, 251, 0.8);
+}
+
+/* ===== STEPS GRID ===== */
+
+.vl-steps-section {
+  padding-top: 16px;
+}
+
+.vl-steps-inner {
+  width: 100%;
+
+  margin: 0 auto;
+}
+
+/* BIG two-column layout so tiles feel large */
+.vl-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 28px;
+}
+
+.vl-step-card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  min-height: 260px;
+  /* makes them feel larger */
+}
+
+/* background image */
+
+.vl-step-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.35);
+  transform: scale(1.05);
+  transition:
+    filter 0.3s ease,
+    transform 0.3s ease;
+}
+
+/* overlay content */
+
+.vl-step-overlay {
+  position: relative;
+  padding: 18px 20px 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.45) 45%,
+      rgba(0, 0, 0, 0) 100%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.85);
+}
+
+.vl-step-header {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.vl-step-no {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.vl-step-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.vl-step-label {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.vl-step-subtitle {
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.86);
+}
+
+.vl-step-short {
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(226, 232, 240, 0.9);
+  margin-bottom: 6px;
+}
+
+.vl-step-hint {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+/* ===== HOVER DETAIL ===== */
+
+.vl-step-detail {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  background: rgba(3, 7, 18, 0.97);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.95);
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(226, 232, 240, 0.96);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition:
+    opacity 0.25s ease-out,
+    transform 0.25s ease-out;
+}
+
+.vl-step-detail ul {
+  padding-left: 18px;
+}
+
+.vl-step-detail li+li {
+  margin-top: 4px;
+}
+
+/* show detail on hover */
+
+.vl-step-card:hover .vl-step-detail {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.vl-step-card:hover .vl-step-image {
+  filter: brightness(0.6);
+  transform: scale(1.08);
+}
+
+/* hover feel */
+
+.vl-hover-card {
+  transition:
+    transform 0.22s cubic-bezier(0.19, 1, 0.22, 1),
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.vl-hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.98);
+  border-color: rgba(248, 250, 252, 0.9);
+}
+
+/* ===== CINEMATIC ENTRANCE ===== */
+
+.vl-anim {
+  opacity: 0;
+  animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes vl-slide-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes vl-slide-right {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes vl-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes vl-slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vl-step-1 {
+  animation-name: vl-slide-left;
+  animation-delay: 0.05s;
+}
+
+.vl-step-2 {
+  animation-name: vl-slide-down;
+  animation-delay: 0.12s;
+}
+
+.vl-step-3 {
+  animation-name: vl-slide-right;
+  animation-delay: 0.19s;
+}
+
+.vl-step-4 {
+  animation-name: vl-slide-up;
+  animation-delay: 0.26s;
+}
+
+.vl-step-5 {
+  animation-name: vl-slide-left;
+  animation-delay: 0.33s;
+}
+
+.vl-step-6 {
+  animation-name: vl-slide-right;
+  animation-delay: 0.4s;
+}
+
+/* ===== BOTTOM STRIP ===== */
+
+.vl-bottom-section {
+  padding-top: 24px;
+  padding-bottom: 90px;
+}
+
+.vl-bottom-strip {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 16px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(3, 7, 18, 0.9);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.vl-bottom-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.vl-bottom-body {
+  font-size: 0.85rem;
+  color: rgba(226, 232, 240, 0.92);
+}
+
+.vl-bottom-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 24px;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #ffffff;
+  color: #020617;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.95);
+  transition:
+    transform 0.25s cubic-bezier(0.19, 1, 0.22, 1),
+    box-shadow 0.25s ease;
+}
+
+.vl-bottom-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.98);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 1024px) {
+  .vl-steps-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vl-bottom-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .virtual-lab-page section {
+    padding: 70px 16px 40px;
+  }
+
+  .vl-hero-inner h1 {
+    font-size: 34px;
+  }
+}

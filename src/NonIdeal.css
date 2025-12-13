@@ -1,0 +1,889 @@
+/* BB84Sim.css */
+/* CHANGE CSS TO BE MORE COOL*/
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary-blue: #1e40af;
+    --secondary-blue: #3b82f6;
+    --accent-cyan: #06b6d4;
+    --success-green: #10b981;
+    --warning-yellow: #f59e0b;
+    --danger-red: #ef4444;
+    --dark-bg: #0f172a;
+    --light-bg: #f8fafc;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    min-height: 10vh;
+    color: #1f2937;
+    overflow-x: hidden;
+}
+
+/* Ensure dialogue body text uses default casing for readability */
+.dialogue-text {
+     text-transform: none;
+}
+
+/* FIX: Ensure user input text is NOT forced to uppercase by the .font-bold class */
+#message-text-display-2 {
+    text-transform: none !important;
+}
+
+/* Professional Header */
+.main-header {
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.title-text {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.subtitle-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+/* Main Layout - ADJUSTED TO SINGLE COLUMN */
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+    display: grid;
+    gap: 2rem;
+    padding: 2rem;
+    min-height: calc(100vh - 80px);
+}
+
+.content-area {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow-heavy);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Step Content */
+.step-content {
+    display: none;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.step-content.active {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.step-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.step-subtitle {
+    font-size: 1.1rem;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+/* Mission Selection */
+.mission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.mission-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+    border-radius: 15px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    text-align: center;
+}
+
+.mission-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--secondary-blue);
+}
+
+.mission-card.selected {
+    border-color: var(--success-green);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+}
+
+.mission-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.mission-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.mission-description {
+    font-size: 0.9rem;
+    color: #6b7280;
+    line-height: 1.4;
+}
+
+/* Characters Section - MODIFIED TO BE WHITE */
+.characters-section {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+    padding: 2rem;
+    background: white; /* Changed to white */
+    border-radius: 15px;
+    border: 1px solid #e5e7eb; /* Light gray border for separation */
+}
+
+.character {
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.character:hover {
+    transform: scale(1.05);
+}
+
+.character-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    border: 3px solid;
+    transition: all 0.3s ease;
+    color: white; /* Added color for consistency */
+}
+
+.alice-avatar {
+    background: linear-gradient(45deg, #dc2626, #ef4444);
+    border-color: #dc2626;
+}
+
+.bob-avatar {
+    background: linear-gradient(45deg, #16a34a, #22c55e);
+    border-color: #16a34a;
+}
+
+/* NEW EVE AVATAR STYLE */
+.eve-avatar {
+    background: linear-gradient(45deg, #9333ea, #c084fc); /* Purple gradient */
+    border-color: #9333ea;
+}
+
+.quantum-avatar {
+    background: linear-gradient(45deg, var(--accent-cyan), var(--secondary-blue));
+    border-color: var(--accent-cyan);
+    cursor: pointer;
+}
+
+.character-name {
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 0.25rem;
+}
+
+.character-role {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* Dialogue Bubbles */
+.dialogue-container {
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.dialogue-bubble {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-soft);
+    border-left: 4px solid var(--secondary-blue);
+    animation: slideIn 0.5s ease-out;
+}
+
+.dialogue-bubble.military {
+     border-left-color: #ef4444; /* Red for urgency */
+     background: #fee2e2;
+}
+
+.dialogue-bubble.command {
+     border-left-color: #10b981; /* Green for command */
+     background: #d1fae5;
+}
+
+/* NEW EVE DIALOGUE STYLE */
+.dialogue-bubble.eve-attack {
+     border-left-color: #9333ea; /* Purple for Eve */
+     background: #f3e8ff;
+}
+
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.dialogue-speaker {
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase; /* KEEP SPEAKER NAMES IN CAPS */
+}
+
+.dialogue-text {
+    line-height: 1.6;
+    color: #374151;
+    font-weight: 500; /* Subtle emphasis for readability */
+    text-transform: none; /* Crucial: Ensure dialogue is standard casing */
+}
+
+/* Dr. Quantum Insight Panel */
+.dr-quantum-insight {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1));
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    box-shadow: var(--shadow-medium);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.dr-quantum-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    color: var(--primary-blue);
+}
+
+.dr-quantum-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4b5563;
+}
+
+/* Quantum Channel - REDESIGNED VISUALIZATION - NOW WHITE BACKGROUND */
+.quantum-channel-section {
+    margin: 2rem 0;
+    padding: 1.5rem 1rem;
+    background: #ffffff; /* White background */
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    border: 4px solid var(--secondary-blue); /* Blue border for contrast */
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+}
+
+.quantum-channel-container {
+    height: 150px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* New Quantum Channel Flow Container for positioning */
+.quantum-channel-flow {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+/* Elements along the flow are absolutely positioned */
+.flow-station {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Added Title Style */
+.channel-title {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    padding: 0.25rem 1rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 3;
+}
+
+/* Polarizer as Filter/Gate */
+.polarizer {
+    width: 80px;
+    height: 80px;
+    background: rgba(30, 64, 175, 0.05); /* Lighter filter on white */
+    border: 3px solid rgba(59, 130, 246, 0.8);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    transition: all 0.5s ease;
+    backdrop-filter: blur(5px);
+    cursor: default;
+}
+
+/* Eve's specific color styling */
+.eve-device-color {
+    border-color: #9333ea !important; /* Purple Border */
+    background: rgba(147, 51, 234, 0.1) !important; /* Purple Background */
+}
+
+/* Overwrite the photon line color for Eve's devices */
+.eve-device-color::before {
+    background: linear-gradient(to right, #6d28d9, #9333ea, #6d28d9) !important; /* Purple Line */
+    box-shadow: 0 0 10px rgba(147, 51, 234, 0.8) !important;
+}
+
+
+/* Default line (Horizontal) - used for the base of '+' and the single line for '×' */
+/* Note: .polarizer::before and .eve-device-color::before share the same rules, but Eve's color overrides are important */
+.polarizer::before, .eve-device-color::before {
+    content: '';
+    width: 90%;
+    height: 4px;
+    /* Base background gradient - overridden by .eve-device-color */
+    background: linear-gradient(to right, #333, var(--secondary-blue), #333);
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg); /* Default Horizontal for '+' */
+    transition: transform 0.3s ease;
+}
+
+/* Reverting the '+' sign visualization */
+.polarizer::after, .eve-device-color::after {
+    content: none !important; /* Ensure the vertical bar is hidden */
+}
+
+.polarizer[data-basis="+"]::before, .eve-device-color[data-basis="+"]::before {
+    transform: translate(-50%, -50%) rotate(0deg); /* Single horizontal line for '+' */
+}
+
+/* Diagonal basis styling (only uses ::before) */
+.polarizer[data-basis="X"]::before, .eve-device-color[data-basis="X"]::before {
+    transform: translate(-50%, -50%) rotate(45deg); /* Diagonal line */
+}
+
+/* Ensure ::after is hidden for '×' basis */
+.polarizer[data-basis="X"]::after, .eve-device-color[data-basis="X"]::after {
+    content: none !important;
+}
+
+/* Labels above the polarizers - MOVED UP TO PREVENT OVERLAP */
+.channel-label-stack {
+    color: #1f2937; /* Dark text for white background */
+    position: absolute;
+    top: -45px; /* Pushed up from -30px */
+    width: 100px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Photon Path/Track Line */
+.photon-track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: repeating-linear-gradient(
+        to right,
+        rgba(59, 130, 246, 0.8),
+        rgba(59, 130, 246, 0.8) 10px,
+        transparent 10px,
+        transparent 20px
+    );
+}
+
+/* Photon particle */
+.photon {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, #ffffff, #06b6d4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Font size kept large for icon visibility */
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--secondary-blue); /* Color set to secondary blue for consistency with track */
+    /* Transition will be set dynamically in JS for custom timing */
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.8);
+    z-index: 10;
+}
+
+/* New element for angle display (positioned above the photon) */
+.photon-angle {
+    position: absolute;
+    top: -15px; /* Position above the photon circle */
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #1f2937; /* Dark text for visibility */
+    background: #fff;
+    padding: 1px 4px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    z-index: 11;
+}
+
+/* Eavesdropping Toggle Styling */
+.toggle-switch {
+    display: inline-block;
+    height: 34px;
+    width: 60px;
+    position: relative;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--danger-red);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+/* End Toggle Styling */
+
+
+/* Action Buttons */
+.action-section {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.btn {
+    background: linear-gradient(45deg, var(--secondary-blue), var(--primary-blue));
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    box-shadow: var(--shadow-soft);
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--secondary-blue), var(--primary-blue));
+}
+
+.btn-success {
+    background: linear-gradient(45deg, var(--success-green), #059669);
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, var(--warning-yellow), #d97706);
+}
+
+.btn-danger {
+    background: linear-gradient(45deg, var(--danger-red), #dc2626);
+}
+
+/* Tables */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+
+.data-table th {
+    background: var(--primary-blue);
+    color: white;
+    padding: 1rem 0.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Reduced vertical gap for data cells */
+.data-table td {
+    padding: 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+    font-family: monospace;
+    font-weight: 600;
+}
+
+/* New Table Row Coloring - DARKER colors implemented (Tailwind 400 level) */
+/* BASE MATCHING: Green for Match, Red for Mismatch/Discard */
+.data-table tr.bg-green-50 {
+    background-color: #d1fae5; /* Tailwind green-100 (Success) */
+}
+
+/* FIX: Make basis mismatch visibly darker (Red-400 equivalent) */
+.data-table tr.bg-red-50 {
+    background-color: #f87171; /* Tailwind red-400 equivalent (for Mismatch/Discarded) */
+}
+
+/* Make hover slightly darker than the base color (Tailwind 500 level) */
+.data-table tr.bg-green-50:hover {
+    background-color: #a7f3d0;
+}
+
+/* Hover state for mismatch */
+.data-table tr.bg-red-50:hover {
+    background-color: #ef4444; /* Tailwind red-500 equivalent on hover */
+}
+
+/* ENFORCED BOLDNESS FIX (For conversational and technical terms) */
+strong, .font-bold, .font-extrabold {
+    font-weight: 900 !important; /* Increased to 900 for max boldness */
+    text-transform: uppercase !important; /* REINFORCED: Enforce block letters everywhere */
+    letter-spacing: 0.05em; /* Added small spacing for better readability */
+}
+/* Ensure maximum visibility for text within strong/bold tags */
+.text-2xl strong, .text-xl strong {
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+}
+
+/* UPDATED: Raw Key Table Error (A != B) - Make this the darkest red */
+.data-table tr.error-red {
+    background-color: #ef4444; /* Tailwind red-500 equivalent (for critical Bit Error) */
+}
+
+
+/* Responsive Table Wrapper */
+.table-responsive {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+/* Input/Message Section */
+.file-upload-section {
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 2px dashed var(--secondary-blue);
+    border-radius: 15px;
+    text-align: center;
+    background: rgba(59, 130, 246, 0.05);
+    transition: all 0.3s ease;
+}
+
+.file-upload-section:hover {
+    border-color: var(--accent-cyan);
+    background: rgba(6, 182, 212, 0.05);
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: inline-block;
+    padding: 0.75rem 1.5rem; /* Reduced padding to match .btn */
+    background: linear-gradient(45deg, var(--secondary-blue), var(--primary-blue));
+    color: white;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+    text-transform: uppercase; /* Match .btn style */
+}
+
+.file-label:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Image Display in Step 6 and 7 (Increased Size) */
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9f9;
+}
+.image-display {
+    width: 100%;
+    max-width: 300px; /* Increased max-width */
+    height: 200px; /* Increased height */
+    background-color: #eee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: #6b7280;
+    object-fit: contain;
+}
+
+
+/* Modals */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-heavy);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.modal-body {
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    color: #374151;
+}
+
+.modal-footer {
+    text-align: center;
+}
+
+/* New Conversion Table Style */
+.conversion-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.conversion-table th {
+    padding: 0.5rem;
+    background: var(--secondary-blue);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.conversion-table td {
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    font-family: monospace;
+    font-size: 0.8rem;
+    text-align: center;
+}
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .main-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .sidebar {
+        order: -1;
+    }
+
+    .step-item {
+        flex: 1 1 auto;
+        min-width: unset;
+        max-width: 30%;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        padding: 0 1rem;
+    }
+
+    .title-text {
+        font-size: 1.2rem;
+    }
+
+    .main-container {
+        padding: 1rem;
+    }
+
+    .mission-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .characters-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .step-item {
+        max-width: 45%;
+    }
+}
