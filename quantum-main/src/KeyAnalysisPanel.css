@@ -1,0 +1,262 @@
+/* ===== CONTAINER ===== */
+.key-analysis-container {
+  min-height: 100vh;
+  background: #000000;
+  padding: 40px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #ffffff;
+}
+
+.key-analysis-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ===== HEADER ===== */
+.key-analysis-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.key-analysis-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+/* ===== SECTIONS ===== */
+.formula-section,
+.results-section,
+.key-section {
+  background: #0a0a0a;
+  border: 1px solid #333333;
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #ffffff;
+}
+
+/* ===== FORMULAS ===== */
+.formula-grid {
+  display: grid;
+  gap: 32px;
+}
+
+.formula-item {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formula-label {
+  font-size: 0.9rem;
+  color: #cccccc;
+  font-weight: 600;
+}
+
+.formula-box {
+  font-size: 1.2rem;
+  color: #ffffff;
+  padding: 16px 24px;
+  background: #050505;
+  border-radius: 4px;
+  text-align: center;
+  border: 1px solid #1a1a1a;
+}
+
+.qber-formula {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+}
+
+.fraction {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.numerator {
+  border-bottom: 2px solid #ffffff;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-size: 1rem;
+}
+
+.denominator {
+  padding-top: 8px;
+  font-size: 1rem;
+}
+
+.threshold-box {
+  font-size: 1rem;
+  color: #ffffff;
+  padding: 16px 20px;
+  background: #050505;
+  border-radius: 4px;
+  line-height: 1.8;
+  border: 1px solid #1a1a1a;
+}
+
+.calculation-box {
+  font-size: 1rem;
+  color: #ffffff;
+  padding: 12px 20px;
+  background: #000000;
+  border-radius: 4px;
+  border: 1px solid #333333;
+}
+
+.italic {
+  font-style: italic;
+}
+
+/* ===== RESULTS TABLE ===== */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table thead tr {
+  border-bottom: 2px solid #333333;
+}
+
+.results-table th {
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.results-table tbody tr {
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.metric-name {
+  padding: 16px 12px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.metric-value {
+  padding: 16px 12px;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: "Courier New", monospace;
+}
+
+.metric-desc {
+  padding: 16px 12px;
+  color: #999999;
+  font-size: 0.9rem;
+}
+
+.status-row {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.status-label {
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+}
+
+.status-value {
+  font-size: 1.2rem !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.status-desc {
+  font-weight: 600 !important;
+}
+
+/* ===== KEY DISPLAY ===== */
+.key-display-group {
+  margin-bottom: 24px;
+}
+
+.key-display-group:last-child {
+  margin-bottom: 0;
+}
+
+.key-label {
+  font-size: 0.85rem;
+  color: #cccccc;
+  margin-bottom: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.key-box {
+  background: #000000;
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid #333333;
+}
+
+.key-value {
+  font-family: "Courier New", monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.3em;
+  color: #ffffff;
+  word-break: break-all;
+  line-height: 1.8;
+}
+
+.key-note {
+  font-size: 0.8rem;
+  color: #666666;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #1a1a1a;
+}
+
+.key-note strong {
+  color: #999999;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .key-analysis-container {
+    padding: 20px 10px;
+  }
+
+  .formula-section,
+  .results-section,
+  .key-section {
+    padding: 20px;
+  }
+
+  .key-analysis-title {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .qber-formula {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

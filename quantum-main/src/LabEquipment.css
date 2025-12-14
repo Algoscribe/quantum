@@ -1,0 +1,434 @@
+/* =========================================
+   LabEquipment Component - Scoped Styles
+   ========================================= */
+
+/* Scope all styles to lab-equipment-page */
+.lab-equipment-page {
+    padding-top: 90px;
+    background: #000;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.lab-equipment-page .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+/* Header Styles */
+.lab-equipment-page header {
+    max-width: 900px;
+    margin: 0 auto 6rem;
+    opacity: 0;
+    animation: labFadeIn 0.8s ease forwards;
+}
+
+@keyframes labFadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.lab-equipment-page h1 {
+    font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    opacity: 0.95;
+    transition: letter-spacing 0.3s ease;
+}
+
+.lab-equipment-page h1:hover {
+    letter-spacing: 0.02em;
+}
+
+.lab-equipment-page .subtitle {
+    color: #666;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    transition: color 0.3s ease;
+}
+
+.lab-equipment-page .subtitle:hover {
+    color: #888;
+}
+
+.lab-equipment-page .intro {
+    color: #888;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    font-weight: 300;
+    transition: color 0.3s ease;
+}
+
+.lab-equipment-page .intro:hover {
+    color: #aaa;
+}
+
+/* Hero Image */
+.lab-equipment-page .hero-image {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 6rem;
+    border-radius: 4px;
+    overflow: hidden;
+    opacity: 0;
+    animation: labFadeInUp 0.8s ease 0.2s forwards;
+    position: relative;
+}
+
+@keyframes labFadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lab-equipment-page .hero-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    transition: background 0.4s ease;
+}
+
+.lab-equipment-page .hero-image:hover::after {
+    background: rgba(0, 0, 0, 0);
+}
+
+.lab-equipment-page .hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.6s ease;
+    filter: grayscale(0.3);
+}
+
+.lab-equipment-page .hero-image:hover img {
+    transform: scale(1.03);
+    filter: grayscale(0);
+}
+
+/* Equipment List */
+.lab-equipment-page .equipment-list {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.lab-equipment-page .equipment-item {
+    border-top: 1px solid #1a1a1a;
+    padding: 3rem 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    animation: labFadeInUp 0.6s ease forwards;
+    position: relative;
+}
+
+.lab-equipment-page .equipment-item:nth-child(1) { animation-delay: 0.1s; }
+.lab-equipment-page .equipment-item:nth-child(2) { animation-delay: 0.15s; }
+.lab-equipment-page .equipment-item:nth-child(3) { animation-delay: 0.2s; }
+.lab-equipment-page .equipment-item:nth-child(4) { animation-delay: 0.25s; }
+.lab-equipment-page .equipment-item:nth-child(5) { animation-delay: 0.3s; }
+.lab-equipment-page .equipment-item:nth-child(6) { animation-delay: 0.35s; }
+.lab-equipment-page .equipment-item:nth-child(7) { animation-delay: 0.4s; }
+.lab-equipment-page .equipment-item:nth-child(8) { animation-delay: 0.45s; }
+.lab-equipment-page .equipment-item:nth-child(9) { animation-delay: 0.5s; }
+
+.lab-equipment-page .equipment-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(to bottom, #fff, transparent);
+    transition: height 0.4s ease;
+}
+
+.lab-equipment-page .equipment-item:hover {
+    padding-left: 2rem;
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.lab-equipment-page .equipment-item:hover::before {
+    height: 100%;
+}
+
+.lab-equipment-page .equipment-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    cursor: default;
+}
+
+.lab-equipment-page .number {
+    font-size: 0.875rem;
+    color: #444;
+    font-weight: 500;
+    min-width: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.lab-equipment-page .equipment-item:hover .number {
+    color: #888;
+    transform: translateX(-0.5rem);
+}
+
+.lab-equipment-page h2 {
+    font-size: 1.75rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    transition: color 0.3s ease;
+}
+
+.lab-equipment-page .equipment-item:hover h2 {
+    color: #fff;
+}
+
+.lab-equipment-page .role {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    padding-left: 3.5rem;
+    font-style: italic;
+    transition: color 0.3s ease;
+    opacity: 0.8;
+}
+
+.lab-equipment-page .equipment-item:hover .role {
+    color: #888;
+    opacity: 1;
+}
+
+/* Content Grid */
+.lab-equipment-page .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem 4rem;
+    padding-left: 3.5rem;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.lab-equipment-page .equipment-item:hover .content-grid {
+    opacity: 1;
+}
+
+.lab-equipment-page .section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: transform 0.3s ease;
+}
+
+.lab-equipment-page .equipment-item:hover .section {
+    transform: translateX(0.5rem);
+}
+
+.lab-equipment-page .section-title {
+    color: #555;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.lab-equipment-page .equipment-item:hover .section-title {
+    color: #777;
+}
+
+.lab-equipment-page .section-content {
+    color: #aaa;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.lab-equipment-page ul {
+    list-style: none;
+}
+
+.lab-equipment-page ul li {
+    position: relative;
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+    color: #999;
+    transition: all 0.3s ease;
+}
+
+.lab-equipment-page ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.lab-equipment-page .equipment-item:hover ul li {
+    color: #bbb;
+    padding-left: 1.2rem;
+}
+
+.lab-equipment-page .equipment-item:hover ul li::before {
+    color: #555;
+}
+
+.lab-equipment-page .highlight {
+    grid-column: 1 / -1;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 1px solid #222;
+    margin-top: 1rem;
+    color: #777;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.lab-equipment-page .equipment-item:hover .highlight {
+    background: rgba(255, 255, 255, 0.04);
+    border-left-color: #444;
+    color: #999;
+}
+
+.lab-equipment-page .highlight strong {
+    color: #999;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.lab-equipment-page .equipment-item:hover .highlight strong {
+    color: #bbb;
+}
+
+/* Footer */
+.lab-equipment-page footer {
+    max-width: 900px;
+    margin: 6rem auto 0;
+    padding-top: 3rem;
+    border-top: 1px solid #1a1a1a;
+    color: #444;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    opacity: 0;
+    animation: labFadeIn 0.8s ease 0.6s forwards;
+}
+
+.lab-equipment-page footer p {
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+.lab-equipment-page footer:hover p {
+    color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .lab-equipment-page .content-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .lab-equipment-page .highlight {
+        grid-column: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .lab-equipment-page .container {
+        padding: 2rem 1.5rem;
+    }
+
+    .lab-equipment-page h1 {
+        font-size: 2.5rem;
+    }
+
+    .lab-equipment-page header {
+        margin-bottom: 4rem;
+    }
+
+    .lab-equipment-page .hero-image {
+        margin-bottom: 4rem;
+    }
+
+    .lab-equipment-page .equipment-item {
+        padding: 2rem 0;
+    }
+
+    .lab-equipment-page .equipment-item::before {
+        display: none;
+    }
+
+    .lab-equipment-page .equipment-item:hover {
+        padding-left: 0;
+        transform: translateX(0.5rem);
+    }
+
+    .lab-equipment-page .equipment-header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .lab-equipment-page .number {
+        min-width: auto;
+    }
+
+    .lab-equipment-page .equipment-item:hover .number {
+        transform: translateX(0);
+    }
+
+    .lab-equipment-page h2 {
+        font-size: 1.5rem;
+    }
+
+    .lab-equipment-page .role,
+    .lab-equipment-page .content-grid {
+        padding-left: 0;
+    }
+
+    .lab-equipment-page .content-grid {
+        gap: 2rem;
+    }
+
+    .lab-equipment-page .equipment-item:hover .section {
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .lab-equipment-page h1 {
+        font-size: 2rem;
+    }
+
+    .lab-equipment-page .subtitle {
+        font-size: 0.85rem;
+    }
+
+    .lab-equipment-page .intro {
+        font-size: 0.95rem;
+    }
+
+    .lab-equipment-page h2 {
+        font-size: 1.25rem;
+    }
+
+    .lab-equipment-page .equipment-item {
+        padding: 1.5rem 0;
+    }
+}
