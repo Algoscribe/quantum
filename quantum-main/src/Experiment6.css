@@ -436,8 +436,8 @@
 }
 /* ===== Graphs layout - spread and bigger (consolidated) ===== */
 .graphs-row-wrapper {
-  margin-top: -120px; /* pulls graphs closer to the channel above; kept as requested */
-  padding: 8px 14px 22px 14px;
+  margin-top: 0px;
+  padding: 8px 14px 22px 14px; /* pulls graphs closer to the channel above; kept as requested */
   max-width: 1700px;
   margin-left: auto;
   margin-right: auto;
@@ -682,28 +682,466 @@
   font-size: 16px;           /* fallback for long words */
   letter-spacing: 0.01em;
 }
-.qber-calculation-box {
-  margin-top: 14px;
-  padding: 14px 16px;
-  border: 1px solid rgba(255,255,255,0.2);
+/* ============================= */
+/* THEORY / ONBOARDING FORMATTING */
+/* ============================= */
+
+.experiment-theory-box {
+  background: #050505;
+  border: 1px solid #222;
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 40px;
+}
+
+/* Title */
+.experiment-theory-box .theory-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Body text */
+.theory-body {
+  font-size: 1.25rem;
+  line-height: 1.75;
+  color: #ddd;
+}
+
+/* Section headings */
+.theory-body h4 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Paragraph spacing */
+.theory-body p {
+  margin-bottom: 15px;
+}
+
+/* Highlight box */
+.theory-highlight {
+  margin-top: 20px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 4px solid #ffffff;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+/* Footer note */
+.theory-footer {
+  margin-top: 24px;
+  font-size: 1rem;
+  color: #aaa;
+  text-align: center;
+}
+
+/* ============================= */
+/* STEP-BY-STEP (DETAILS TAGS)   */
+/* ============================= */
+
+.bb84-step {
+  background: #050505;
+  border: 1px solid #222;
   border-radius: 10px;
-  background: rgba(255,255,255,0.04);
-  color: #fff;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+}
+
+/* Summary header */
+.bb84-step summary {
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  list-style: none;
+  color: #ffffff;
+}
+
+/* Remove default marker */
+.bb84-step summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Content inside steps */
+.bb84-step p {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+/* Lists inside steps */
+.bb84-step ul {
+  margin: 10px 0 10px 20px;
+}
+
+.bb84-step li {
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+/* ============================= */
+/* READY BOX                     */
+/* ============================= */
+
+.bb84-ready {
+  margin-top: 30px;
+  padding: 20px;
+  background: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.bb84-ready-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.bb84-ready-sub {
+  font-size: 0.9rem;
+  color: #bbb;
+}
+/* ============================= */
+/* LIMIT THEORY WIDTH (CENTERED) */
+/* ============================= */
+
+.experiment-theory-wrapper {
+  max-width: 1300px;
+  margin: 0 auto 48px auto; /* center + spacing below */
+  padding: 0 16px;         /* small side padding for mobile */
+}
+/* Center and style ONLY "Welcome to Experiment 1." */
+.experiment-theory-box .theory-body > strong {
+  display: block;
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #ffffff;
+}
+/* ======================================================
+   BB84 STEP-BY-STEP SECTION (SAFE & ISOLATED)
+   Affects ONLY the STEP 1–6 text
+   ====================================================== */
+
+section.bb84-onboarding {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+}
+
+/* Each step as a vertical card */
+section.bb84-onboarding .bb84-step {
+  display: block;
+  width: 100%;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Step title */
+section.bb84-onboarding .bb84-step summary {
+  padding: 16px 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Remove default arrow */
+section.bb84-onboarding .bb84-step summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Step content */
+section.bb84-onboarding .bb84-step p,
+section.bb84-onboarding .bb84-step ul {
+  padding: 0 22px 14px 22px;
+  line-height: 1.6;
+}
+
+/* Lists */
+section.bb84-onboarding .bb84-step ul {
+  padding-left: 42px;
+}
+
+section.bb84-onboarding .bb84-step li {
+  margin-bottom: 6px;
+}
+
+/* Ready box */
+section.bb84-onboarding .bb84-ready {
+  margin: 32px auto 0;
+  max-width: 700px;
+  text-align: center;
+  padding: 24px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+section.bb84-onboarding .bb84-ready-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+section.bb84-onboarding .bb84-ready-sub {
+  font-size: 1rem;
+  color: #ccc;
+}
+/* =====================================================
+   FORCE BB84 STEPS TO STACK VERTICALLY (FIX COLUMN BUG)
+   ===================================================== */
+
+/* This container is accidentally inheriting flex-row */
+section.bb84-onboarding {
+  display: block !important;
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+}
+
+/* Force each STEP to be full-width vertical */
+section.bb84-onboarding .bb84-step {
+  display: block !important;
+  width: 100% !important;
+  margin-bottom: 20px;
+}
+
+/* Kill any flex/grid inheritance inside steps */
+section.bb84-onboarding .bb84-step > * {
+  display: block;
+}
+
+/* Ready card centered & vertical */
+section.bb84-onboarding .bb84-ready {
+  display: block;
+  max-width: 600px;
+  margin: 32px auto 0;
+  text-align: center;
+}
+/* Extra breathing room below BB84 steps */
+section.bb84-onboarding {
+  padding-bottom: 100px; /* adjust: 60–120px as you like */
+}
+/* ===== STEP 4 — Eve Explanation Styling ===== */
+.bb84-step {
+  max-width: 1200px;
+  margin: 0 auto 32px auto;
+}
+
+/* Sub-head emphasis inside steps */
+.bb84-step p strong {
+  color: #ffffff;
+}
+
+/* “Does NOT mean” + “It means” blocks */
+.bb84-step ul {
+  margin: 12px 0 20px 20px;
+  padding: 0;
+}
+
+.bb84-step ul li {
+  margin-bottom: 8px;
+  color: #d1d5db;
+  line-height: 1.6;
+}
+
+/* Highlight warning list */
+.bb84-step ul:first-of-type li {
+  color: #ffffff 
+}
+
+/* Explanation text */
+.bb84-step p {
+  color: #d1d5db;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+/* ===== Eve Table ===== */
+.bb84-eve-table {
+  max-width: 365px;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  overflow: hidden;
   font-size: 0.95rem;
 }
 
-.qber-formula {
-  margin-bottom: 8px;
-  font-weight: 600;
+
+.bb84-eve-table thead {
+  background: rgba(255,255,255,0.08);
 }
 
-.qber-values {
+.bb84-eve-table th,
+.bb84-eve-table td {
+  padding: 12px 16px;
+  text-align: center;
+}
+
+
+.bb84-eve-table th {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.bb84-eve-table td {
+  color: #e5e7eb;
+}
+
+.bb84-eve-table tbody tr:not(:last-child) {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+/* ===== Instructions Modal ===== */
+
+.controls-header {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+  z-index: 3;
 }
 
-.qber-final {
+
+.instructions-btn {
+  font-weight: 600;
+  padding: 6px 14px;
+}
+
+
+/* Modal container */
+.instructions-modal {
+  max-width: 700px;
+  width: 90%;
+  background: #0b0b0b;
+  border-radius: 16px;
+  padding: 28px;
+  color: #fff;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+}
+
+/* Title */
+.instructions-modal h2 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* List */
+.instructions-list {
+  padding-left: 20px;
+  line-height: 1.7;
+  font-size: 15px;
+  color: #ddd;
+}
+
+.instructions-list li {
+  margin-bottom: 10px;
+}
+
+/* Footer */
+.instructions-footer {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+}
+/* ===============================
+   Button Hover + Click Motion
+   =============================== */
+
+.exp-btn {
+  position: relative;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+/* Hover = lift slightly */
+.exp-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+/* Click / Active = pressed */
+.exp-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+}
+/* ===== Compact Vertical Graph Explanation ===== */
+
+.graph-explanation-compact {
+  max-width: 820px;
+  margin: 1px auto 8px;
+  padding: 2px 12px;
+
+  background: rgba(255, 255, 255, 0.035);
+  border-radius: 6px;
+
+  color: #e5e7eb;
+  font-size: 0.9rem;
+}
+
+.graph-explanation-compact strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+/* Vertical bullet points */
+.graph-points {
+  list-style: disc;
+  padding-left: 18px;
+  margin: 0;
+}
+
+.graph-points li {
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+/* Key insight */
+.graph-key {
   margin-top: 6px;
-  font-size: 1.05rem;
+  font-size: 0.88rem;
+  color: #6ee7b7;
+}
+
+/* === Apply Settings button hover (Exp 3 style) === */
+.controls-left-column .exp-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(255, 255, 255, 0.15);
+}
+
+/* === Reset / Ghost button hover (Exp 3 style) === */
+.controls-left-column .exp-btn-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+/* ===== REPORT BUTTON STYLING ===== */
+.report-btn-large {
+  font-size: 18px;        /* bigger text */
+  padding: 14px 40px;     /* bigger button */
+  margin-bottom: 50px;   /* space underneath */
+  border-radius: 10px;   /* softer look */
+  letter-spacing: 0.08em;
+}
+/* ===== REPORT BUTTON TEXT REFINEMENT ===== */
+.report-btn-large {
+  font-family: "Georgia", "Times New Roman", serif; /* academic feel */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;   /* cleaner spacing */
+  font-size: 17px;
 }

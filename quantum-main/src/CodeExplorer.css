@@ -151,3 +151,76 @@
     background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
     margin: 40px auto;
 }
+/* === BB84 PAGE TEXT SIZE BOOST === */
+
+.bb84-content {
+  max-width: 1200px;
+}
+
+/* Main title */
+.bb84-content .title {
+  font-size: 3.4rem; /* was smaller */
+  line-height: 1.2;
+}
+
+/* Subtitle */
+.bb84-content .subtitle {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+}
+
+/* Summary paragraph */
+.bb84-content .summary-text {
+  font-size: 1.25rem;
+  line-height: 1.9;
+}
+
+/* Section heading */
+.bb84-content .section-title {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Protocol list items */
+.bb84-content .protocol-list li {
+  font-size: 1.15rem;
+  line-height: 1.85;
+  margin-bottom: 1.2rem;
+}
+
+/* Key takeaway */
+.bb84-content .security-note {
+  font-size: 1.2rem;
+  line-height: 1.9;
+}
+
+/* Button */
+.ipynb-button {
+  font-size: 1.05rem;
+  padding: 1rem 2.8rem;
+}
+/* === INCREASE WHITE TEXT OPACITY (BB84 PAGE) === */
+
+.bb84-content,
+.bb84-content p,
+.bb84-content li,
+.bb84-content h1,
+.bb84-content h2,
+.bb84-content h3 {
+  color: rgba(255, 255, 255, 0.97);
+}
+
+/* Slightly softer for secondary text */
+.bb84-content .subtitle {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Key takeaway emphasis */
+.bb84-content .security-note {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* List items clarity */
+.bb84-content .protocol-list li {
+  color: rgba(255, 255, 255, 0.95);
+}

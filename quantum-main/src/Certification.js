@@ -93,9 +93,9 @@ const CertificatePage = () => {
                             <p className="cert-label">Date of Completion</p>
                         </div>
                         <div className="cert-signature-block">
-                            <p className="cert-signature-placeholder">A. I. Generator</p>
+                            <p className="cert-signature-placeholder">QKD_Xplore Quantum Lab</p>
                             <div className="cert-signature-line"></div>
-                            <p className="cert-label">Instructor / Project Lead</p>
+                            <p className="cert-label">Virtual Lab</p>
                         </div>
                     </div>
                     

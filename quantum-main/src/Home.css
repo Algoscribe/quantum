@@ -1208,3 +1208,20 @@ footer p {
   align-items: flex-start;
   /* so content starts at top, not vertically centered */
 }
+/* --- ADD THIS TO THE BOTTOM OF App.css --- */
+
+.threat-card,
+.comparison-column,
+.principle-card,
+.feature-card,
+.qber-indicator,
+.audience-card,
+.theory-box,
+.modal-content {
+  /* The Glass Effect */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* For Safari */
+  
+  /* Optional: Make the background slightly stronger to pop against the blur */
+  background: rgba(255, 255, 255, 0.05); 
+}

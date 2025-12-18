@@ -1,10 +1,10 @@
- import React from "react";
+import React from "react";
 import "./PostQuiz.css";
 import QuantumBackground from "./QuantumBackground";
 
 const PostQuizPage = () => {
   const postQuizUrl =
-    "https://docs.google.com/forms/d/1R9IUvlZiS_9S0NayAAixt5HV8M4xL5k6eE8oW4H1ZpY/edit";
+    "https://docs.google.com/forms/d/e/1FAIpQLSf7HSPHCi85AIDvLmMYWM5LucmmGyQPRAdp2TEpz31-S5FFSw/viewform?usp=dialog";
 
   return (
     <div className="quiz-hero">
@@ -34,10 +34,12 @@ const PostQuizPage = () => {
           rel="noopener noreferrer"
           className="quiz-hero-btn"
         >
-          Start Post-Quiz
+          START POST-QUIZ
         </a>
 
-        <p className="quiz-hero-meta">Compare your score and celebrate progress</p>
+        <p className="quiz-hero-meta">
+          Compare your score and celebrate progress
+        </p>
       </div>
     </div>
   );

@@ -110,3 +110,46 @@
   font-size: 0.8rem;
   opacity: 0.65;
 }
+/* Center everything in hero */
+.quiz-hero {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+
+  display: grid;
+  place-items: center;
+
+  text-align: center; /* 🔑 THIS */
+  overflow: hidden;
+}
+
+/* Content block */
+.quiz-hero-content {
+  position: relative;
+  z-index: 2;
+
+  max-width: 900px;
+  padding: 3rem 2rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* horizontal centering */
+}
+
+/* Body text */
+.quiz-hero-body {
+  text-align: center;
+}
+
+/* Bullet list */
+.quiz-hero-points {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 2rem 0;
+
+  text-align: center;        /* 🔑 THIS */
+}
+
+.quiz-hero-points li {
+  text-align: center;        /* 🔑 THIS */
+}

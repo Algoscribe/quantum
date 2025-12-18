@@ -33,6 +33,8 @@ import CodeExplorer from './CodeExplorer';
 import PreQuiz from './PreQuiz';
 import PostQuiz from './PostQuiz';
 import CertificatePage from "./Certification";
+import Credits from "./Credits";
+
 
 // navbar
 import QXNavbar from "./QXNavbar";
@@ -81,7 +83,7 @@ function App() {
         <Route path="/prequiz" element={<PreQuiz />} />
         <Route path="/postquiz" element={<PostQuiz />} />
         <Route path="/certification" element={<CertificatePage />} />
-
+        <Route path="/credits" element={<Credits />} />
         {/* 404 fallback */}
         <Route
           path="*"

@@ -8,36 +8,41 @@
 }
 
 .key-analysis-wrapper {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 /* ===== HEADER ===== */
 .key-analysis-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 60px;
 }
 
 .key-analysis-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 8px;
 }
 
-/* ===== SECTIONS ===== */
+/* ===== SECTIONS (CLEAN GLASS) ===== */
 .formula-section,
 .results-section,
 .key-section {
-  background: #0a0a0a;
-  border: 1px solid #333333;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-radius: 12px;
   padding: 32px;
   margin-bottom: 32px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
+/* ===== SECTION TITLES ===== */
 .section-title {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
   margin-bottom: 24px;
   color: #ffffff;
@@ -56,21 +61,30 @@
 }
 
 .formula-label {
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   color: #cccccc;
   font-weight: 600;
 }
 
+/* ===== FORMULA BOX (CENTERED, BIGGER) ===== */
 .formula-box {
-  font-size: 1.2rem;
-  color: #ffffff;
-  padding: 16px 24px;
-  background: #050505;
-  border-radius: 4px;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
   text-align: center;
-  border: 1px solid #1a1a1a;
+
+  font-size: 1.4rem;
+  padding: 20px 32px;
+
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
+/* ===== QBER FRACTION ===== */
 .qber-formula {
   display: flex;
   justify-content: center;
@@ -90,30 +104,45 @@
   padding-bottom: 8px;
   padding-left: 16px;
   padding-right: 16px;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 .denominator {
   padding-top: 8px;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
+/* ===== SECURITY THRESHOLD (MATCHING STYLE) ===== */
 .threshold-box {
-  font-size: 1rem;
-  color: #ffffff;
-  padding: 16px 20px;
-  background: #050505;
-  border-radius: 4px;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+  text-align: center;
+
+  font-size: 1.3rem;
+  padding: 20px 32px;
+
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
   line-height: 1.8;
-  border: 1px solid #1a1a1a;
 }
 
+.threshold-box li {
+  margin: 10px 0;
+}
+
+/* ===== CALCULATION BOX ===== */
 .calculation-box {
-  font-size: 1rem;
+  font-size: 1.3rem;
   color: #ffffff;
   padding: 12px 20px;
   background: #000000;
-  border-radius: 4px;
+  border-radius: 6px;
   border: 1px solid #333333;
 }
 
@@ -140,7 +169,7 @@
   text-align: left;
   font-weight: 600;
   color: #ffffff;
-  font-size: 0.85rem;
+  font-size: 1.5rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -153,12 +182,13 @@
   padding: 16px 12px;
   color: #ffffff;
   font-weight: 500;
+  font-size: 1.3rem;
 }
 
 .metric-value {
   padding: 16px 12px;
   color: #ffffff;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 700;
   font-family: "Courier New", monospace;
 }
@@ -166,7 +196,7 @@
 .metric-desc {
   padding: 16px 12px;
   color: #999999;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
 }
 
 .status-row {
@@ -179,7 +209,7 @@
 }
 
 .status-value {
-  font-size: 1.2rem !important;
+  font-size: 1.5rem !important;
   font-weight: 800 !important;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -199,7 +229,7 @@
 }
 
 .key-label {
-  font-size: 0.85rem;
+  font-size: 1.7rem;
   color: #cccccc;
   margin-bottom: 12px;
   font-weight: 600;
@@ -210,13 +240,13 @@
 .key-box {
   background: #000000;
   padding: 20px;
-  border-radius: 4px;
+  border-radius: 6px;
   border: 1px solid #333333;
 }
 
 .key-value {
   font-family: "Courier New", monospace;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   letter-spacing: 0.3em;
   color: #ffffff;
   word-break: break-all;
@@ -248,7 +278,7 @@
   }
 
   .key-analysis-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .section-title {

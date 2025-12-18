@@ -283,21 +283,7 @@ export default function Home() {
               </div>
 
             </div>
-            <img
-              src={img3}
-              alt="Bloch Sphere Visualization"
-              style={{
-                width: '100%',
-                maxWidth: '700px',
-                height: 'auto',
-                borderRadius: '10px',
-                border: '2px solid rgba(255, 255, 255, 0.2)',
-                opacity: 0.8,
-                margin: '0 auto',        // Add this line
-                display: 'block',        // Add this line (ensures margin auto works on img)
-              }}
-              className="bloch-sphere-image"
-            />
+            
             <p className="comparison-conclusion">Security is not assumed, it is experimentally verified.</p>
           </div>
         </section>

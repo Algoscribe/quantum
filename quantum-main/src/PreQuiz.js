@@ -3,9 +3,9 @@ import "./PreQuiz.css";
 import QuantumBackground from "./QuantumBackground";
 
 const PreQuizPage = () => {
-  // Put your actual Google Form link here
+  // Google Form link (must be a string)
   const preQuizUrl =
-    "https://docs.google.com/forms/d/XXXXXXXXXXXXXXX/viewform";
+    "https://docs.google.com/forms/d/e/1FAIpQLSdA9i2vyT_RAl7B6rpMek6LyWmouoGo5WDjxl9RW7IQwePQvw/viewform?usp=dialog";
 
   return (
     <div className="quiz-hero">
@@ -47,11 +47,6 @@ const PreQuizPage = () => {
           ~5 minutes • 10 questions • Answer honestly—this is for you, not your
           marks.
         </p>
-      </div>
-
-      {/* Optional scroll hint / cinematic detail */}
-      <div className="quiz-scroll-indicator">
-        <span className="quiz-scroll-dot" />
       </div>
     </div>
   );

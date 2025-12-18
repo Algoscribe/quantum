@@ -17,7 +17,7 @@ export default function Signup() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       alert("Signup successful!");
-      navigate("/lab/bb84"); // or "/dashboard" if you want
+      navigate("/login");  // or "/dashboard" if you want
     } catch (error) {
       alert(error.message);
     } finally {
