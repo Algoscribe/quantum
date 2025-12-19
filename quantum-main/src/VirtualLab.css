@@ -1,25 +1,32 @@
-/* VirtualLab.css */
+/* ================================ */
+/* VIRTUAL LAB — FULLY SCOPED CSS  */
+/* ================================ */
+
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:italic&family=Inter:wght@300;400;600;700&family=JetBrains+Mono&display=swap');
 
-body {
+/* Root scope */
+.virtual-lab {
   font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
   background-color: #000;
-  margin: 0;
-  color: white;
+  color: #fff;
+  min-height: 100vh;
 }
 
-.serif-italic {
+/* Typography helpers */
+.virtual-lab .serif-italic {
   font-family: 'Instrument Serif', serif;
   font-style: italic;
 }
 
-.mono {
+.virtual-lab .mono {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Background Technical Grid */
-.technical-grid {
+/* ================================ */
+/* BACKGROUND GRID */
+/* ================================ */
+
+.virtual-lab .technical-grid {
   background-image: radial-gradient(circle, #fff 0.5px, transparent 0.5px);
   background-size: 40px 40px;
   opacity: 0.05;
@@ -29,8 +36,11 @@ body {
   z-index: 0;
 }
 
-/* Encoding Bubbles */
-.state-bubble {
+/* ================================ */
+/* STATE / ENCODING BUBBLES */
+/* ================================ */
+
+.virtual-lab .state-bubble {
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.02);
   padding: 1.5rem;
@@ -39,13 +49,16 @@ body {
   transition: all 0.3s ease;
 }
 
-.state-bubble:hover {
+.virtual-lab .state-bubble:hover {
   border-color: rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* Data Table Styling */
-.technical-table th {
+/* ================================ */
+/* TECHNICAL TABLE */
+/* ================================ */
+
+.virtual-lab .technical-table th {
   text-align: left;
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
@@ -56,30 +69,36 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.technical-table td {
+.virtual-lab .technical-table td {
   padding: 14px 12px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Layout Dividers */
-.divider-label {
+/* ================================ */
+/* DIVIDERS */
+/* ================================ */
+
+.virtual-lab .divider-label {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 2.5rem 0;
+  margin: 2rem 0;
 }
 
-.divider-label::after {
+.virtual-lab .divider-label::after {
   content: '';
   flex: 1;
   height: 1px;
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Specialized Cards */
-.secure-limit-tab {
+/* ================================ */
+/* SPECIALIZED CARDS */
+/* ================================ */
+
+.virtual-lab .secure-limit-tab {
   background: #ffffff;
   color: #000000;
   padding: 2.5rem;
@@ -88,17 +107,22 @@ body {
   transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.secure-limit-tab:hover {
+.virtual-lab .secure-limit-tab:hover {
   transform: translateY(-8px);
 }
 
-.xor-logic-box {
+.virtual-lab .xor-logic-box {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 2.5rem;
   border-radius: 2.5rem;
 }
-.phase-container {
+
+/* ================================ */
+/* PHASE / GRID SYSTEM */
+/* ================================ */
+
+.virtual-lab .phase-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 3.5rem;
@@ -109,22 +133,23 @@ body {
   z-index: 1;
 }
 
-.phase-card {
+.virtual-lab .phase-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: left;
   gap: 1.25rem;
 }
-.phase-icon {
-  width: 140px;
-  height: 140px;
+
+.virtual-lab .phase-icon {
+  width: 120px;
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0.9;
 }
-.physics-core {
+
+/* Physics note */
+.virtual-lab .physics-core {
   margin-top: 1rem;
   padding-left: 1rem;
   border-left: 2px solid rgba(255, 255, 255, 0.15);
@@ -132,88 +157,51 @@ body {
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.65);
 }
-@media (max-width: 1024px) {
-  .phase-icon {
-    width: 110px;
-    height: 110px;
-  }
 
-  .phase-description {
-    font-size: 0.85rem;
-  }
-}
-/* ===== PHASE GRID FIX ===== */
-.group {
-  position: relative;
-}
+/* ================================ */
+/* PHASE GRID (HARD FIX WITHOUT !important) */
+/* ================================ */
 
-
-/* ===== PHASE GRID — HARD FIX ===== */
-.phase-grid {
+.virtual-lab .phase-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
   background: rgba(255, 255, 255, 0.1);
   max-width: 72rem;
   margin: 0 auto 8rem auto;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.phase-card {
-  background: black;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.virtual-lab .phase-grid .phase-card {
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
-/* Mobile: stack vertically */
-@media (max-width: 768px) {
-  .phase-grid {
-    grid-template-columns: 1fr;
-  }
-}
-/* FORCE PHASES INTO 2×3 GRID — NO TAILWIND */
-section.grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  grid-auto-flow: row !important;
-}
-/* FORCE QUANTUM ICON SIZE */
-.phase-grid svg,
-.group svg {
-  width: 500px !important;
-  height: 500px !important;
-}
-.phase-icon {
-  width: 28px;   /* or 24px if you want smaller */
-  height: 28px;
-  display: flex;
-  align-items: center!important;
-  justify-content: center!important;
-}
-section {
-  max-width: 100%;
+/* ================================ */
+/* SVG CONTROL — SCOPED */
+/* ================================ */
+
+.virtual-lab .phase-grid svg {
+  width: 120px;
+  height: 120px;
 }
 
-p {
-  max-width: 65ch;
-}
-/* ===== ENCODING SCHEMA GRID FIX ===== */
-.encoding-grid {
+/* ================================ */
+/* ENCODING GRID */
+/* ================================ */
+
+.virtual-lab .encoding-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
 }
 
 @media (max-width: 768px) {
-  .encoding-grid {
+  .virtual-lab .encoding-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-}
-.divider-label {
-  margin: 1.5rem 0;
+
+  .virtual-lab .phase-grid {
+    grid-template-columns: 1fr;
+  }
 }

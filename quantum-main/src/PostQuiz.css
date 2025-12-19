@@ -1,74 +1,87 @@
-.quiz-hero {
+/* ============================= */
+/* PRE & POST QUIZ ONLY STYLES */
+/* ============================= */
+
+.quiz-page .quiz-hero {
   position: relative;
   min-height: 100vh;
-  background: #000; /* star bg will be visible */
+  width: 100%;
+  background: #000;
   color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+  display: grid;
+  place-items: center;
+
   overflow: hidden;
 }
 
-/* Make sure stars stay behind content */
-.quiz-hero > canvas,
-.quiz-hero > div:first-child {
+/* Background canvas / stars */
+.quiz-page .quiz-hero > canvas,
+.quiz-page .quiz-hero > div:first-child {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   z-index: 1;
 }
 
-.quiz-hero-content {
+/* Content block */
+.quiz-page .quiz-hero-content {
   position: relative;
   z-index: 10;
+
+  max-width: 900px;
+  padding: 3rem 2rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  max-width: 720px;
-  padding: 4rem 2rem 4rem;
 }
 
-/* Softer, smaller Qubit mesh */
-.quiz-orbit {
+/* Subtle orbit visual */
+.quiz-page .quiz-orbit {
   position: absolute;
   top: 48%;
   left: 50%;
-  width: 220px; /* reduced */
-  height: 220px; /* reduced */
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   transform: translate(-50%, -48%);
-  opacity: 0.35; /* lighter */
+  opacity: 0.35;
+  pointer-events: none;
 }
 
-/* Typography reverted to clean version */
-.quiz-hero-kicker {
+/* Typography */
+.quiz-page .quiz-hero-kicker {
   font-size: 0.8rem;
   opacity: 0.65;
   letter-spacing: 0.22em;
   margin-bottom: 0.7rem;
 }
 
-.quiz-hero-title {
+.quiz-page .quiz-hero-title {
   font-size: 2.9rem;
   text-transform: uppercase;
   font-weight: 700;
   margin-bottom: 1.3rem;
 }
 
-.quiz-hero-body {
+.quiz-page .quiz-hero-body {
   font-size: 1.05rem;
   opacity: 0.92;
   margin-bottom: 1.2rem;
 }
 
-.quiz-hero-points {
+/* Bullet points */
+.quiz-page .quiz-hero-points {
   list-style: none;
   padding: 0;
-  margin: 0 auto 2.4rem auto;
+  margin: 1.5rem 0 2rem 0;
   max-width: 500px;
 }
 
-.quiz-hero-points li {
+.quiz-page .quiz-hero-points li {
   font-size: 1rem;
   opacity: 0.9;
   margin-bottom: 0.6rem;
@@ -76,7 +89,7 @@
   padding-left: 1.3rem;
 }
 
-.quiz-hero-points li::before {
+.quiz-page .quiz-hero-points li::before {
   content: "";
   width: 6px;
   height: 6px;
@@ -87,7 +100,8 @@
   top: 7px;
 }
 
-.quiz-hero-btn {
+/* CTA Button */
+.quiz-page .quiz-hero-btn {
   padding: 0.85rem 2.6rem;
   background: #fff;
   color: #000;
@@ -99,57 +113,15 @@
   cursor: pointer;
 }
 
-.quiz-hero-btn:hover {
+.quiz-page .quiz-hero-btn:hover {
   background: #000;
   color: #fff;
   border: 1px solid #fff;
 }
 
-.quiz-hero-meta {
+/* Meta text */
+.quiz-page .quiz-hero-meta {
   margin-top: 1rem;
   font-size: 0.8rem;
   opacity: 0.65;
-}
-/* Center everything in hero */
-.quiz-hero {
-  position: relative;
-  min-height: 100vh;
-  width: 100%;
-
-  display: grid;
-  place-items: center;
-
-  text-align: center; /* 🔑 THIS */
-  overflow: hidden;
-}
-
-/* Content block */
-.quiz-hero-content {
-  position: relative;
-  z-index: 2;
-
-  max-width: 900px;
-  padding: 3rem 2rem;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* horizontal centering */
-}
-
-/* Body text */
-.quiz-hero-body {
-  text-align: center;
-}
-
-/* Bullet list */
-.quiz-hero-points {
-  list-style: none;
-  padding: 0;
-  margin: 1.5rem 0 2rem 0;
-
-  text-align: center;        /* 🔑 THIS */
-}
-
-.quiz-hero-points li {
-  text-align: center;        /* 🔑 THIS */
 }

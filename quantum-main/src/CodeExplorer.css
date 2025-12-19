@@ -1,226 +1,181 @@
-/* Container for the entire page */
+/* ===================================== */
+/* BB84 PAGE — FULLY SCOPED STYLES ONLY */
+/* ===================================== */
+
+/* Main container */
 .bb84-container {
-    position: relative;
-    min-height: 100vh;
-    background-color: #000000;
-    color: #ffffff;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+  position: relative;
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 100px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Helvetica", sans-serif;
 }
 
-/* Content wrapper to place text over the background */
-.bb84-content {
-    position: relative;
-    z-index: 10;
-    max-width: 900px;
-    padding: 60px 50px;
-    margin: 20px;
-    background-color: transparent;
-    border-radius: 0;
-    box-shadow: none;
-}
+/* Content wrapper */
+.bb84-container .bb84-content {
+  position: relative;
+  z-index: 10;
 
-/* Headings */
-.title {
-    font-size: 3em;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 20px;
-    text-align: center;
-    letter-spacing: -1px;
-    line-height: 1.2;
-}
-
-.subtitle {
-    font-size: 0.75em;
-    font-weight: 400;
-    color: #888888;
-    margin-bottom: 40px;
-    border-bottom: none;
-    padding-bottom: 0;
-    text-align: center;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-}
-
-/* Paragraph Text */
-.summary-text,
-.security-note {
-    font-size: 1.05em;
-    font-weight: 300;
-    line-height: 1.8;
-    margin-bottom: 30px;
-    color: #cccccc;
-}
-
-/* Section and Lists */
-.section {
-    margin-bottom: 40px;
-    padding: 0;
-    background-color: transparent;
-    border-radius: 0;
-}
-
-.section h3 {
-    color: #ffffff;
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 1.5em;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-}
-
-.section ul {
-    list-style-type: none;
-    padding-left: 0;
-    margin: 0;
-}
-
-.section ul li {
-    margin-bottom: 15px;
-    padding-left: 30px;
-    position: relative;
-    font-size: 1.05em;
-    font-weight: 300;
-    line-height: 1.8;
-    color: #cccccc;
-}
-
-.section ul li::before {
-    content: "•";
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 1.2em;
-    display: inline-block;
-    width: 30px;
-    margin-left: -30px;
-    position: absolute;
-    left: 0;
-}
-
-/* Security Note emphasis */
-.security-note {
-    color: #ffffff;
-    font-style: normal;
-    font-weight: 400;
-    border-left: 3px solid rgba(255, 255, 255, 0.3);
-    padding-left: 20px;
-    margin: 30px 0;
-    background-color: rgba(255, 255, 255, 0.05);
-    padding: 20px;
-    padding-left: 20px;
-    border-radius: 0;
-}
-
-/* The Button */
-.ipynb-button {
-    display: block;
-    width: fit-content;
-    margin: 50px auto 0;
-    padding: 16px 48px;
-    background-color: #ffffff;
-    color: #000000;
-    text-decoration: none;
-    font-size: 0.9em;
-    font-weight: 600;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    text-align: center;
-    border: none;
-    cursor: pointer;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.ipynb-button:hover {
-    background-color: #e0e0e0;
-    color: #000000;
-    transform: scale(1.05);
-}
-
-/* Optional: Add subtle divider lines between sections */
-.section+.section::before {
-    content: '';
-    display: block;
-    width: 60%;
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
-    margin: 40px auto;
-}
-/* === BB84 PAGE TEXT SIZE BOOST === */
-
-.bb84-content {
   max-width: 1200px;
+  padding: 60px 50px;
+  margin: 20px;
+
+  background: transparent;
 }
 
-/* Main title */
-.bb84-content .title {
-  font-size: 3.4rem; /* was smaller */
+/* ================= */
+/* HEADINGS */
+/* ================= */
+
+.bb84-container .bb84-title {
+  font-size: 3.4rem;
+  font-weight: 700;
   line-height: 1.2;
-}
+  letter-spacing: -1px;
 
-/* Subtitle */
-.bb84-content .subtitle {
-  font-size: 1.8rem;
-  margin-bottom: 2rem;
-}
-
-/* Summary paragraph */
-.bb84-content .summary-text {
-  font-size: 1.25rem;
-  line-height: 1.9;
-}
-
-/* Section heading */
-.bb84-content .section-title {
-  font-size: 1.6rem;
-  margin-bottom: 1.5rem;
-}
-
-/* Protocol list items */
-.bb84-content .protocol-list li {
-  font-size: 1.15rem;
-  line-height: 1.85;
-  margin-bottom: 1.2rem;
-}
-
-/* Key takeaway */
-.bb84-content .security-note {
-  font-size: 1.2rem;
-  line-height: 1.9;
-}
-
-/* Button */
-.ipynb-button {
-  font-size: 1.05rem;
-  padding: 1rem 2.8rem;
-}
-/* === INCREASE WHITE TEXT OPACITY (BB84 PAGE) === */
-
-.bb84-content,
-.bb84-content p,
-.bb84-content li,
-.bb84-content h1,
-.bb84-content h2,
-.bb84-content h3 {
+  text-align: center;
+  margin-bottom: 20px;
   color: rgba(255, 255, 255, 0.97);
 }
 
-/* Slightly softer for secondary text */
-.bb84-content .subtitle {
+.bb84-container .bb84-subtitle {
+  font-size: 0.85rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+
+  text-align: center;
+  margin-bottom: 40px;
+
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* Key takeaway emphasis */
-.bb84-content .security-note {
+/* ================= */
+/* TEXT CONTENT */
+/* ================= */
+
+.bb84-container .bb84-summary,
+.bb84-container .bb84-security-note {
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.9;
+
+  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.97);
+}
+
+/* ================= */
+/* SECTIONS */
+/* ================= */
+
+.bb84-container .bb84-section {
+  margin-bottom: 40px;
+}
+
+.bb84-container .bb84-section-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.97);
+}
+
+/* Lists */
+.bb84-container .bb84-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bb84-container .bb84-list li {
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 15px;
+
+  font-size: 1.15rem;
+  line-height: 1.85;
+  font-weight: 300;
+
   color: rgba(255, 255, 255, 0.95);
 }
 
-/* List items clarity */
-.bb84-content .protocol-list li {
-  color: rgba(255, 255, 255, 0.95);
+.bb84-container .bb84-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Section divider */
+.bb84-container .bb84-section + .bb84-section::before {
+  content: "";
+  display: block;
+  width: 60%;
+  height: 1px;
+
+  margin: 40px auto;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+}
+
+/* ================= */
+/* SECURITY NOTE */
+/* ================= */
+
+.bb84-container .bb84-security-note {
+  padding: 20px;
+  margin: 30px 0;
+
+  border-left: 3px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+
+  font-weight: 400;
+}
+
+/* ================= */
+/* BUTTON */
+/* ================= */
+
+.bb84-container .bb84-button {
+  display: block;
+  width: fit-content;
+
+  margin: 50px auto 0;
+  padding: 1rem 2.8rem;
+
+  background: #fff;
+  color: #000;
+
+  border-radius: 50px;
+  border: none;
+
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.bb84-container .bb84-button:hover {
+  background: #e0e0e0;
+  transform: scale(1.05);
 }
