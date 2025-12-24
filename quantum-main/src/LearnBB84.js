@@ -1,14 +1,29 @@
 import React, { useState } from "react";
 import "./LearnBB84.css";
 import BlochSphereImage from './image.png';
-import img1 from './images/image.png';
+import img1 from './images/img1.png';
+import img2 from './images/img2.png';
+import img3 from './images/img3.png';
+import img4 from './images/img4.png';
+import img5 from './images/img5.png';
+import img6 from './images/img6.png';
+import img7 from './images/img7.png';
+import img8 from './images/img8.png';
+import img9 from './images/img9.png';
+import img10 from './images/img10.png';
+import img11 from './images/img11.png';
+import img12 from './images/img12.png';
+import img13 from './images/img13.png';
+import img14 from './images/img14.png';
+import img15 from './images/img15.png';
+import img16 from './images/img16.png';
 
 const TOPICS = [
   { 
     id: "quantum-basics",
     label: "Quantum Basics: The Qubit",
     tag: "What is a qubit?",
-    image: BlochSphereImage,
+    image: img16,
     bullets: [
       "A classical bit is either 0 or 1. A qubit can exist in a superposition of both 0 and 1 at the same time.",
       "This superposition is not uncertainty—it is a real physical state.",
@@ -22,7 +37,7 @@ const TOPICS = [
     id: "measurement-disturbance",
     label: "Measurement Disturbance",
     tag: "The core reason QKD works",
-    image: BlochSphereImage,
+    image: img2,
     bullets: [
       "In classical systems, you can read data without changing it.",
       "In quantum systems, measurement changes the state and destroys the original superposition.",
@@ -36,7 +51,7 @@ const TOPICS = [
     id: "no-cloning",
     label: "The No-Cloning Theorem",
     tag: "Why copying is impossible",
-    image: img1,
+    image: img3,
     bullets: [
       "It is impossible to create an identical copy of an unknown quantum state.",
       "An eavesdropper cannot copy a photon and forward it safely.",
@@ -50,7 +65,7 @@ const TOPICS = [
     id: "bases-complementarity",
     label: "Bases and Complementarity",
     tag: "Incompatible measurements",
-    image: BlochSphereImage,
+    image: img4,
     bullets: [
       "In BB84, two bases are used: Rectilinear basis (+) and Diagonal basis (×).",
       "If measured in the correct basis → original bit is recovered. Wrong basis → completely random result.",
@@ -71,7 +86,7 @@ const TOPICS = [
     id: "quantum-cryptography",
     label: "What is Quantum Cryptography?",
     tag: "Security from physics, not math",
-    image: BlochSphereImage,
+    image: img5,
     bullets: [
       "Quantum cryptography uses quantum mechanics to secure communication.",
       "Unlike classical cryptography (relies on hard math problems), it relies on physical laws that cannot be bypassed.",
@@ -85,7 +100,7 @@ const TOPICS = [
     id: "classical-weakness",
     label: "Why Classical Cryptography Is Not Enough",
     tag: "The quantum computer threat",
-    image: BlochSphereImage,
+    image: img6,
     bullets: [
       "Today's secure communication relies on RSA (integer factorization) and ECC (discrete logarithms).",
       "A quantum computer running Shor's algorithm can break RSA and ECC efficiently.",
@@ -99,7 +114,7 @@ const TOPICS = [
     id: "qkd-types",
     label: "Types of Quantum Cryptography",
     tag: "Different approaches",
-    image: BlochSphereImage,
+    image: img7,
     bullets: [
       "QKD (Quantum Key Distribution): Most mature, generates shared secret keys. Examples: BB84, E91, CV-QKD.",
       "QSDC (Quantum Secure Direct Communication): Sends message itself using quantum states, no separate key exchange.",
@@ -114,7 +129,7 @@ const TOPICS = [
     id: "bb84-protocol",
     label: "What is the BB84 Protocol?",
     tag: "The foundation of QKD",
-    image: BlochSphereImage,
+    image: img8,
     bullets: [
       "BB84 was proposed in 1984 by Charles Bennett and Gilles Brassard—the first QKD protocol.",
       "It's a prepare-and-measure protocol: Alice prepares quantum states (photons), Bob measures them.",
@@ -128,7 +143,7 @@ const TOPICS = [
     id: "bb84-security",
     label: "Why BB84 Is Secure",
     tag: "Physics guarantees security",
-    image: BlochSphereImage,
+    image: img9,
     bullets: [
       "Security comes from quantum physics, not math problems.",
       "Measurement disturbs quantum states: non-orthogonal states cannot be perfectly distinguished.",
@@ -143,7 +158,7 @@ const TOPICS = [
     id: "bb84-encoding",
     label: "Information Encoding in BB84",
     tag: "Photon polarization",
-    image: BlochSphereImage,
+    image: img10,
     bullets: [
       "Information encoded using single photons—each represents one bit (0 or 1).",
       "Rectilinear basis (+): Horizontal (0°) = bit 0, Vertical (90°) = bit 1.",
@@ -158,7 +173,7 @@ const TOPICS = [
     id: "bb84-workflow",
     label: "BB84 Workflow",
     tag: "From random bits to secret key",
-    image: BlochSphereImage,
+    image: img11,
     bullets: [
       "1️⃣ Alice generates random bit string and random basis string.",
       "2️⃣ Alice prepares photons using these bits and bases, sends to Bob over quantum channel.",
@@ -175,7 +190,7 @@ const TOPICS = [
     id: "detecting-eve",
     label: "Detecting an Eavesdropper (Eve)",
     tag: "QBER reveals attacks",
-    image: BlochSphereImage,
+    image: img12,
     bullets: [
       "If Eve intercepts photons, she must guess the basis. Wrong guess collapses state randomly.",
       "Bob may receive incorrect bit even when his basis matches Alice's—creates extra errors.",
@@ -190,7 +205,7 @@ const TOPICS = [
     id: "final-key",
     label: "Final Key Generation",
     tag: "Error correction & privacy amplification",
-    image: BlochSphereImage,
+    image: img13,
     bullets: [
       "If error rate is acceptable: perform error correction to fix natural errors.",
       "Apply privacy amplification to remove any information Eve might have gained.",
@@ -205,7 +220,7 @@ const TOPICS = [
     id: "practical-considerations",
     label: "Practical Considerations",
     tag: "Real-world implementation",
-    image: BlochSphereImage,
+    image: img14,
     bullets: [
       "Theoretical security proofs assume perfect implementations.",
       "Real systems face: hardware imperfections, detector inefficiencies, side-channel attacks.",
@@ -220,7 +235,7 @@ const TOPICS = [
     id: "why-bb84-matters",
     label: "Why BB84 Matters",
     tag: "Foundation for secure quantum future",
-    image: BlochSphereImage,
+    image: img15,
     bullets: [
       "BB84 is the first quantum cryptography protocol and foundation of modern QKD systems.",
       "It's a practical demonstration that physics can guarantee security.",

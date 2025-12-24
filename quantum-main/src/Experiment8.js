@@ -19,6 +19,13 @@ export default function Exp8BB84() {
     const [keyRateVsDistance, setKeyRateVsDistance] = useState([]);
     const [showInstructions, setShowInstructions] = useState(false);
 
+    const reportDate = new Date().toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+
+
 
 
     const [eveLevel, setEveLevel] = useState(DEFAULT_EVE_PERCENT);
@@ -219,6 +226,9 @@ but practically limited by physical channel properties.
   <li>QBER eventually exceeds the abort threshold</li>
   <li>Long-distance QKD requires advanced techniques</li>
 </ul>
+<p style="margin-top:30px; text-align:center;">
+  <strong>Experiment Date:</strong> ${reportDate}
+</p>
 
 </body>
 </html>
@@ -245,11 +255,11 @@ but practically limited by physical channel properties.
     };
 
     const handleDistanceChange = (e) => {
-    const val = parseInt(e.target.value, 10);
-    setTempChannelDistanceKm(val);
-    setTimeout(() => setShowSliderConfirm(true), 4000);
+        const val = parseInt(e.target.value, 10);
+        setTempChannelDistanceKm(val);
+        setTimeout(() => setShowSliderConfirm(true), 4000);
 
-  };
+    };
 
 
     // ---------- Confirm / Cancel for the modal ----------
@@ -626,14 +636,39 @@ but practically limited by physical channel properties.
                     <div className="instructions-modal" role="dialog" aria-modal="true">
                         <h2>Instructions — Experiment 8</h2>
 
-                        <ol>
-                            <li>Select a transmission distance</li>
-                            <li>Click <strong>Apply Settings</strong></li>
-                            <li>Send photons</li>
-                            <li>Observe detected photons decrease</li>
-                            <li>Notice key rate drops with distance</li>
-                            <li>Observe QBER rise only at long distances</li>
+                        <ol className="instructions-list">
+                            <li>
+                                Select the total number of photons (N) for the experiment.
+                            </li>
+                            <li>
+                                Adjust the <strong>distance (km)</strong> slider to set the transmission length.
+                            </li>
+                            <li>
+                                Note that <strong>Eve is disabled</strong> and channel noise is fixed at 0%.
+                            </li>
+                            <li>
+                                Click <strong>Apply Settings</strong> to initialize the experiment.
+                            </li>
+                            <li>
+                                Send all photons through the quantum channel.
+                            </li>
+                            <li>
+                                Observe that detected photons decrease as distance increases.
+                            </li>
+                            <li>
+                                Notice that the <strong>sifted key rate drops sharply</strong> with distance.
+                            </li>
+                            <li>
+                                Observe the <strong>QBER</strong>: it remains low at short distances.
+                            </li>
+                            <li>
+                                At large distances, notice QBER rise and cross the abort threshold.
+                            </li>
+                            <li>
+                                Use the <strong>Key Rate vs Distance</strong> graph to identify the practical range limit of BB84.
+                            </li>
                         </ol>
+
 
                         <button
                             className="exp-btn exp-btn-primary"

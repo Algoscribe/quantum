@@ -30,6 +30,12 @@ export default function Exp6BB84() {
   const [showInstructions, setShowInstructions] = useState(false);
   const qberHistoryRef = useRef([]);
 
+  const reportDate = new Date().toLocaleDateString("en-IN", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
 
   // Modal & UI
   const [showSliderConfirm, setShowSliderConfirm] = useState(false);
@@ -53,21 +59,21 @@ export default function Exp6BB84() {
 
   // Helpers
   const updateStatus = (message) => setStatusMessage(message);
-// ================= REPORT WINDOW (PRINT-SAFE) =================
-const openReportWindow = () => {
-  const width = 900;
-  const height = 650;
+  // ================= REPORT WINDOW (PRINT-SAFE) =================
+  const openReportWindow = () => {
+    const width = 900;
+    const height = 650;
 
-  const left = Math.max(0, (window.screen.availWidth - width) / 2);
-  const top = Math.max(0, (window.screen.availHeight - height) / 2);
+    const left = Math.max(0, (window.screen.availWidth - width) / 2);
+    const top = Math.max(0, (window.screen.availHeight - height) / 2);
 
-  const w = window.open(
-    "",
-    "_blank",
-    `width=${width},height=${height},left=${left},top=${top}`
-  );
+    const w = window.open(
+      "",
+      "_blank",
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
 
-  w.document.write(`
+    w.document.write(`
 <!DOCTYPE html>
 <html>
 <head>
@@ -186,13 +192,16 @@ imperfections and not only from eavesdropping.
 Low QBER does not automatically imply an attack.
 Understanding error sources is essential for real-world quantum security.
 </p>
+<p style="margin-top:30px; text-align:center;">
+  <strong>Experiment Date:</strong> ${reportDate}
+</p>
 
 </body>
 </html>
   `);
 
-  w.document.close();
-};
+    w.document.close();
+  };
 
   // ---------- Slider change handlers (set temp values + show modal) ----------
   const handlePhotonSliderChange = (e) => {
@@ -1053,13 +1062,36 @@ Understanding error sources is essential for real-world quantum security.
           {showInstructions && (
             <div className="instructions-modal" role="dialog" aria-modal="true">
               <h2>Instructions — Experiment 6</h2>
-              <ol>
-                <li>Eve is present conceptually but interception is frozen at 0%</li>
-                <li>Adjust channel noise</li>
-                <li>Apply settings</li>
-                <li>Send photons</li>
-                <li>Observe QBER increase due to noise only</li>
+              <ol className="instructions-list">
+                <li>
+                  Eve interception is fixed at <strong>0%</strong> for this experiment.
+                </li>
+                <li>
+                  Select the number of photons (N) using the photon slider.
+                </li>
+                <li>
+                  Adjust the <strong>channel noise</strong> level.
+                </li>
+                <li>
+                  Click <strong>Apply Settings</strong> to initialize the run.
+                </li>
+                <li>
+                  Send all photons through the quantum channel.
+                </li>
+                <li>
+                  Observe that errors appear even without eavesdropping.
+                </li>
+                <li>
+                  Watch how QBER increases smoothly as noise increases.
+                </li>
+                <li>
+                  Use the <strong>QBER vs Channel Noise</strong> graph to compare runs.
+                </li>
+                <li>
+                  Interpret the result: noise causes random errors, not information leakage.
+                </li>
               </ol>
+
 
               <button
                 className="exp-btn exp-btn-primary"
@@ -1460,13 +1492,13 @@ Understanding error sources is essential for real-world quantum security.
         />
       </div>
       <div style={{ textAlign: "center", margin: "40px 0" }}>
-  <button
-    className="exp-btn exp-btn-primary report-btn-large"
-    onClick={openReportWindow}
-  >
-    REPORT
-  </button>
-</div>
+        <button
+          className="exp-btn exp-btn-primary report-btn-large"
+          onClick={openReportWindow}
+        >
+          REPORT
+        </button>
+      </div>
 
     </>
   );

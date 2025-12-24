@@ -25,6 +25,13 @@ export default function Exp3BB84() {
   const [tempChannelDistanceKm, setTempChannelDistanceKm] = useState(0);
   const [showInstructions, setShowInstructions] = useState(false);
 
+  const reportDate = new Date().toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+
 
   // Modal & UI
   const [showSliderConfirm, setShowSliderConfirm] = useState(false);
@@ -187,6 +194,9 @@ any measurement of a quantum state introduces unavoidable disturbance.
 <p>
 The intercept–resend attack produces detectable errors, allowing Alice and Bob
 to infer the presence of an eavesdropper using QBER alone.
+</p>
+<p style="margin-top:30px; text-align:center;">
+  <strong>Experiment Date:</strong> ${reportDate}
 </p>
 
 </body>
@@ -794,13 +804,39 @@ to infer the presence of an eavesdropper using QBER alone.
             <div className="instructions-modal" role="dialog" aria-modal="true">
               <h2>Instructions — Experiment 3</h2>
 
-              <ol>
-                <li>Eve is always ON</li>
-                <li>Select number of photons</li>
-                <li>Click Apply Settings</li>
-                <li>Send photons</li>
-                <li>Observe QBER → ~25%</li>
+              <ol className="instructions-list">
+                <li>
+                  This experiment runs with <strong>Eve active</strong>, performing an intercept–resend attack.
+                </li>
+                <li>
+                  Select the number of photons (N) using the photon slider (minimum 16 recommended).
+                </li>
+                <li>
+                  Adjust the <strong>Eve Interception (%)</strong> slider to control how often Eve intercepts photons.
+                </li>
+                <li>
+                  Click <strong>Apply Settings</strong> to initialize the experiment with the selected parameters.
+                </li>
+                <li>
+                  Use <strong>Send Next Photon</strong> or <strong>Send All Photons</strong> to begin transmission.
+                </li>
+                <li>
+                  Observe how Eve measures photons in a random basis and resends them to Bob.
+                </li>
+                <li>
+                  Notice that errors appear even when Alice’s and Bob’s bases match.
+                </li>
+                <li>
+                  Observe the graphs: incorrect bits increase and QBER rises significantly.
+                </li>
+                <li>
+                  For a full intercept–resend attack, QBER stabilizes near <strong>25%</strong>.
+                </li>
+                <li>
+                  Interpret the result: a high QBER is a clear signature of <strong>eavesdropping</strong>.
+                </li>
               </ol>
+
 
               <button
                 className="exp-btn exp-btn-primary"

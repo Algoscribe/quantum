@@ -1,7 +1,7 @@
 // src/Footer.js
 import React from "react";
 import { Link } from "react-router-dom";
-import "./App.css";
+import "./Footer.css";
 
 export default function Footer() {
   return (
@@ -10,12 +10,12 @@ export default function Footer() {
         <Link to="/">Home</Link>
         <Link to="/concepts">Concepts</Link>
         <Link to="/bb84-simulation">BB84 Simulation</Link>
-        <Link to="/reports">Reports</Link>
+        <Link to="/VirtualLab">Virtual Lab</Link>
         <Link to="/credits">Credits</Link>
       </div>
-      <p>© 2024 QKD_Xplore Quantum Lab. Built for education.</p>
+      <p>© 2025 QKD_Xplore Virtual Lab. Built for education.</p>
       <p style={{ fontSize: "20px" }}>
-        BB84 Made Interactive: Learn, Test, Innovate.
+        BB84 Made Interactive:Learn,Test,Analyze,Secure.
       </p>
     </footer>
   );

@@ -25,6 +25,12 @@ export default function Exp4BB84() {
   const [tempChannelDistanceKm, setTempChannelDistanceKm] = useState(0);
   const [showInstructions, setShowInstructions] = useState(false);
 
+  const reportDate = new Date().toLocaleDateString("en-IN", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
 
   // Modal & UI
   const [showSliderConfirm, setShowSliderConfirm] = useState(false);
@@ -179,6 +185,9 @@ detecting every intercepted photon.
 Partial eavesdropping is statistically detectable using QBER thresholds,
 proving that quantum cryptography converts physical disturbance into
 measurable security guarantees.
+</p>
+<p style="margin-top:30px; text-align:center;">
+  <strong>Experiment Date:</strong> ${reportDate}
 </p>
 
 </body>
@@ -808,13 +817,39 @@ measurable security guarantees.
             <div className="instructions-modal" role="dialog" aria-modal="true">
               <h2>Instructions — Experiment 4</h2>
 
-              <ol>
-                <li>Select number of photons</li>
-                <li>Set Eve interception percentage</li>
-                <li>Click Apply Settings</li>
-                <li>Send photons</li>
-                <li>Observe gradual QBER increase</li>
+              <ol className="instructions-list">
+                <li>
+                  Select the number of photons (N) using the photon slider (minimum 16 recommended).
+                </li>
+                <li>
+                  Set the <strong>Eve Interception (%)</strong> slider to control how often Eve intercepts photons.
+                </li>
+                <li>
+                  Keep channel noise and distance unchanged to isolate eavesdropping effects.
+                </li>
+                <li>
+                  Click <strong>Apply Settings</strong> to initialize the experiment.
+                </li>
+                <li>
+                  Use <strong>Send Next Photon</strong> or <strong>Send All Photons</strong> to start transmission.
+                </li>
+                <li>
+                  Observe that some photons pass untouched while others are disturbed by Eve.
+                </li>
+                <li>
+                  Notice that incorrect bits appear gradually as Eve’s interception percentage increases.
+                </li>
+                <li>
+                  Observe the graphs: QBER rises smoothly with Eve’s interception rate.
+                </li>
+                <li>
+                  Compare results with Experiment 3 — QBER is lower because Eve attacks only a fraction of photons.
+                </li>
+                <li>
+                  Interpret the result: even partial eavesdropping is <strong>statistically detectable</strong>.
+                </li>
               </ol>
+
 
 
               <button

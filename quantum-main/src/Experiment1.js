@@ -21,6 +21,11 @@ export default function Exp1BB84() {
   const [tempChannelNoisePercent, setTempChannelNoisePercent] = useState(0);
   const [tempChannelDistanceKm, setTempChannelDistanceKm] = useState(0);
   const DEFAULT_PHOTONS = 16;
+  const reportDate = new Date().toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
 
   // Modal & UI
@@ -45,21 +50,21 @@ export default function Exp1BB84() {
 
   // Helpers
   const updateStatus = (message) => setStatusMessage(message);
-// ================= REPORT WINDOW (PRINT-SAFE) =================
-const openReportWindow = () => {
-  const width = 900;
-  const height = 650;
+  // ================= REPORT WINDOW (PRINT-SAFE) =================
+  const openReportWindow = () => {
+    const width = 900;
+    const height = 650;
 
-  const left = Math.max(0, (window.screen.availWidth - width) / 2);
-  const top = Math.max(0, (window.screen.availHeight - height) / 2);
+    const left = Math.max(0, (window.screen.availWidth - width) / 2);
+    const top = Math.max(0, (window.screen.availHeight - height) / 2);
 
-  const w = window.open(
-    "",
-    "_blank",
-    `width=${width},height=${height},left=${left},top=${top}`
-  );
+    const w = window.open(
+      "",
+      "_blank",
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
 
-  w.document.write(`
+    w.document.write(`
 <!DOCTYPE html>
 <html>
 <head>
@@ -234,12 +239,16 @@ subsequent experiments involving noise, mismatch, eavesdropping, and
 distance effects are compared against this zero-error benchmark.
 </p>
 
+<p style="margin-top:30px; text-align:center;">
+  <strong>Experiment Date:</strong> ${reportDate}
+</p>
+
 </body>
 </html>
   `);
 
-  w.document.close();
-};
+    w.document.close();
+  };
 
   // ---------- Slider change handlers (set temp values + show modal) ----------
   const handlePhotonSliderChange = (e) => {
@@ -759,17 +768,41 @@ distance effects are compared against this zero-error benchmark.
               <h2> Instructions</h2>
 
               <ol className="instructions-list">
-                <li>Choose the desired number of photons  </li>
-                <li>Default number of photons is 16  </li>
-                <li>Move the slider for photon and apply changes</li>
-                <li>click on send next photon or send all photons to observe transmission</li>
-                <li>Observe how Alice sends photons with random bits and bases.</li>
-                <li>Notice that Bob’s basis always matches Alice’s in this experiment(forcefully made).</li>
-                <li>Watch the photon travel without disturbance through the channel.</li>
-                <li>Observe the graphs QBER remains at <strong>0%</strong>.</li>
-                <li>This experiment shows the <strong>ideal BB84 case</strong>.</li>
-                <li>REMINDER - Other sliders are frozen for this experiment </li>
+                <li>
+                  Select the number of photons (N) using the photon slider. The default value is <strong>16</strong>.
+                </li>
+                <li>
+                  Click <strong>Apply</strong> to initialize the experiment with the selected number of photons.
+                </li>
+                <li>
+                  Use <strong>Send Next Photon</strong> to observe photons one by one, or <strong>Send All Photons</strong> to transmit all photons together.
+                </li>
+                <li>
+                  Observe how Alice randomly chooses the bit value and encoding basis for each photon.
+                </li>
+                <li>
+                  Notice that Bob’s basis is <strong>forced to match Alice’s</strong> in this experiment, ensuring ideal measurements.
+                </li>
+                <li>
+                  Watch the photon travel through the channel without any disturbance, noise, or loss.
+                </li>
+                <li>
+                  In the <strong>Correct vs Incorrect</strong> graph, the correct bits increase while incorrect bits remain zero.
+                </li>
+                <li>
+                  In the <strong>Basis Match vs Mismatch</strong> graph, all photons appear under “Match”.
+                </li>
+                <li>
+                  Observe the <strong>QBER (%)</strong> graph — it stays constant at <strong>0%</strong> throughout the transmission.
+                </li>
+                <li>
+                  Interpret the result: zero errors and zero QBER confirm an <strong>ideal BB84 transmission</strong>.
+                </li>
+                <li>
+                  <strong>Note:</strong> Eve, noise, and distance sliders are disabled in this experiment.
+                </li>
               </ol>
+
 
               <div className="instructions-footer">
                 <button
@@ -803,7 +836,7 @@ distance effects are compared against this zero-error benchmark.
               <p>When the photon leaves Alice, its polarization stays exactly the same while traveling. Nothing rotates it, bends it, or disturbs it  this is an ideal, error-free quantum channel.</p>
 
               <h4>What Bob Does</h4>
-              <p>Bob measures each photon that reaches him. In this teaching experiment Bob's basis is intentionally made identical to Alice’s so you can clearly observe a correct measurement. His measurement always reveals the correct bit here.</p>
+              <p>Bob measures each photon that reaches him. In this experiment Bob's basis is intentionally made identical to Alice’s so you can clearly observe a correct measurement. His measurement always reveals the correct bit here.</p>
 
               <h4>How the Sifted Key Forms</h4>
               <p>Every photon where Alice and Bob used the same basis becomes part of the sifted key. Since their bases are aligned, the sifted key forms smoothly and without errors  a perfect baseline before we introduce noise or eavesdropping.</p>
@@ -912,9 +945,22 @@ distance effects are compared against this zero-error benchmark.
             <summary>STEP 5 — How Alice and Bob Detect Eve</summary>
             <p>When Eve intercepts a photon:</p>
             <ul>
-              <li>She must guess the basis</li>
-              <li>A wrong guess collapses the state</li>
-              <li>Bob receives an incorrect bit</li>
+              <li>She measures the qubit using a randomly chosen basis</li>
+              <li>She then resends a new photon using the same basis she used to measure</li>
+            </ul>
+
+            <p>What happens next:</p>
+            <ul>
+              <li>
+                <b>A) Eve’s basis matches Alice’s basis</b><br />
+                The photon is measured correctly and resent without disturbance.<br />
+                When Bob uses the same basis, he receives the correct bit and assumes the channel is safe.
+              </li>
+              <li>
+                <b>B) Eve’s basis does NOT match Alice’s basis</b><br />
+                Eve’s measurement disturbs the photon state.<br />
+                When Bob later measures using Alice’s basis, he may receive the wrong bit and interprets this as an error in the channel.
+              </li>
             </ul>
 
             <p>
@@ -1113,7 +1159,7 @@ distance effects are compared against this zero-error benchmark.
           truncateLength={16}
         />
       </div>
-        <div style={{ textAlign: "center", margin: "40px 0" }}>
+      <div style={{ textAlign: "center", margin: "40px 0" }}>
         <button
           className="exp-btn exp-btn-primary report-btn-large"
           onClick={openReportWindow}

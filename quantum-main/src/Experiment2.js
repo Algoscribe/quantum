@@ -23,6 +23,12 @@ export default function Exp2BB84() {
   const [showSliderConfirm, setShowSliderConfirm] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
 
+  const reportDate = new Date().toLocaleDateString("en-IN", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
 
   // Transmission tracking
   const [sentTransmissions, setSentTransmissions] = useState([]);
@@ -41,21 +47,21 @@ export default function Exp2BB84() {
 
   // Helpers
   const updateStatus = (message) => setStatusMessage(message);
- // ================= REPORT WINDOW (PRINT-SAFE) =================
-const openReportWindow = () => {
-  const width = 900;
-  const height = 650;
+  // ================= REPORT WINDOW (PRINT-SAFE) =================
+  const openReportWindow = () => {
+    const width = 900;
+    const height = 650;
 
-  const left = Math.max(0, (window.screen.availWidth - width) / 2);
-  const top = Math.max(0, (window.screen.availHeight - height) / 2);
+    const left = Math.max(0, (window.screen.availWidth - width) / 2);
+    const top = Math.max(0, (window.screen.availHeight - height) / 2);
 
-  const w = window.open(
-    "",
-    "_blank",
-    `width=${width},height=${height},left=${left},top=${top}`
-  );
+    const w = window.open(
+      "",
+      "_blank",
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
 
-  w.document.write(`
+    w.document.write(`
 <!DOCTYPE html>
 <html>
 <head>
@@ -210,12 +216,16 @@ Experiment 2 provides the conceptual foundation required to understand
 all later BB84 experiments involving disturbance, noise, and attacks.
 </p>
 
+<p style="margin-top:30px; text-align:center;">
+  <strong>Experiment Date:</strong> ${reportDate}
+</p>
+
 </body>
 </html>
   `);
 
-  w.document.close();
-};
+    w.document.close();
+  };
 
 
   // ---------- Slider change handlers (set temp values + show modal) ----------
@@ -749,14 +759,35 @@ all later BB84 experiments involving disturbance, noise, and attacks.
             <h2>Instructions</h2>
 
             <ol className="instructions-list">
-              <li>Choose the desired number of photons</li>
-              <li>Default number of photons is 16</li>
-              <li>Change photon number and apply</li>
-              <li>Send photons to observe transmission</li>
-              <li>Observe basis effects</li>
-              <li>QBER remains <strong>0%</strong></li>
-              <li>Other sliders are frozen</li>
+              <li>
+                Select the number of photons (N) using the photon slider. The default value is <strong>16</strong>.
+              </li>
+              <li>
+                Click <strong>Apply</strong> to initialize the experiment with the selected photon count.
+              </li>
+              <li>
+                Use <strong>Send Next Photon</strong> or <strong>Send All Photons</strong> to start the transmission.
+              </li>
+              <li>
+                Observe how Alice encodes each photon using a random bit and a random basis.
+              </li>
+              <li>
+                Watch how Bob’s measurement result depends on whether his basis matches Alice’s basis.
+              </li>
+              <li>
+                Notice that measurement outcomes become random when the bases do not match.
+              </li>
+              <li>
+                Observe the graphs: errors appear due to basis mismatch, not eavesdropping.
+              </li>
+              <li>
+                The QBER reflects quantum randomness in this experiment (no Eve involved).
+              </li>
+              <li>
+                <strong>Note:</strong> Eve, noise, and distance sliders are frozen to isolate basis effects.
+              </li>
             </ol>
+
 
             <div className="instructions-footer">
               <button

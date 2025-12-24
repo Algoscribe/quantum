@@ -47,12 +47,12 @@ const LabEquipment = () => {
   // Scroll animations for equipment items
   const initScrollAnimations = () => {
     const equipmentItems = containerRef.current.querySelectorAll('.equipment-item');
-    
+
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -61,7 +61,7 @@ const LabEquipment = () => {
         }
       });
     }, observerOptions);
-    
+
     equipmentItems.forEach(item => {
       item.style.opacity = '0';
       item.style.transform = 'translateY(30px)';
@@ -73,30 +73,30 @@ const LabEquipment = () => {
   // Interactive hover effects
   const initInteractiveHovers = () => {
     const equipmentItems = containerRef.current.querySelectorAll('.equipment-item');
-    
+
     equipmentItems.forEach(item => {
-      item.addEventListener('mouseenter', function() {
+      item.addEventListener('mouseenter', function () {
         this.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
       });
-      
-      item.addEventListener('mousemove', function(e) {
+
+      item.addEventListener('mousemove', function (e) {
         const rect = this.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        
+
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        
+
         const rotateX = (y - centerY) / 50;
         const rotateY = (centerX - x) / 50;
-        
+
         // Subtle 3D tilt effect on desktop only
         if (window.innerWidth > 768) {
           this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateX(2rem)`;
         }
       });
-      
-      item.addEventListener('mouseleave', function() {
+
+      item.addEventListener('mouseleave', function () {
         this.style.transform = '';
       });
     });
@@ -106,16 +106,16 @@ const LabEquipment = () => {
   const initParallaxEffect = () => {
     const heroImage = containerRef.current.querySelector('.hero-image');
     if (!heroImage) return;
-    
+
     const handleParallax = () => {
       const scrolled = window.pageYOffset;
       const rate = scrolled * 0.3;
-      
+
       if (scrolled < window.innerHeight) {
         heroImage.style.transform = `translateY(${rate}px)`;
       }
     };
-    
+
     parallaxHandlerRef.current = handleParallax;
     window.addEventListener('scroll', handleParallax);
   };
@@ -123,11 +123,11 @@ const LabEquipment = () => {
   // Animated number counters
   const initNumberAnimations = () => {
     const numbers = containerRef.current.querySelectorAll('.number');
-    
+
     const observerOptions = {
       threshold: 0.5
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
@@ -136,7 +136,7 @@ const LabEquipment = () => {
         }
       });
     }, observerOptions);
-    
+
     numbers.forEach(number => {
       observer.observe(number);
     });
@@ -148,7 +148,7 @@ const LabEquipment = () => {
     const steps = 20;
     const increment = targetNumber / steps;
     let current = 0;
-    
+
     const timer = setInterval(() => {
       current += increment;
       if (current >= targetNumber) {
@@ -177,21 +177,21 @@ const LabEquipment = () => {
     `;
     document.body.appendChild(progressBar);
     progressBarRef.current = progressBar;
-    
+
     const handleProgressScroll = () => {
       // Only update if we're on the lab equipment page
       if (!containerRef.current) return;
-      
+
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight - windowHeight;
       const scrolled = window.pageYOffset;
       const progress = (scrolled / documentHeight) * 100;
-      
+
       if (progressBar) {
         progressBar.style.width = progress + '%';
       }
     };
-    
+
     progressHandlerRef.current = handleProgressScroll;
     window.addEventListener('scroll', handleProgressScroll);
   };
@@ -200,11 +200,11 @@ const LabEquipment = () => {
   const handleKeydown = (e) => {
     // Only handle if we're focused on lab equipment page
     if (!containerRef.current) return;
-    
+
     const equipmentItems = Array.from(containerRef.current.querySelectorAll('.equipment-item'));
     const currentFocused = document.activeElement;
     const currentIndex = equipmentItems.findIndex(item => item.contains(currentFocused));
-    
+
     if (e.key === 'ArrowDown' && currentIndex < equipmentItems.length - 1) {
       e.preventDefault();
       equipmentItems[currentIndex + 1].focus();
@@ -222,7 +222,7 @@ const LabEquipment = () => {
     equipmentItems.forEach(item => {
       item.setAttribute('tabindex', '0');
     });
-    
+
     keydownHandlerRef.current = handleKeydown;
     document.addEventListener('keydown', handleKeydown);
   };
@@ -231,17 +231,17 @@ const LabEquipment = () => {
   const initMobileExpand = () => {
     if (window.innerWidth <= 768) {
       const equipmentItems = containerRef.current.querySelectorAll('.equipment-item');
-      
+
       equipmentItems.forEach(item => {
         const contentGrid = item.querySelector('.content-grid');
         if (contentGrid) {
           contentGrid.style.maxHeight = '0';
           contentGrid.style.overflow = 'hidden';
           contentGrid.style.transition = 'max-height 0.4s ease';
-          
-          item.addEventListener('click', function() {
+
+          item.addEventListener('click', function () {
             const isExpanded = this.classList.contains('expanded');
-            
+
             // Close all other items
             equipmentItems.forEach(otherItem => {
               if (otherItem !== this) {
@@ -250,7 +250,7 @@ const LabEquipment = () => {
                 if (otherGrid) otherGrid.style.maxHeight = '0';
               }
             });
-            
+
             // Toggle current item
             if (isExpanded) {
               this.classList.remove('expanded');
@@ -271,16 +271,16 @@ const LabEquipment = () => {
         <h1>Lab Equipment</h1>
         <p className="subtitle">BB84 Quantum Key Distribution</p>
         <p className="intro">
-          This virtual laboratory simulates the core components of a real-world BB84 QKD setup. 
-          While the experiment runs in software, each element corresponds to an actual physical device 
-          used in quantum communication systems.
+          Till now, we explored how the BB84 protocol works using software-based simulations.
+          In this section, we move beyond simulation and explain the actual hardware components used in real-life quantum key distribution systems.
+          Each module shown here corresponds to a physical device implemented in practical quantum communication setups.
         </p>
       </header>
 
       <div className="hero-image">
-        <img 
-          src= {img1} 
-          alt="Quantum Computing Laboratory Equipment" 
+        <img
+          src={img1}
+          alt="Quantum Computing Laboratory Equipment"
           loading="lazy"
         />
       </div>
@@ -293,7 +293,7 @@ const LabEquipment = () => {
             <h2>Single-Photon Source</h2>
           </div>
           <p className="role">Generates individual photons used to encode quantum bits (qubits)</p>
-          
+
           <div className="content-grid">
             <div className="section">
               <div className="section-title">In the Lab</div>
@@ -329,7 +329,7 @@ const LabEquipment = () => {
             <h2>Polarization Encoder</h2>
           </div>
           <p className="role">Encodes information onto photons using polarization</p>
-          
+
           <div className="content-grid">
             <div className="section">
               <div className="section-title">In the Lab</div>
@@ -364,7 +364,7 @@ const LabEquipment = () => {
             <h2>Quantum Channel</h2>
           </div>
           <p className="role">Carries photons from Alice to Bob</p>
-          
+
           <div className="content-grid">
             <div className="section">
               <div className="section-title">In the Lab</div>
@@ -401,7 +401,7 @@ const LabEquipment = () => {
             <h2>Eavesdropper Module</h2>
           </div>
           <p className="role">Simulates an attacker performing an intercept–resend attack</p>
-          
+
           <div className="content-grid">
             <div className="section">
               <div className="section-title">In the Lab</div>
@@ -435,7 +435,7 @@ const LabEquipment = () => {
             <h2>Polarization Analyzer</h2>
           </div>
           <p className="role">Measures incoming photons in a randomly chosen basis</p>
-          
+
           <div className="content-grid">
             <div className="section">
               <div className="section-title">In the Lab</div>
@@ -470,7 +470,7 @@ const LabEquipment = () => {
             <h2>Single-Photon Detectors</h2>
           </div>
           <p className="role">Detects the photon and records a bit value</p>
-          
+
           <div className="content-grid">
             <div className="section">
               <div className="section-title">In the Lab</div>
@@ -505,7 +505,7 @@ const LabEquipment = () => {
             <h2>Classical Public Channel</h2>
           </div>
           <p className="role">Allows Alice and Bob to communicate openly after transmission</p>
-          
+
           <div className="content-grid">
             <div className="section">
               <div className="section-title">In the Lab</div>
@@ -537,7 +537,7 @@ const LabEquipment = () => {
             <h2>Data Analysis & Visualization</h2>
           </div>
           <p className="role">Analyzes results and detects eavesdropping</p>
-          
+
           <div className="content-grid">
             <div className="section">
               <div className="section-title">In the Lab</div>
@@ -572,7 +572,7 @@ const LabEquipment = () => {
             <h2>Error Correction & Privacy Amplification</h2>
           </div>
           <p className="role">Reconciles key differences and removes potential information leaked to eavesdroppers</p>
-          
+
           <div className="content-grid">
             <div className="section">
               <div className="section-title">In the Lab</div>

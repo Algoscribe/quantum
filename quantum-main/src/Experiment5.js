@@ -33,6 +33,12 @@ export default function Exp5BB84() {
 
   // Modal & UI
   const [showSliderConfirm, setShowSliderConfirm] = useState(false);
+  const reportDate = new Date().toLocaleDateString("en-IN", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
 
   // Transmission tracking
   const [sentTransmissions, setSentTransmissions] = useState([]);
@@ -51,21 +57,21 @@ export default function Exp5BB84() {
 
   // Helpers
   const updateStatus = (message) => setStatusMessage(message);
-// ================= REPORT WINDOW (PRINT-SAFE) =================
-const openReportWindow = () => {
-  const width = 900;
-  const height = 650;
+  // ================= REPORT WINDOW (PRINT-SAFE) =================
+  const openReportWindow = () => {
+    const width = 900;
+    const height = 650;
 
-  const left = Math.max(0, (window.screen.availWidth - width) / 2);
-  const top = Math.max(0, (window.screen.availHeight - height) / 2);
+    const left = Math.max(0, (window.screen.availWidth - width) / 2);
+    const top = Math.max(0, (window.screen.availHeight - height) / 2);
 
-  const w = window.open(
-    "",
-    "_blank",
-    `width=${width},height=${height},left=${left},top=${top}`
-  );
+    const w = window.open(
+      "",
+      "_blank",
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
 
-  w.document.write(`
+    w.document.write(`
 <!DOCTYPE html>
 <html>
 <head>
@@ -189,13 +195,16 @@ Reliable conclusions require sufficiently large photon samples.
 Small datasets can be misleading, while large photon counts produce
 trustworthy security metrics.
 </p>
+<p style="margin-top:30px; text-align:center;">
+  <strong>Experiment Date:</strong> ${reportDate}
+</p>
 
 </body>
 </html>
   `);
 
-  w.document.close();
-};
+    w.document.close();
+  };
 
   // ---------- Slider change handlers (set temp values + show modal) ----------
   const handlePhotonSliderChange = (e) => {
@@ -1051,13 +1060,36 @@ trustworthy security metrics.
             <div className="instructions-modal" role="dialog" aria-modal="true">
               <h2>Instructions — Experiment 3</h2>
 
-              <ol>
-                <li>Eve is always ON</li>
-                <li>Select number of photons</li>
-                <li>Click Apply Settings</li>
-                <li>Send photons</li>
-                <li>Observe QBER → ~25%</li>
+              <ol className="instructions-list">
+                <li>
+                  Select the number of photons (N) using the photon slider.
+                </li>
+                <li>
+                  Keep Eve interception, noise, and distance fixed to isolate statistical effects.
+                </li>
+                <li>
+                  Click <strong>Apply Settings</strong> to initialize the experiment.
+                </li>
+                <li>
+                  Send all photons to complete one full transmission run.
+                </li>
+                <li>
+                  Observe the QBER value after the run is completed.
+                </li>
+                <li>
+                  Increase the photon count and repeat the experiment.
+                </li>
+                <li>
+                  Notice that QBER fluctuates for small N but stabilizes as N increases.
+                </li>
+                <li>
+                  Observe the <strong>QBER vs Photon Count</strong> graph to see convergence.
+                </li>
+                <li>
+                  Interpret the result: larger photon counts give more reliable security estimates.
+                </li>
               </ol>
+
 
               <button
                 className="exp-btn exp-btn-primary"
@@ -1338,13 +1370,15 @@ trustworthy security metrics.
                 <input
                   type="range"
                   min="0"
-                  max="50"
-                  value={tempChannelNoisePercent}
-                  onChange={handleNoiseChange}
+                  max="30"
+                  value={0}
                   className="exp-slider"
-                  title="Channel noise (%)"
+                  disabled
                 />
-                <span className="slider-value">{tempChannelNoisePercent}%</span>
+                <span className="slider-value">0% (Fixed)</span>
+
+
+
               </div>
             </div>
 
@@ -1356,12 +1390,12 @@ trustworthy security metrics.
                   type="range"
                   min="0"
                   max="200"
-                  value={tempChannelDistanceKm}
-                  onChange={handleDistanceChange}
+                  value={0}
                   className="exp-slider"
-                  title="Approx. channel distance"
+                  disabled
                 />
-                <span className="slider-value">{tempChannelDistanceKm} km</span>
+                <span className="slider-value">0 km (Fixed)</span>
+
               </div>
             </div>
 
@@ -1443,14 +1477,14 @@ trustworthy security metrics.
           truncateLength={16}
         />
       </div>
-       <div style={{ textAlign: "center", margin: "40px 0" }}>
-  <button
-    className="exp-btn exp-btn-primary report-btn-large"
-    onClick={openReportWindow}
-  >
-    REPORT
-  </button>
-</div>
+      <div style={{ textAlign: "center", margin: "40px 0" }}>
+        <button
+          className="exp-btn exp-btn-primary report-btn-large"
+          onClick={openReportWindow}
+        >
+          REPORT
+        </button>
+      </div>
     </>
   );
 }

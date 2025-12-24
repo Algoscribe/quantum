@@ -24,7 +24,7 @@ export default function QXNavbar() {
       <ul className="qx-nav-links">
         <li>
           <Link to="/" className="qx-nav-logo" style={isActive("/")}>
-            QKD_Xplore Quantum Lab
+            QKD_Xplore Virtual Lab
           </Link>
         </li>
 
@@ -36,7 +36,7 @@ export default function QXNavbar() {
 
         <li>
           <Link to="/prequiz" style={isActive("/prequiz")}>
-            PreQuiz
+            Knowledge Check
           </Link>
         </li>
 
@@ -93,8 +93,8 @@ export default function QXNavbar() {
             <Link to="/lab/experiment-6">Experiment 6</Link>
             <Link to="/lab/experiment-7">Experiment 7</Link>
             <Link to="/lab/experiment-8">Experiment 8</Link>
-            <Link to="/lab/experiment-9">Experiment 9</Link>
-            <Link to="/lab/experiment-10">Experiment10</Link>
+            {/* <Link to="/lab/experiment-9">Experiment 9</Link>
+            <Link to="/lab/experiment-10">Experiment10</Link> */}
             <Link to="/lab/equipment">Lab Equipment</Link>
           </div>
         </li>
@@ -107,7 +107,7 @@ export default function QXNavbar() {
 
         <li>
           <Link to="/postquiz" style={isActive("/postquiz")}>
-            PostQuiz
+            Assessment
           </Link>
         </li>
 

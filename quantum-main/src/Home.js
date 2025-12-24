@@ -7,6 +7,16 @@ import { Center } from '@react-three/drei';
 import img2 from './images/Screenshot 2025-12-14 094941.png'
 import img3 from './images/Screenshot 2025-12-14 094956.png'
 import img4 from './images/Screenshot 2025-12-14 095008.png'
+import img5 from "./images/Quantum_lock.png";
+import img6 from "./images/Gemini_Generated_Image_866cv8866cv8866c.png";
+import img7 from "./images/Gemini_Generated_Image_f8mn9zf8mn9zf8mn.png";
+
+import img8 from "./images/Gemini_Generated_Image_72w9yp72w9yp72w9.png";
+import img9 from "./images/Gemini_Generated_Image_z12bb8z12bb8z12b.png";
+import img10 from "./images/Gemini_Generated_Image_s9bfqus9bfqus9bf.png";
+import img11 from "./images/Gemini_Generated_Image_9xs4639xs4639xs4.png";
+import img12 from "./images/Gemini_Generated_Image_raxnr0raxnr0raxn.png";
+
 // Modal data
 const experiments = {
   exp1: {
@@ -173,7 +183,7 @@ export default function Home() {
 
     setModalContent(`
       <h2>Message Sent!</h2>
-      <p>Thank you, ${name || 'User'}, for reaching out to the Quantum Lab.</p>
+      <p>Thank you, ${name || 'User'}, for reaching out to the Virtual Lab.</p>
       <p>This contact form is for demonstration purposes only, and no actual email was sent. You can close this window now.</p>
     `);
     setIsModalOpen(true);
@@ -189,7 +199,7 @@ export default function Home() {
         <section id="hero">
           <div className="container">
             <h1>QKD_Xplore</h1>
-            <h2 className="hero-subtitle">Quantum Lab</h2>
+            <h2 className="hero-subtitle">Virtual Lab</h2>
             <p className="hero-tagline">BB84 Made Interactive</p>
             <div className="hero-features">
               <span>Learn</span>
@@ -205,6 +215,32 @@ export default function Home() {
             </p>
           </div>
           <div className="scroll-indicator">↓</div>
+        </section>
+        {/* Target Audience Section */}
+        <section id="audience">
+          <div className="container">
+            <h2>Designed for Education and Demonstration</h2>
+            <p className="section-intro">QKD_Xplore is built for:</p>
+            <div className="audience-grid">
+              <div className="audience-card">
+                <h3>🎓 Students</h3>
+                <p>Learning quantum communication and modern cryptography principles through interactive exploration.</p>
+              </div>
+              <div className="audience-card">
+                <h3>👨‍🏫 Educators</h3>
+                <p>Teaching complex quantum concepts with visual, hands-on demonstrations that make theory tangible.</p>
+              </div>
+              <div className="audience-card">
+                <h3>💻 Hackathons</h3>
+                <p>Live demonstrations and experimental quantum security challenges for competitive learning.</p>
+              </div>
+              <div className="audience-card">
+                <h3>🔬 Researchers</h3>
+                <p>Early-stage quantum security research and protocol testing in a controlled environment.</p>
+              </div>
+            </div>
+            <p className="audience-values">It prioritizes intuition, transparency, and correctness.</p>
+          </div>
         </section>
 
         {/* Mission Section */}
@@ -228,30 +264,40 @@ export default function Home() {
                 <div className="threat-icon">🔒</div>
                 <h3>Current Cryptography</h3>
                 <p>Most modern cryptography relies on the difficulty of mathematical problems. RSA and elliptic curve encryption protect today's internet.</p>
+                {/* Image under the text */}
+                <img
+                  src={img5}
+                  alt="Harvest Now Decrypt Later"
+                  className="threat-card-image"
+                />
               </div>
               <div className="threat-card threat-warning">
                 <div className="threat-icon">⚛️</div>
                 <h3>Quantum Computers</h3>
                 <p>Algorithms such as Shor's can efficiently break RSA and elliptic curve cryptography. The clock is ticking.</p>
+                {/* Image under the text */}
+                <img
+                  src={img7}
+                  alt="Harvest Now Decrypt Later"
+                  className="threat-card-image"
+                />
               </div>
               <div className="threat-card threat-danger">
                 <div className="threat-icon">📡</div>
                 <h3>Harvest Now, Decrypt Later</h3>
-                <p>Data encrypted today can be harvested and decrypted in the future once large-scale quantum machines become available.</p>
+                <p>
+                  Data encrypted today using classical computers can be harvested and decrypted in the future once
+                  large-scale quantum machines become available.
+                </p>
+
+                {/* Image under the text */}
+                <img
+                  src={img6}
+                  alt="Harvest Now Decrypt Later"
+                  className="threat-card-image"
+                />
               </div>
-              <img
-                src={img2}
-                alt="Bloch Sphere Visualization"
-                style={{
-                  width: '100%',
-                  maxWidth: '700px',
-                  height: '500px',
-                  borderRadius: '10px',
-                  border: '2px solid rgba(255, 255, 255, 0.2)',
-                  opacity: 0.8,
-                }}
-                className="bloch-sphere-image"
-              />
+
             </div>
 
           </div>
@@ -275,7 +321,7 @@ export default function Home() {
               <div className="comparison-column comparison-quantum">
                 <h3>Quantum Communication</h3>
                 <ul className="comparison-list">
-                  <li>Information encoded in single quantum states</li>
+                  <li>Information encoded in quantum states</li>
                   <li>Measurement irreversibly disturbs the system</li>
                   <li>Any interception leaves a measurable trace</li>
                   <li>Security is experimentally verified</li>
@@ -283,53 +329,98 @@ export default function Home() {
               </div>
 
             </div>
-            
-            <p className="comparison-conclusion">Security is not assumed, it is experimentally verified.</p>
           </div>
         </section>
 
-        {/* Core Principles Section */}
-        <section id="core-principles">
-          <div className="container">
-            <h2>Core Quantum Principles Behind BB84</h2>
-            <div className="principles-grid">
-              <div className="principle-card">
-                <div className="principle-number">01</div>
-                <h3>Superposition</h3>
-                <p>A qubit exists in multiple states until measured. It's not that we don't know which—it genuinely exists in both states simultaneously.</p>
-              </div>
-              <div className="principle-card">
-                <div className="principle-number">02</div>
-                <h3>Measurement Disturbance</h3>
-                <p>Observation changes the quantum state. This isn't a limitation of our tools—it's a fundamental feature of quantum mechanics.</p>
-              </div>
-              <div className="principle-card">
-                <div className="principle-number">03</div>
-                <h3>No-Cloning Theorem</h3>
-                <p>Unknown quantum states cannot be copied. This is a fundamental law, not a technical limitation.</p>
-              </div>
-              <div className="principle-card">
-                <div className="principle-number">04</div>
-                <h3>Complementary Bases</h3>
-                <p>Wrong measurements produce random outcomes. When Eve guesses the wrong basis, she introduces detectable errors.</p>
-              </div>
-            </div>
-            <p className="principles-note">These principles are not theoretical assumptions; they are enforced by nature.</p>
-          </div>
-          <img
-            src={img4}
-            alt="Bloch Sphere Visualization"
-            style={{
-              width: '100%',
-              maxWidth: '400px',
-              height: 'auto',
-              borderRadius: '10px',
-              border: '2px solid rgba(255, 255, 255, 0.2)',
-              opacity: 0.8,
-            }}
-            className="bloch-sphere-image"
-          />
-        </section>
+<section id="core-principles">
+  <div className="container">
+    <h2>Core Quantum Principles Behind BB84</h2>
+
+    <div className="principles-grid">
+
+      {/* 01 */}
+      <div className="principle-card">
+        <div className="principle-number">01</div>
+
+        <div className="principle-content">
+          <h3>Superposition</h3>
+          <p>
+            A qubit exists in multiple states until measured. It's not that we
+            don't know which—it genuinely exists in both states simultaneously.
+          </p>
+        </div>
+
+        <div className="principle-visual">
+          <img src={img8} alt="Quantum Superposition" />
+        </div>
+      </div>
+
+      {/* 02 */}
+      <div className="principle-card">
+        <div className="principle-number">02</div>
+
+        <div className="principle-content">
+          <h3>Measurement Disturbance</h3>
+          <p>
+            Observation changes the quantum state. This isn't a limitation of our
+            tools—it's a fundamental feature of quantum mechanics.
+          </p>
+        </div>
+
+        <div className="principle-visual">
+          <img src={img10} alt="Measurement Disturbance" />
+        </div>
+      </div>
+
+      {/* 03 */}
+      <div className="principle-card">
+        <div className="principle-number">03</div>
+
+        <div className="principle-content">
+          <h3>No-Cloning Theorem</h3>
+          <p>
+            Unknown quantum states cannot be copied. This is a fundamental law,
+            not a technical limitation.
+          </p>
+        </div>
+
+        <div className="principle-visual">
+          <img src={img9} alt="No Cloning Theorem" />
+        </div>
+      </div>
+
+      {/* 04 */}
+      <div className="principle-card">
+        <div className="principle-number">04</div>
+
+        <div className="principle-content">
+          <h3>The Four States</h3>
+          <ul className="four-states-list">
+            <li><strong>Horizontal (0°)</strong> – bit 0 (rectilinear)</li>
+            <li><strong>Vertical (90°)</strong> – bit 1 (rectilinear)</li>
+            <li><strong>Diagonal (45°)</strong> – bit 0 (diagonal)</li>
+            <li><strong>Anti-diagonal (135°)</strong> – bit 1 (diagonal)</li>
+          </ul>
+          <p className="soft-text">
+            Alice and Bob keep bits only when their bases match. Mismatched bases
+            produce random outcomes.
+          </p>
+        </div>
+
+        <div className="principle-visual">
+          <img src={img11} alt="BB84 Polarization States" />
+        </div>
+      </div>
+
+    </div>
+
+    <p className="principles-note">
+      These principles are not theoretical assumptions; they are enforced by nature.
+    </p>
+  </div>
+</section>
+
+
 
         {/* About Section */}
         <section id="about">
@@ -349,7 +440,7 @@ export default function Home() {
               </div>
               <div className="about-visual">
                 <img
-                  src={BlochSphereImage}
+                  src={img12}
                   alt="Bloch Sphere Visualization"
                   style={{
                     width: '100%',
@@ -389,7 +480,7 @@ export default function Home() {
               </div>
               <div className="feature-card">
                 <div className="feature-icon">📈</div>
-                <h3>Track QBER Live</h3>
+                <h3>Track Quantum Bit Error Rate Live</h3>
                 <p>Monitor Quantum Bit Error Rate in real-time. See how errors emerge when security is compromised.</p>
               </div>
               <div className="feature-card">
@@ -416,22 +507,37 @@ export default function Home() {
                 <div className="qber-indicators">
                   <div className="qber-indicator qber-safe">
                     <div className="qber-badge">✓ Safe</div>
-                    <h4>Low QBER</h4>
+                    <h4>
+                      Low QBER
+                      <br />
+                      <span>(&lt; 11%)</span>
+                    </h4>
                     <p>Indicates a clean channel. Communication is secure and unobserved.</p>
                   </div>
+
                   <div className="qber-indicator qber-warning">
                     <div className="qber-badge">⚠ Warning</div>
-                    <h4>Elevated QBER</h4>
+                    <h4>
+                      Elevated QBER
+                      <br />
+                      <span>(&gt; 11% – &lt; 25%)</span>
+                    </h4>
                     <p>Random interception introduces characteristic error spikes. Investigation needed.</p>
                   </div>
+
                   <div className="qber-indicator qber-danger">
                     <div className="qber-badge">✕ Danger</div>
-                    <h4>High QBER</h4>
+                    <h4>
+                      High QBER
+                      <br />
+                      <span>(&gt; 25%)</span>
+                    </h4>
                     <p>Sustained high QBER signals eavesdropping. Abort and restart protocol.</p>
                   </div>
+
                 </div>
               </div>
-              <p className="qber-conclusion">Alice and Bob do not guess whether Eve is present—they measure it.</p>
+              <p className="qber-conclusion">Alice and Bob do not guess whether Eve is present,they observe it.</p>
             </div>
           </div>
         </section>
@@ -484,83 +590,45 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <p className="protocol-conclusion">Security emerges from physics, not secrecy.</p>
+            <p className="protocol-conclusion">Security emerges from physics, not mathematics.</p>
           </div>
         </section>
 
         {/* Workflow Section */}
         <section id="workflow" className="process-3d">
           <div className="container">
-            <h2 className="title-large">Operational Workflow</h2>
+            <h2 className="title-large">Virtual Lab Workflow</h2>
+
             <div className="steps-container">
-              <StepCube number="1" title="Acquire" description="Learn quantum fundamentals" />
+              <StepCube
+                number="1"
+                title="Learn"
+                description="Understand quantum principles and BB84 fundamentals"
+              />
+
               <div className="arrow-3d">→</div>
-              <StepCube number="2" title="Execute" description="Run live simulation" />
+
+              <StepCube
+                number="2"
+                title="Test"
+                description="Run simulations and experiment with protocol parameters"
+              />
+
               <div className="arrow-3d">→</div>
-              <StepCube number="3" title="Decrypt" description="Analyze secure transmission" />
-            </div>
-          </div>
-        </section>
 
-        {/* Target Audience Section */}
-        <section id="audience">
-          <div className="container">
-            <h2>Designed for Education and Demonstration</h2>
-            <p className="section-intro">QKD_Xplore is built for:</p>
-            <div className="audience-grid">
-              <div className="audience-card">
-                <h3>🎓 Students</h3>
-                <p>Learning quantum communication and modern cryptography principles through interactive exploration.</p>
-              </div>
-              <div className="audience-card">
-                <h3>👨‍🏫 Educators</h3>
-                <p>Teaching complex quantum concepts with visual, hands-on demonstrations that make theory tangible.</p>
-              </div>
-              <div className="audience-card">
-                <h3>💻 Hackathons</h3>
-                <p>Live demonstrations and experimental quantum security challenges for competitive learning.</p>
-              </div>
-              <div className="audience-card">
-                <h3>🔬 Researchers</h3>
-                <p>Early-stage quantum security research and protocol testing in a controlled environment.</p>
-              </div>
-            </div>
-            <p className="audience-values">It prioritizes intuition, transparency, and correctness.</p>
-          </div>
-        </section>
+              <StepCube
+                number="3"
+                title="Analyze"
+                description="Observe QBER, key rates, and security indicators"
+              />
 
-        {/* Theory Section */}
-        <section id="theory">
-          <div className="container">
-            <div className="theory-content">
-              <h2>The Science</h2>
+              <div className="arrow-3d">→</div>
 
-              <div className="theory-box">
-                <h3>Quantum Superposition</h3>
-                <p>Classical bits are either 0 or 1. Qubits can be both at the same time. It's not that we don't know which—they genuinely exist in both states until measured.</p>
-              </div>
-
-              <div className="theory-box">
-                <h3>The No-Cloning Theorem</h3>
-                <p>You can't make a perfect copy of an unknown quantum state. This is a fundamental law, not a technical limitation.</p>
-              </div>
-
-              <div className="theory-box">
-                <h3>Measurement Disturbance</h3>
-                <p>Measuring a quantum system changes it. If Eve measures a photon with the wrong basis, she'll change its state. When Alice and Bob compare their results later, they'll see extra errors.</p>
-              </div>
-
-              <div className="theory-box">
-                <h3>The Four States</h3>
-                <p>BB84 uses four polarization states:</p>
-                <ul>
-                  <li><strong>Horizontal (0°)</strong> - represents bit 0 in rectilinear basis</li>
-                  <li><strong>Vertical (90°)</strong> - represents bit 1 in rectilinear basis</li>
-                  <li><strong>Diagonal (45°)</strong> - represents bit 0 in diagonal basis</li>
-                  <li><strong>Anti-diagonal (135°)</strong> - represents bit 1 in diagonal basis</li>
-                </ul>
-                <p>Alice randomly picks a bit and a basis for each photon. Bob randomly picks a basis to measure with. When their bases match, he gets the right bit. When they don't match, he gets a random result.</p>
-              </div>
+              <StepCube
+                number="4"
+                title="Secure"
+                description="Verify security and finalize a trusted quantum key"
+              />
             </div>
           </div>
         </section>

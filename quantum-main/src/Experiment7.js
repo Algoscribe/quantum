@@ -21,6 +21,12 @@ export default function Exp7BB84() {
     const [channelDistanceKm, setChannelDistanceKm] = useState(0);
     const [showInstructions, setShowInstructions] = useState(false);
 
+    const reportDate = new Date().toLocaleDateString("en-IN", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
 
 
 
@@ -37,7 +43,7 @@ export default function Exp7BB84() {
     const [sentTransmissions, setSentTransmissions] = useState([]);
     const [channelKey, setChannelKey] = useState(0);
     const [statusMessage, setStatusMessage] = useState(
-        `Photon loss enabled — observe reduction in key rate without loss of security`
+        `Photon loss enabled — observe reduction in key length without loss of security`
     );
 
 
@@ -144,7 +150,7 @@ export default function Exp7BB84() {
 <button class="print-btn" onclick="window.print()">Print Report</button>
 
 <h1>LAB REPORT — Experiment 7</h1>
-<h2>Photon Loss vs Key Rate in BB84</h2>
+<h2>Photon Loss vs Key length in BB84</h2>
 
 <h3>1. Aim</h3>
 <p>
@@ -185,7 +191,7 @@ Loss occurs due to absorption, scattering, or detector inefficiencies.
 Thus, photon loss affects:
 </p>
 <ul>
-  <li>Key rate (number of usable bits)</li>
+  <li>Key length (number of usable bits)</li>
 </ul>
 <p>
 But does not affect:
@@ -208,7 +214,7 @@ This property makes BB84 suitable for long-distance quantum communication.
 </ul>
 
 <div class="box">
-ADD SCREENSHOT OF KEY RATE vs PHOTON LOSS GRAPH HERE
+ADD SCREENSHOT OF KEY LENGTH vs PHOTON LOSS GRAPH HERE
 </div>
 
 <h3>5. Conclusion</h3>
@@ -222,6 +228,9 @@ as long as the remaining photons are correctly measured.
   <li>Security depends on error statistics, not detection rate</li>
   <li>BB84 is robust against channel attenuation</li>
 </ul>
+<p style="margin-top:30px; text-align:center;">
+  <strong>Experiment Date:</strong> ${reportDate}
+</p>
 
 </body>
 </html>
@@ -286,7 +295,7 @@ as long as the remaining photons are correctly measured.
         setSentTransmissions([]);
         setChannelKey((k) => k + 1);
         updateStatus(
-            `Channel updated: Photon loss = ${photonLossPercent}% · Observing key rate`
+            `Channel updated: Photon loss = ${photonLossPercent}% · Observing key length`
         );
 
     };
@@ -301,7 +310,7 @@ as long as the remaining photons are correctly measured.
         setChannelKey(k => k + 1);
 
         updateStatus(
-            `Reset complete — Photon loss experiment · Observe key rate reduction`
+            `Reset complete — Photon loss experiment · Observe key length reduction`
         );
 
 
@@ -599,13 +608,39 @@ as long as the remaining photons are correctly measured.
                     <div className="instructions-modal" role="dialog" aria-modal="true">
                         <h2>Instructions — Experiment 7</h2>
 
-                        <ol>
-                            <li>Set photon loss percentage</li>
-                            <li>Click Apply Settings</li>
-                            <li>Send photons</li>
-                            <li>Observe key length drop</li>
-                            <li>Notice QBER stays low</li>
+                        <ol className="instructions-list">
+                            <li>
+                                Set the <strong>photon loss percentage</strong> using the Photon Loss slider.
+                            </li>
+                            <li>
+                                Choose the total number of photons (N) for the experiment.
+                            </li>
+                            <li>
+                                Note that <strong>Eve is disabled</strong> and channel noise is fixed at 0%.
+                            </li>
+                            <li>
+                                Click <strong>Apply Settings</strong> to initialize the run.
+                            </li>
+                            <li>
+                                Send all photons through the quantum channel.
+                            </li>
+                            <li>
+                                Observe that many photons do not reach Bob due to loss.
+                            </li>
+                            <li>
+                                Watch the <strong>sifted key length</strong> decrease as loss increases.
+                            </li>
+                            <li>
+                                Notice that the <strong>QBER remains low</strong> despite high loss.
+                            </li>
+                            <li>
+                                Use the <strong>Key Length vs Photon Loss</strong> graph to compare runs.
+                            </li>
+                            <li>
+                                Interpret the result: photon loss reduces key quantity, not security.
+                            </li>
                         </ol>
+
 
                         <button
                             className="exp-btn exp-btn-primary"
@@ -748,7 +783,7 @@ as long as the remaining photons are correctly measured.
 
                             <h4>6. What Students Should Learn</h4>
                             <ul>
-                                <li>Photon loss reduces key rate, not security</li>
+                                <li>Photon loss reduces key length, not security</li>
                                 <li>Lost photons do not introduce errors</li>
                                 <li>QBER measures correctness, not throughput</li>
                                 <li>BB84 remains secure even under high loss</li>
@@ -996,10 +1031,10 @@ as long as the remaining photons are correctly measured.
                             maxY={stats.totalSent}
                         />
 
-                        {/* GRAPH 3 — Key Rate vs Photon Loss */}
+                        {/* GRAPH 3 — Key Length vs Photon Loss */}
                         <div className="chart-wrapper">
                             <div className="chart-title-outside">
-                                Key Rate vs Photon Loss (Loss ≠ Insecurity)
+                                Key Length vs Photon Loss (Loss ≠ Insecurity)
                             </div>
 
                             <div className="chart-card">
