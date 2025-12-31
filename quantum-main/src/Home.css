@@ -205,29 +205,12 @@ section {
   padding: 40px;
   text-align: center;
   transition: all 0.3s;
+  height: 550px;
 }
 
 .threat-card:hover {
   transform: translateY(-8px);
   border-color: rgba(255, 255, 255, 0.3);
-}
-
-.threat-warning {
-  border-color: rgba(255, 200, 0, 0.3);
-}
-
-.threat-warning:hover {
-  border-color: rgba(255, 200, 0, 0.6);
-  box-shadow: 0 10px 40px rgba(255, 200, 0, 0.1);
-}
-
-.threat-danger {
-  border-color: rgba(255, 80, 80, 0.3);
-}
-
-.threat-danger:hover {
-  border-color: rgba(255, 80, 80, 0.6);
-  box-shadow: 0 10px 40px rgba(255, 80, 80, 0.1);
 }
 
 .threat-icon {
@@ -274,6 +257,7 @@ section {
 .comparison-column {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-color: rgba(100, 200, 255, 0.3);
   border-radius: 16px;
   padding: 40px;
 }
@@ -1208,6 +1192,7 @@ footer p {
   align-items: flex-start;
   /* so content starts at top, not vertically centered */
 }
+
 /* --- ADD THIS TO THE BOTTOM OF App.css --- */
 
 .threat-card,
@@ -1220,11 +1205,13 @@ footer p {
 .modal-content {
   /* The Glass Effect */
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); /* For Safari */
-  
+  -webkit-backdrop-filter: blur(12px);
+  /* For Safari */
+
   /* Optional: Make the background slightly stronger to pop against the blur */
-  background: rgba(255, 255, 255, 0.05); 
+  background: rgba(255, 255, 255, 0.05);
 }
+
 .threat-grid {
   display: flex;
   gap: 24px;
@@ -1243,41 +1230,46 @@ footer p {
 .threat-card-image {
   margin-top: 16px;
   width: 100%;
-  height: auto;
+  height: 200px;
   border-radius: 10px;
   border: 2px solid rgba(255, 255, 255, 0.2);
   opacity: 0.85;
 }
+
 .qber-indicator h4 span {
   font-size: 0.9em;
   font-weight: 400;
   opacity: 0.8;
 }
+
 .qber-indicator h4 {
   margin-bottom: 10px;
 }
+
 .steps-container {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 24px;
-  flex-wrap: wrap; /* mobile-safe */
+  flex-wrap: wrap;
+  /* mobile-safe */
 }
+
 .step-cube {
   animation-delay: 0s !important;
 }
+
 /* ========== GRADIENT HEADING STYLE ========== */
 .gradient-heading {
-  background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    rgba(200, 150, 255, 0.9) 60%,
-    rgba(170, 120, 255, 0.85) 100%
-  );
+  background: linear-gradient(135deg,
+      #ffffff 0%,
+      rgba(200, 150, 255, 0.9) 60%,
+      rgba(170, 120, 255, 0.85) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
 #core-science {
   padding: 5rem 1rem;
 }
@@ -1326,6 +1318,7 @@ footer p {
   line-height: 1.6;
   opacity: 0.9;
 }
+
 .principles-row {
   display: flex;
   gap: 2rem;
@@ -1338,6 +1331,7 @@ footer p {
 .principles-row::-webkit-scrollbar {
   height: 6px;
 }
+
 .principles-row::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 10px;
@@ -1345,8 +1339,9 @@ footer p {
 
 .principle-card {
   position: relative;
-  min-width: 280px;
-  max-width: 320px;
+  width: 700px;
+  min-height: 350px;
+  max-height: 550px;
   padding: 2rem;
   border-radius: 18px;
 
@@ -1383,6 +1378,7 @@ footer p {
   color: rgba(255, 255, 255, 0.06);
   pointer-events: none;
 }
+
 .principle-card {
   transition: all 0.35s ease;
 }
@@ -1394,19 +1390,16 @@ footer p {
 .principles-row:hover .principle-card:not(:hover) {
   opacity: 0.55;
 }
+
 .principles-row {
   display: flex;
-  gap: 3.5rem;          /* more air */
+  gap: 3.5rem;
+  /* more air */
   margin-top: 4rem;
   overflow-x: auto;
   padding-bottom: 2rem;
 }
 
-.principle-card {
-  min-width: 360px;     /* KEY CHANGE */
-  max-width: 380px;
-  padding: 2.5rem;
-}
 .science-grid-2x2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1455,6 +1448,7 @@ footer p {
     grid-template-columns: 1fr;
   }
 }
+
 /* ===============================
    Core Quantum Principles – BB84
    =============================== */
@@ -1485,8 +1479,9 @@ footer p {
 .principles-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 3rem;
+  gap: 2rem;
   margin-top: 4rem;
+
 }
 
 /* ===============================
@@ -1496,12 +1491,12 @@ footer p {
 .principle-card {
   position: relative;
   display: grid;
-  grid-template-columns: 1.5fr 1fr; /* text | image space */
+  /* text | image space */
   gap: 2.2rem;
 
   padding: 2.8rem;
   min-height: 280px;
-
+  width: 500px;
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -1516,9 +1511,9 @@ footer p {
   position: absolute;
   top: 1.4rem;
   right: 1.8rem;
-  font-size: 5rem;
+  font-size: 3.5rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.15);
   pointer-events: none;
 }
 
@@ -1567,18 +1562,21 @@ footer p {
   align-items: center;
   justify-content: center;
   border-radius: 14px;
-  opacity: 0.35; /* intentional empty space look */
+  opacity: 1;
+  border-radius: 10px;
+  /* intentional empty space look */
 }
 
 /* When images are added later */
 .principle-visual img {
   max-width: 100%;
-  max-height: 150px;
+  max-height: 200px;
   object-fit: contain;
-  opacity: 0.9;
+  opacity: 0.8;
+  border-radius: 15px;
+
 }
 
 /* ===============================
    Responsive (Mobile)
    =============================== */
-

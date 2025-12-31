@@ -23,7 +23,7 @@ const experiments = {
     title: 'Key Generation',
     content: `
       <h3>How it works</h3>
-      <p>Alice picks random bits—0s and 1s—and random bases to encode them. She sends photons to Bob. He measures with his own random bases. When their bases match, he gets the right bit. That's the foundation.</p>
+      <p>Alice picks random bits, 0s and 1s and random bases to encode them. She sends photons to Bob. He measures with his own random bases. When their bases match, he gets the right bit. That's the foundation.</p>
       
       <h3>Why it's secure</h3>
       <p>You can't copy a quantum state. If someone tries to intercept and measure the photons, they disturb them. Alice and Bob will see extra errors and know something's wrong.</p>
@@ -48,7 +48,7 @@ const experiments = {
       In the diagonal basis: 45° = 0, 135° = 1</p>
       
       <h3>Measurement outcomes</h3>
-      <p>If Bob uses the same basis as Alice, he gets the correct bit with certainty. If he uses the wrong basis, he gets a random result. That's quantum mechanics—not a bug, it's a feature.</p>
+      <p>If Bob uses the same basis as Alice, he gets the correct bit with certainty. If he uses the wrong basis, he gets a random result. That's quantum mechanics not a bug, it's a feature.</p>
     `
   },
   exp3: {
@@ -346,7 +346,7 @@ export default function Home() {
           <h3>Superposition</h3>
           <p>
             A qubit exists in multiple states until measured. It's not that we
-            don't know which—it genuinely exists in both states simultaneously.
+            don't know which it genuinely exists in both states simultaneously.
           </p>
         </div>
 
@@ -363,7 +363,7 @@ export default function Home() {
           <h3>Measurement Disturbance</h3>
           <p>
             Observation changes the quantum state. This isn't a limitation of our
-            tools—it's a fundamental feature of quantum mechanics.
+            tools it's a fundamental feature of quantum mechanics.
           </p>
         </div>
 
@@ -435,7 +435,7 @@ export default function Home() {
                   The security doesn't come from math being hard to solve. It comes from physics. If someone tries to intercept the key, they have to measure the quantum states. And measuring disturbs them. You can't avoid it.
                 </p>
                 <p>
-                  That disturbance is detectable. So Alice and Bob know if someone's listening. The eavesdropper can't copy the quantum states either—the no-cloning theorem forbids it.
+                  That disturbance is detectable. So Alice and Bob know if someone's listening. The eavesdropper can't copy the quantum states either the no-cloning theorem forbids it.
                 </p>
               </div>
               <div className="about-visual">

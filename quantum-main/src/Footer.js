@@ -15,7 +15,7 @@ export default function Footer() {
       </div>
       <p>© 2025 QKD_Xplore Virtual Lab. Built for education.</p>
       <p style={{ fontSize: "20px" }}>
-        BB84 Made Interactive:Learn,Test,Analyze,Secure.
+        BB84 Made Interactive:Learn ,Test, Analyze, Secure.
       </p>
     </footer>
   );

@@ -142,3 +142,22 @@
 section {
   padding-top: 90px;
 }
+.qx-nav-links {
+  display: flex;
+  gap: 28px;            /* ✅ was 40px */
+  list-style: none;
+  align-items: center;
+}
+body { overflow-y: scroll; }
+.gemini-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.gemini-btn {
+  display: flex;
+  align-items: center;
+}
+.qx-nav-links li {
+  list-style: none;
+}

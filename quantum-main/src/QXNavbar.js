@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./QXNavbar.css";
+import GeminiIcon from "./assets/gemini.svg";
 
-export default function QXNavbar() {
+
+export default function QXNavbar({ onOpenGemini }) {
   const location = useLocation();
 
   const [isLabDropdownOpen, setIsLabDropdownOpen] = useState(false);
@@ -55,13 +57,18 @@ export default function QXNavbar() {
           </button>
 
           <div
-            className={`qx-nav-dropdown-menu ${
-              isBB84DropdownOpen ? "active" : ""
-            }`}
+            className={`qx-nav-dropdown-menu ${isBB84DropdownOpen ? "active" : ""
+              }`}
           >
             <Link to="/bb84-theory">Theory</Link>
-            <Link to="/bb84-ideal">Ideal</Link>
-            <Link to="/bb84-notideal">Not-Ideal</Link>
+            <a href="/ideal.html" className="dropdown-item">
+              Ideal
+            </a>
+
+            <a href="/nonideal.html" className="dropdown-item">
+              NONIdeal
+            </a>
+
           </div>
         </li>
 
@@ -80,9 +87,8 @@ export default function QXNavbar() {
           </button>
 
           <div
-            className={`qx-nav-dropdown-menu ${
-              isLabDropdownOpen ? "active" : ""
-            }`}
+            className={`qx-nav-dropdown-menu ${isLabDropdownOpen ? "active" : ""
+              }`}
           >
             <Link to="/virtual-lab">Overview</Link>
             <Link to="/lab/experiment-1">Experiment 1</Link>
@@ -118,11 +124,31 @@ export default function QXNavbar() {
         </li>
 
         <li>
-          <Link to="/credits" style={isActive("/credits")}>
-            Credits
-          </Link>
-        </li>
-      </ul>
+    <Link
+  to="/credits"
+  className={`qx-nav-link ${location.pathname === "/credits" ? "active" : ""}`}
+>
+  Credits
+</Link>
+
+  </li>
+
+  {/* ✅ GEMINI GOES HERE */}
+  <li className="gemini-nav-item">
+    <button
+      className="qx-nav-link-btn gemini-btn"
+      onClick={onOpenGemini}
+      title="Gemini"
+    >
+      <img
+        src={GeminiIcon}
+        alt="Gemini"
+        className="gemini-icon"
+      />
+    </button>
+  </li>
+</ul>
+
 
       {/* START BUTTON */}
       <button

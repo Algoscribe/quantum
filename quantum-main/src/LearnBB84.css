@@ -793,3 +793,50 @@
     0 30px 70px rgba(0, 0, 0, 0.65),
     inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
+/* ===============================
+   FIX: SHOW QuantumBackground
+   (NO GLOBAL SIDE EFFECTS)
+   =============================== */
+
+/* Ensure Learn page sits above the background */
+.learn-page {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+/* Lift all main sections above canvas */
+.learn-hero,
+.learn-topics,
+.learn-section,
+.learn-final-cta {
+  position: relative;
+  z-index: 2;
+}
+
+/* Slight transparency so background is visible */
+.learn-card {
+  background: rgba(5, 5, 5, 0.72);
+}
+
+/* Hero pill was fully blocking glow */
+.learn-pill {
+  background: rgba(0, 0, 0, 0.45);
+}
+/* ===============================
+   FORCE Quantum Background TO SHOW
+   (Fixes fixed-position break)
+   =============================== */
+
+.learn-page {
+  transform: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  perspective: none !important;
+  contain: none !important;
+}
+
+/* Also neutralize any parent stacking context */
+.learn-page * {
+  transform-style: flat;
+}

@@ -19,8 +19,8 @@ const BB84Page = () => {
 
         <p className="summary-text">
           This interactive Jupyter Notebook implements the{" "}
-          <strong>BB84 (Bennett and Brassard, 1984)</strong> protocol — the first
-          Quantum Key Distribution (QKD) scheme — using the{" "}
+          <strong>BB84 (Bennett and Brassard, 1984)</strong> protocol the first
+          Quantum Key Distribution (QKD) scheme using the{" "}
           <strong>Qiskit quantum computing framework</strong>. The protocol
           enables two legitimate parties, Alice and Bob, to establish a shared,
           secret cryptographic key whose security is guaranteed by the

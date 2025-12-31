@@ -30,7 +30,7 @@ export default function Credits() {
           </p>
           <p className="credits-text">
             The laboratory provides a hands-on platform to understand and
-            experiment with the <strong>BB84 protocol</strong> — a foundational
+            experiment with the <strong>BB84 protocol</strong> a foundational
             quantum cryptography protocol by{" "}
             <strong>Charles Bennett</strong> and{" "}
             <strong>Gilles Brassard</strong> (1984).
@@ -61,7 +61,7 @@ export default function Credits() {
 
         {/* Team Section */}
         <div className="credits-block">
-          <h2 className="credits-subtitle">Team QuSec — Contributors</h2>
+          <h2 className="credits-subtitle">Team QuSec Contributors</h2>
           <div className="team-grid">
             <div className="team-card">Aniruddha Gharat</div>
             <div className="team-card">Arundhati Nair</div>

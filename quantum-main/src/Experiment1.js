@@ -793,7 +793,7 @@ distance effects are compared against this zero-error benchmark.
                   In the <strong>Basis Match vs Mismatch</strong> graph, all photons appear under “Match”.
                 </li>
                 <li>
-                  Observe the <strong>QBER (%)</strong> graph — it stays constant at <strong>0%</strong> throughout the transmission.
+                  Observe the <strong>QBER (%)</strong> graph it stays constant at <strong>0%</strong> throughout the transmission.
                 </li>
                 <li>
                   Interpret the result: zero errors and zero QBER confirm an <strong>ideal BB84 transmission</strong>.

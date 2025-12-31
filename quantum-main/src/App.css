@@ -661,3 +661,131 @@ section {
     padding: 120px 26px 70px;
   }
 }
+/* ===============================
+   GEMINI OVERLAY (GMAIL STYLE)
+   =============================== */
+
+.gemini-panel {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+
+  width: 360px;
+  height: 520px; /* initial height */
+max-height: calc(100vh - 120px);
+min-height: 300px;
+
+
+  background: #ffffff; /* ✅ white */
+  color: #000000;
+
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+}
+
+.gemini-header {
+  height: 48px;
+  padding: 0 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-weight: 600;
+  font-size: 14px;
+
+  color: #000;
+  background: #ffffff;
+
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.gemini-body {
+  flex: 1;
+  padding: 14px;
+  font-size: 13px;
+  color: #111;
+}
+.gemini-panel {
+         /* ✅ user can resize */
+  overflow: auto;
+  min-width: 280px;
+  max-width: 520px;
+}
+.gemini-panel::-webkit-resizer {
+  background: transparent;
+}
+.gemini-resizer {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 6px;
+  height: 100%;
+
+  cursor: ew-resize;
+  background: transparent;
+  z-index: 10;
+}
+
+.gemini-resizer:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+/* Horizontal resize (left edge) */
+.gemini-resizer-x {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  cursor: ew-resize;
+  z-index: 20;
+}
+
+.gemini-resizer-x:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* Vertical resize (bottom edge) */
+.gemini-resizer-y {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  cursor: ns-resize;
+  z-index: 20;
+}
+
+.gemini-resizer-y:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+.gemini-header button {
+  background: transparent;
+  border: none;
+  outline: none;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  cursor: pointer;
+  color: #000;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+/* kill focus ring */
+.gemini-header button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* subtle hover (premium feel) */
+.gemini-header button:hover {
+  background: rgba(0, 0, 0, 0.06);
+}

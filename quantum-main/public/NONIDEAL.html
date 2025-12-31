@@ -1,0 +1,2577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BB84 Quantum Key Distribution Interactive Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- mathjs is included but we'll use simplified probability functions for cleaner simulation logic -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+    <!-- REMOVED MATHJAX - USING PLAIN HTML FOR QBER FORMULA RENDERING -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary-blue: #1e40af;
+            --secondary-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --success-green: #10b981;
+            --warning-yellow: #f59e0b;
+            --danger-red: #ef4444;
+            --dark-bg: #0f172a;
+            --light-bg: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--primary-blue) 100%);
+            min-height: 10vh;
+            color: #1f2937;
+            overflow-x: hidden;
+            /* REVERTED: Removed global text-transform: uppercase */
+        }
+        
+        /* Ensure dialogue body text uses default casing for readability */
+        .dialogue-text {
+             text-transform: none; /* Override any potential parent inherited uppercase */
+        }
+
+        /* FIX: Ensure user input text is NOT forced to uppercase by the .font-bold class */
+        #message-text-display-2 {
+            text-transform: none !important;
+        }
+
+        /* Professional Header */
+        .main-header {
+            background: rgba(30, 64, 175, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--accent-cyan), var(--secondary-blue));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .title-text {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* Main Layout - ADJUSTED TO SINGLE COLUMN */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            grid-template-columns: 1fr; 
+            display: grid; 
+            gap: 2rem;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        .content-area {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-heavy);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Step Content */
+        .step-content {
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .step-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-subtitle {
+            font-size: 1.1rem;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        /* Mission Selection */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .mission-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--secondary-blue);
+        }
+
+        .mission-card.selected {
+            border-color: var(--success-green);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+        }
+
+        .mission-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .mission-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .mission-description {
+            font-size: 0.9rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        /* Characters Section - MODIFIED TO BE WHITE */
+        .characters-section {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white; /* Changed to white */
+            border-radius: 15px;
+            border: 1px solid #e5e7eb; /* Light gray border for separation */
+        }
+
+        .character {
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .character:hover {
+            transform: scale(1.05);
+        }
+
+        .character-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border: 3px solid;
+            transition: all 0.3s ease;
+            color: white; /* Added color for consistency */
+        }
+
+        .alice-avatar {
+            background: linear-gradient(45deg, #dc2626, #ef4444);
+            border-color: #dc2626;
+        }
+
+        .bob-avatar {
+            background: linear-gradient(45deg, #16a34a, #22c55e);
+            border-color: #16a34a;
+        }
+        
+        /* NEW EVE AVATAR STYLE */
+        .eve-avatar {
+            background: linear-gradient(45deg, #9333ea, #c084fc); /* Purple gradient */
+            border-color: #9333ea;
+        }
+
+        .quantum-avatar {
+            background: linear-gradient(45deg, var(--accent-cyan), var(--secondary-blue));
+            border-color: var(--accent-cyan);
+            cursor: pointer;
+        }
+
+        .character-name {
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 0.25rem;
+        }
+
+        .character-role {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        /* Dialogue Bubbles */
+        .dialogue-container {
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .dialogue-bubble {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-soft);
+            border-left: 4px solid var(--secondary-blue);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .dialogue-bubble.military {
+             border-left-color: #ef4444; /* Red for urgency */
+             background: #fee2e2;
+        }
+        
+        .dialogue-bubble.command {
+             border-left-color: #10b981; /* Green for command */
+             background: #d1fae5;
+        }
+        
+        /* NEW EVE DIALOGUE STYLE */
+        .dialogue-bubble.eve-attack {
+             border-left-color: #9333ea; /* Purple for Eve */
+             background: #f3e8ff;
+        }
+
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .dialogue-speaker {
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase; /* KEEP SPEAKER NAMES IN CAPS */
+        }
+
+        .dialogue-text {
+            line-height: 1.6;
+            color: #374151;
+            font-weight: 500; /* Subtle emphasis for readability */
+            text-transform: none; /* Crucial: Ensure dialogue is standard casing */
+        }
+
+        /* Dr. Quantum Insight Panel */
+        .dr-quantum-insight {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1));
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .dr-quantum-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+            color: var(--primary-blue);
+        }
+
+        .dr-quantum-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #4b5563;
+        }
+        
+        /* Quantum Channel - REDESIGNED VISUALIZATION - NOW WHITE BACKGROUND */
+        .quantum-channel-section {
+            margin: 2rem 0;
+            padding: 1.5rem 1rem; 
+            background: #ffffff; /* White background */
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid var(--secondary-blue); /* Blue border for contrast */
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); 
+        }
+        
+        .quantum-channel-container {
+            height: 150px; 
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        /* New Quantum Channel Flow Container for positioning */
+        .quantum-channel-flow {
+            position: relative;
+            width: 100%;
+            height: 100px; 
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Elements along the flow are absolutely positioned */
+        .flow-station {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Added Title Style */
+        .channel-title {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            padding: 0.25rem 1rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 3;
+        }
+
+        /* Polarizer as Filter/Gate */
+        .polarizer {
+            width: 80px;
+            height: 80px;
+            background: rgba(30, 64, 175, 0.05); /* Lighter filter on white */
+            border: 3px solid rgba(59, 130, 246, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); 
+            transition: all 0.5s ease;
+            backdrop-filter: blur(5px);
+            cursor: default;
+        }
+        
+        /* Eve's specific color styling */
+        .eve-device-color {
+            border-color: #9333ea !important; /* Purple Border */
+            background: rgba(147, 51, 234, 0.1) !important; /* Purple Background */
+        }
+
+        /* Overwrite the photon line color for Eve's devices */
+        .eve-device-color::before {
+            background: linear-gradient(to right, #6d28d9, #9333ea, #6d28d9) !important; /* Purple Line */
+            box-shadow: 0 0 10px rgba(147, 51, 234, 0.8) !important;
+        }
+
+
+        /* Default line (Horizontal) - used for the base of '+' and the single line for '×' */
+        /* Note: .polarizer::before and .eve-device-color::before share the same rules, but Eve's color overrides are important */
+        .polarizer::before, .eve-device-color::before {
+            content: ''; 
+            width: 90%;
+            height: 4px;
+            /* Base background gradient - overridden by .eve-device-color */
+            background: linear-gradient(to right, #333, var(--secondary-blue), #333); 
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+            position: absolute; 
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(0deg); /* Default Horizontal for '+' */
+            transition: transform 0.3s ease;
+        }
+
+        /* Reverting the '+' sign visualization */
+        .polarizer::after, .eve-device-color::after {
+            content: none !important; /* Ensure the vertical bar is hidden */
+        }
+        
+        .polarizer[data-basis="+"]::before, .eve-device-color[data-basis="+"]::before {
+            transform: translate(-50%, -50%) rotate(0deg); /* Single horizontal line for '+' */
+        }
+
+        /* Diagonal basis styling (only uses ::before) */
+        .polarizer[data-basis="X"]::before, .eve-device-color[data-basis="X"]::before {
+            transform: translate(-50%, -50%) rotate(45deg); /* Diagonal line */
+        }
+        
+        /* Ensure ::after is hidden for '×' basis */
+        .polarizer[data-basis="X"]::after, .eve-device-color[data-basis="X"]::after {
+            content: none !important;
+        }
+
+        /* Labels above the polarizers - MOVED UP TO PREVENT OVERLAP */
+        .channel-label-stack {
+            color: #1f2937; /* Dark text for white background */
+            position: absolute;
+            top: -45px; /* Pushed up from -30px */
+            width: 100px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        /* Photon Path/Track Line */
+        .photon-track {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: repeating-linear-gradient(
+                to right,
+                rgba(59, 130, 246, 0.8),
+                rgba(59, 130, 246, 0.8) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+        
+        /* Photon particle */
+        .photon {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%;
+            background: radial-gradient(circle at center, #ffffff, #06b6d4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Font size kept large for icon visibility */
+            font-size: 2rem; 
+            font-weight: bold;
+            color: var(--secondary-blue); /* Color set to secondary blue for consistency with track */
+            /* Transition will be set dynamically in JS for custom timing */
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.8);
+            z-index: 10;
+        }
+        
+        /* New element for angle display (positioned above the photon) */
+        .photon-angle {
+            position: absolute;
+            top: -15px; /* Position above the photon circle */
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #1f2937; /* Dark text for visibility */
+            background: #fff;
+            padding: 1px 4px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            z-index: 11;
+        }
+        
+        /* Eavesdropping Toggle Styling */
+        .toggle-switch {
+            display: inline-block;
+            height: 34px;
+            width: 60px;
+            position: relative;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--danger-red);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        /* End Toggle Styling */
+
+
+        /* Action Buttons */
+        .action-section {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--secondary-blue), var(--primary-blue));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--secondary-blue), var(--primary-blue));
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, var(--success-green), #059669);
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, var(--warning-yellow), #d97706);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, var(--danger-red), #dc2626);
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .data-table th {
+            background: var(--primary-blue);
+            color: white;
+            padding: 1rem 0.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Reduced vertical gap for data cells */
+        .data-table td {
+            padding: 0.5rem; 
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+            font-family: monospace;
+            font-weight: 600;
+        }
+        
+        /* New Table Row Coloring - DARKER colors implemented (Tailwind 400 level) */
+        /* BASE MATCHING: Green for Match, Red for Mismatch/Discard */
+        .data-table tr.bg-green-50 {
+            background-color: #d1fae5; /* Tailwind green-100 (Success) */
+        }
+        
+        /* FIX: Make basis mismatch visibly darker (Red-400 equivalent) */
+        .data-table tr.bg-red-50 {
+            background-color: #f87171; /* Tailwind red-400 equivalent (for Mismatch/Discarded) */
+        }
+
+        /* Make hover slightly darker than the base color (Tailwind 500 level) */
+        .data-table tr.bg-green-50:hover {
+            background-color: #a7f3d0; 
+        }
+        
+        /* Hover state for mismatch */
+        .data-table tr.bg-red-50:hover {
+            background-color: #ef4444; /* Tailwind red-500 equivalent on hover */
+        }
+        
+        /* ENFORCED BOLDNESS FIX (For conversational and technical terms) */
+        strong, .font-bold, .font-extrabold {
+            font-weight: 900 !important; /* Increased to 900 for max boldness */
+            text-transform: uppercase !important; /* REINFORCED: Enforce block letters everywhere */
+            letter-spacing: 0.05em; /* Added small spacing for better readability */
+        }
+        /* Ensure maximum visibility for text within strong/bold tags */
+        .text-2xl strong, .text-xl strong {
+            font-weight: 900 !important;
+            text-transform: uppercase !important;
+        }
+
+        /* UPDATED: Raw Key Table Error (A != B) - Make this the darkest red */
+        .data-table tr.error-red {
+            background-color: #ef4444; /* Tailwind red-500 equivalent (for critical Bit Error) */
+        }
+
+
+        /* Responsive Table Wrapper */
+        .table-responsive {
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        /* Input/Message Section */
+        .file-upload-section {
+            margin: 2rem auto;
+            padding: 2rem;
+            border: 2px dashed var(--secondary-blue);
+            border-radius: 15px;
+            text-align: center;
+            background: rgba(59, 130, 246, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-section:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 0.75rem 1.5rem; /* Reduced padding to match .btn */
+            background: linear-gradient(45deg, var(--secondary-blue), var(--primary-blue));
+            color: white;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            text-transform: uppercase; /* Match .btn style */
+        }
+
+        .file-label:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Image Display in Step 6 and 7 (Increased Size) */
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        .image-display {
+            width: 100%;
+            max-width: 300px; /* Increased max-width */
+            height: 200px; /* Increased height */
+            background-color: #eee;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #6b7280;
+            object-fit: contain;
+        }
+
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-heavy);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .modal-body {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .modal-footer {
+            text-align: center;
+        }
+        
+        /* New Conversion Table Style */
+        .conversion-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .conversion-table th {
+            padding: 0.5rem;
+            background: var(--secondary-blue);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .conversion-table td {
+            padding: 0.5rem;
+            border: 1px solid #e5e7eb;
+            font-family: monospace;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .step-item {
+                flex: 1 1 auto;
+                min-width: unset;
+                max-width: 30%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .title-text {
+                font-size: 1.2rem;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .characters-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step-item {
+                max-width: 45%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">⚛️</div>
+                <div>
+                    <div class="title-text">BB84 Quantum Key Distribution</div>
+                    <div class="subtitle-text">Protocol Simulator: Integrity Guaranteed by Physics</div>
+                </div>
+            </div>
+            <div class="text-white text-sm">
+                Initiate Secure Key Exchange
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Content Area -->
+        <main class="content-area">
+            <!-- Step 1: Mission Selection & Message Input -->
+            <div class="step-content active" id="step-1">
+                <div class="step-header">
+                    <h1 class="step-title">1. Mission Briefing and Message Input</h1>
+                    <p class="step-subtitle">Choose your operational zone and input the vital two character message to be secured.</p>
+                </div>
+
+                <div class="dialogue-container" id="mission-dialogue">
+                    <!-- Default initial dialogue -->
+                    <div class="dialogue-bubble command">
+                        <div class="dialogue-speaker">MISSION CONTROL:</div>
+                        <div class="dialogue-text">
+                            Welcome, operative. The integrity of our sensitive communications rests entirely on the <strong>BB84 quantum key distribution</strong> protocol. Select your mission environment below to begin key preparation.
+                        </div>
+                    </div>
+                    <div class="dr-quantum-insight">
+                        <div class="dr-quantum-icon">⚛️</div>
+                        <div class="dr-quantum-content">
+                            <strong class="text-primary-blue">Dr. quantum's insight:</strong> Our goal is to generate a final, secure key between Alice and Bob that <strong>no eavesdropper can obtain undetected</strong>. The security is fundamentally guaranteed by the laws of quantum physics!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mission-grid">
+                    <div class="mission-card" id="mission-naval" onclick="selectMission('naval')">
+                        <div class="mission-icon">🌊</div>
+                        <div class="mission-title">Naval Operations</div>
+                        <div class="mission-description">Secure satellite communications for naval fleet operations.</div>
+                    </div>
+                    <div class="mission-card" id="mission-space" onclick="selectMission('space')">
+                        <div class="mission-icon">🛰️</div>
+                        <div class="mission-title">Space Mission</div>
+                        <div class="mission-description">Deep space communication with Mars base station.</div>
+                    </div>
+                    <div class="mission-card" id="mission-ground" onclick="selectMission('ground')">
+                        <div class="mission-icon">🛡️</div>
+                        <div class="mission-title">Ground Forces</div>
+                        <div class="mission-description">Military field operations secure key exchange.</div>
+                    </div>
+                    <!-- New Scenario Added -->
+                    <div class="mission-card" id="mission-financial" onclick="selectMission('financial')">
+                        <div class="mission-icon">🏦</div>
+                        <div class="mission-title">Financial Data Exchange</div>
+                        <div class="mission-description">Secure high value bank transaction data transfer.</div>
+                    </div>
+                </div>
+
+                <div class="characters-section" id="characters-section" style="display: none;">
+                    <div class="character">
+                        <div class="character-avatar alice-avatar" id="alice-avatar">👩‍✈️</div>
+                        <div class="character-name" id="alice-name">Captain Alice</div>
+                        <div class="character-role">Quantum Transmitter</div>
+                    </div>
+                    <div class="character">
+                        <div class="character-avatar bob-avatar" id="bob-avatar">👨‍💻</div>
+                        <div class="character-name" id="bob-name">Operator Bob</div>
+                        <div class="character-role">Quantum Receiver</div>
+                    </div>
+                    
+                    <!-- NEW EVE CHARACTER -->
+                    <div class="character">
+                        <div class="character-avatar eve-avatar">😈</div>
+                        <div class="character-name">Eavesdropper Eve</div>
+                        <div class="character-role">Adversary</div>
+                    </div>
+                    
+                    <!-- Protocol Guide button remains for general help -->
+                    <div class="character" onclick="showGuide(BB84.currentStep)">
+                        <div class="character-avatar quantum-avatar">🧬</div>
+                        <div class="character-name">Dr. Quantum</div>
+                        <div class="character-role">Navigator</div>
+                    </div>
+                </div>
+
+                <!-- Message Input Section -->
+                <div class="file-upload-section" id="upload-section" style="display: none;">
+                    <h3 class="font-bold mb-4 text-primary-blue">
+                        KEY LENGTH (TOTAL TRANSMISSION): 
+                        <span id="key-length-display" class="text-xl font-mono text-gray-700">32</span> BITS
+                    </h3>
+                    
+                    <p class="text-sm text-gray-500 mb-4 font-bold text-danger-red">
+                        EDUCATIONAL NOTE: WE TRANSMIT 32 PHOTONS TO YIELD A REALISTIC MINIMUM OF 16 SECURE BITS AFTER THE SIFTING PROCESS (DUE TO 50% BASIS MISMATCH).
+                    </p>
+
+                    <label for="message-input" class="block font-bold mb-2 text-gray-700">TYPE YOUR SECRET MESSAGE (MAX 2 CHARS):</label>
+                    <input type="text" id="message-input" maxlength="2" placeholder="E.G., HY OR GO" oninput="handleMessageInput()" class="w-full max-w-sm mx-auto p-3 border-2 border-secondary-blue rounded-lg shadow-inner text-xl font-mono text-center">
+
+                    <div id="message-status" style="margin-top: 1rem; font-size: 0.9rem; color: #6b7280;">INPUT REQUIRED.</div>
+                    <!-- Binary preview is now hidden until input is provided -->
+                    <div class="font-bold text-xs text-primary-blue mt-1" id="binary-preview"></div>
+                    
+                    <!-- EVE TOGGLE SECTION -->
+                    <div class="mt-6 pt-4 border-t border-gray-300">
+                        <div class="flex items-center justify-center space-x-4">
+                            <span class="font-bold text-lg text-red-600">EVE'S ATTACK STATUS:</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="eve-toggle" onchange="toggleEveAttack()">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="font-bold text-lg text-gray-500" id="eve-status-text">DISABLED</span>
+                        </div>
+                        <p class="text-xs text-red-600 mt-2">TOGGLE TO SIMULATE EVE'S INTERCEPT RESEND ATTACK!</p>
+                    </div>
+                    <!-- END EVE TOGGLE -->
+
+                    <div class="action-section">
+                        <button class="btn btn-primary" id="start-protocol" onclick="startProtocol()" disabled>
+                            PROCEED TO STEP 2: ENCODE MESSAGE
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW Step 2: Message Encoding Detail -->
+            <div class="step-content" id="step-2">
+                <div class="step-header">
+                    <!-- FIX: Cleaned up title -->
+                    <h1 class="step-title">2. Message Encoding: Text to Binary (<strong>M</strong>)</h1>
+                    <p class="step-subtitle">WITNESS THE CRITICAL PROCESS: CONVERTING YOUR VITAL TEXT MESSAGE INTO A 16 BIT BINARY SIGNAL.</p>
+                </div>
+
+                <div class="dialogue-container">
+                    <div class="dialogue-bubble command">
+                        <div class="dialogue-speaker text-red-600" id="alice-dialogue-2-enc">Alice's System:</div>
+                        <div class="dialogue-text">
+                            "The raw text message is: <span class="font-bold text-xl text-gray-800" id="message-text-display-2">---</span>. We must convert this into a binary stream, <strong>M</strong>, ready for cryptographic operation. Every character counts for 8 bits! Prepare for quantum transmission."
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dr-quantum-insight">
+                    <div class="dr-quantum-icon">🧮</div>
+                    <div class="dr-quantum-content">
+                        <!-- REMOVED AI-EVIDENT TEXT -->
+                        <strong class="text-primary-blue">Dr. quantum's insight:</strong> Data must be converted to a binary stream, <strong>M</strong>. We are set to transmit <strong>32 photons</strong> to ensure we generate a sufficiently long <strong>secure key</strong> to encrypt the user's message.
+                        </div>
+                </div>
+
+                <!-- Message Conversion Table -->
+                <div class="mt-8 pt-4 border-t border-gray-300">
+                    <h4 class="text-lg font-bold text-primary-blue mb-3">Message Conversion Detail</h4>
+                    <div id="conversion-details">
+                        <!-- Populated by JS in visualizeTextToBinary() -->
+                    </div>
+                </div>
+
+                <div class="action-section">
+                    <button class="btn btn-success" id="btn-start-qkd" onclick="startQKDTransmission()">
+                        PROCEED TO STEP 3: START QUANTUM KEY DISTRIBUTION
+                    </button>
+                </div>
+            </div>
+
+            <!-- Old Step 2 -> NEW Step 3: Quantum Transmission (Sending the photons) -->
+            <div class="step-content" id="step-3">
+                <div class="step-header">
+                    <h1 class="step-title">3. Quantum Transmission <span class="text-xs font-normal text-gray-500">(QUANTUM CHANNEL)</span></h1>
+                    <p class="step-subtitle">ALICE SENDS <span id="key-length-total-2">32</span> POLARIZED PHOTONS (QUBITS) TO BOB. SENT: <span id="key-length-progress-2">0</span> / TOTAL: <span id="key-length-total-2-again">32</span></p>
+                </div>
+                
+                <!-- NEW DIALOGUE FOR STEP 3 -->
+                <div class="dialogue-container">
+                    <div class="dialogue-bubble military">
+                        <div class="dialogue-speaker text-red-600" id="alice-dialogue-2">Captain Alice:</div>
+                        <div class="dialogue-text">
+                            "Quantum communication initialized! I'm launching <strong>32 polarized photons</strong> into the quantum channel. My encoding is completely <strong>random</strong>, a secret mix of bits and bases for maximum security. Bob, confirm reception!"
+                        </div>
+                    </div>
+                    <div class="dialogue-bubble command">
+                        <div class="dialogue-speaker text-green-600" id="bob-dialogue-2">Operator Bob:</div>
+                        <div class="dialogue-text">
+                            "Receiving quantum pulse now. My detectors are set to make their own <strong>independent, random basis choices</strong> for each photon. This uncertainty is the key to our security! Transmission acknowledged."
+                        </div>
+                    </div>
+                    <!-- EVE'S ATTACK DIALOGUE (Added via JS if enabled) -->
+                </div>
+
+                <div class="dr-quantum-insight">
+                    <div class="dr-quantum-icon">🔑</div>
+                    <div class="dr-quantum-content">
+                        <!-- EDUCATIONAL: Added expected error rate -->
+                        <strong class="text-primary-blue">Dr. quantum's insight:</strong> This step is pure quantum physics. Alice and Bob make independent random choices. The <strong>polarizer settings</strong> change for every single photon! 
+                        <p class="mt-3">Basis Encoding: Alice prepares photons in one of two bases:</p>
+                        <ul class="list-disc list-inside ml-4 text-sm space-y-1">
+                            <li><strong>RECTILINEAR BASIS (+)</strong>: A bit 0 is represented by a horizontally polarized photon (0°), and a bit 1 by a vertically polarized photon (90°).</li>
+                            <li><strong>DIAGONAL BASIS (×)</strong>: A bit 0 is a 45° polarized photon, and a bit 1 is a 135° polarized photon.</li>
+                        </ul>
+                        <p class="mt-3">If <strong>eve attacks</strong>, her tampering introduces an observable <strong>25% error rate</strong> into the final sifted key.</p>
+                    </div>
+                </div>
+
+                <div class="quantum-channel-section">
+                    <div class="channel-title">QUANTUM CHANNEL</div>
+                    <div class="quantum-channel-container">
+                        <div class="quantum-channel-flow" id="quantum-channel-flow">
+                            <!-- 1. ALICE SOURCE - Moved from 0% to 5% to prevent clipping -->
+                            <div class="flow-station" style="left: 5%;"> 
+                                <div class="channel-label-stack">ALICE (SOURCE)</div>
+                                <span class="text-4xl text-red-400">👩‍✈️</span>
+                            </div>
+
+                            <!-- 2. ALICE BASE (Polarizer) -->
+                            <!-- POSITION SHIFTED FROM 25% TO 20% -->
+                            <div class="polarizer flow-station" id="alice-polarizer" data-basis="+" style="left: 20%;" title="ALICE'S POLARIZER: PREPARES THE PHOTON IN ONE OF FOUR POLARIZATION STATES BASED ON HER RANDOM BIT AND BASIS.">
+                                <div class="channel-label-stack">ALICE'S POLARIZER</div>
+                            </div>
+                            
+                            <!-- 3. EVE'S STATION MODIFIED FOR 2 BASES (Measure + Re-encode) -->
+                            <!-- VERTICAL ALIGNMENT ADJUSTMENT: FIXED AT +10PX -->
+                            <div class="flow-station" id="eve-station" style="left: 50%; width: 220px; flex-direction: row; justify-content: space-around; gap: 10px; transform: translate(-50%, calc(-50% + 10px));">
+                                <!-- Eve's Detector (Measure Basis) -->
+                                <div style="display: flex; flex-direction: column; align-items: center; position: relative; margin-right: 20px;">
+                                    <div class="polarizer eve-device-color" id="eve-detector-box" data-basis="+" title="EVE'S DETECTOR: MEASURES THE INCOMING PHOTON STATE.">
+                                        <!-- Visualization is handled by pseudo-elements -->
+                                    </div>
+                                    <!-- Hiding this span but keeping its ID for JS compatibility -->
+                                    <span class="text-sm font-semibold text-gray-700 block mt-1 hidden" id="eve-measure-basis">+</span>
+                                    <span class="text-sm font-semibold text-gray-700 block" style="margin-top: 5px;">READER</span> <!-- Adjusted margin-top for tighter fit -->
+                                </div>
+                                
+                                <!-- NEW EVE AVATAR (Centerpiece) -->
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10;">
+                                    <span class="text-4xl text-purple-600">🕵</span>
+                                </div>
+                                
+                                <!-- Eve's Re-encoder (Resend Basis) -->
+                                <div style="display: flex; flex-direction: column; align-items: center; position: relative; margin-left: 20px;">
+                                    <div class="polarizer eve-device-color" id="eve-reencoder-box" data-basis="X" title="EVE'S RE-ENCODER: RE-PREPARES A NEW PHOTON BASED ON HER MEASUREMENT.">
+                                        <!-- Visualization is handled by pseudo-elements -->
+                                    </div>
+                                    <!-- Hiding this span but keeping its ID for JS compatibility -->
+                                    <span class="text-sm font-semibold text-gray-700 block mt-1 hidden" id="eve-resend-basis">X</span>
+                                    <span class="text-sm font-semibold text-gray-700 block" style="margin-top: 5px;">RESEND</span> <!-- Adjusted margin-top for tighter fit -->
+                                </div>
+                            </div>
+                            <!-- END EVE STATION MODIFIED -->
+                            
+                            <!-- 4. BOB BASE (Polarizer/Detector) -->
+                            <!-- POSITION SHIFTED FROM 75% TO 80% -->
+                            <div class="polarizer flow-station" id="bob-polarizer" data-basis="+" style="left: 80%;" title="BOB'S POLARIZER/DETECTOR: MEASURES THE INCOMING PHOTON USING HIS RANDOMLY CHOSEN BASIS. THIS IS WHERE QUANTUM COLLAPSE OCCURS.">
+                                <div class="channel-label-stack">BOB'S POLARIZER/DETECTOR</div>
+                            </div>
+
+                            <!-- 5. BOB RECEIVER - Moved from 100% to 95% to prevent clipping -->
+                            <div class="flow-station" style="left: 95%;"> 
+                                <div class="channel-label-stack">BOB (RECEIVER)</div>
+                                <span class="text-4xl text-green-400">👨‍💻</span>
+                            </div>
+
+                            <!-- 6. PHOTON PATH (The visual track line) -->
+                            <div class="photon-track" id="photon-track">
+                                <!-- Photon element will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="transmission-status" style="text-align: center; margin-top: 1rem; color: #1f2937; background: #f0f0f0; padding: 0.5rem 1rem; border-radius: 8px;">
+                        READY FOR QUANTUM TRANSMISSION (0 / 32 PHOTONS SENT)...
+                    </div>
+                </div>
+
+                <!-- NEW QBER PROGRESS PANEL -->
+                <!-- REMOVING QBER PROGRESS PANEL AS REQUESTED -->
+                
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>INDEX</th>
+                                <th>ALICE'S BIT</th>
+                                <th>ALICE'S BASIS (+ / ×)</th>
+                                <th>EVE'S MEASURE BASIS</th>
+                                <th>EVE'S RESEND BASIS</th>
+                                <th>EVE'S MEASUREMENT</th>
+                                <th>BOB'S BASIS (+ / ×)</th>
+                                <th>BOB'S MEASUREMENT</th>
+                                <th>BASIS MATCH? (A VS B)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quantum-table-body">
+                            <!-- Data populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="action-section">
+                    <button class="btn btn-primary" id="btn-send-photon" onclick="sendPhoton()">SEND NEXT PHOTON (1/32)</button>
+                    <button class="btn btn-warning" id="btn-send-burst" onclick="sendBurst()">SEND ALL PHOTONS (32)</button>
+                    <!-- Button correctly calls reconcileBases() to proceed to Step 4 -->
+                    <button class="btn btn-success" id="btn-reconcile" onclick="siftAndGenerateRawKey()" disabled>PROCEED TO STEP 4: RECONCILE & SIFT</button>
+                </div>
+            </div>
+
+            <!-- OLD Step 3 & 4 MERGED -->
+            <div class="step-content" id="step-4">
+                <div class="step-header">
+                    <h1 class="step-title">4. Basis Reconciliation & Raw Key Sifting <span class="text-xs font-normal text-gray-500">(CLASSICAL CHANNEL)</span></h1>
+                    <p class="step-subtitle">ALICE AND BOB PUBLICLY ANNOUNCE BASES TO DISCARD UNRELIABLE BITS AND FORM THE RAW KEY.</p>
+                </div>
+                
+                <!-- NEW DIALOGUE FOR STEP 4 -->
+                <div class="dialogue-container">
+                    <div class="dialogue-bubble military">
+                        <div class="dialogue-speaker text-red-600" id="alice-dialogue-3">Captain Alice:</div>
+                        <div class="dialogue-text">
+                            "The transmission is complete. I'm now broadcasting my <strong>full basis sequence</strong> over the public channel. Compare my '+' and '×' choices against yours, Bob, so we can isolate the strong candidates for our <strong>raw key</strong>."
+                        </div>
+                    </div>
+                    <div class="dialogue-bubble command">
+                        <div class="dialogue-speaker text-green-600" id="bob-dialogue-3">Operator Bob:</div>
+                        <div class="dialogue-text">
+                            "Acknowledged. Initiating <strong>sifting protocol</strong>. Only the positions where our random bases matched are considered reliable. Everything else is garbage data and must be discarded immediately."
+                        </div>
+                    </div>
+                    <div class="dr-quantum-insight">
+                        <div class="dr-quantum-icon">📡</div>
+                        <div class="dr-quantum-content">
+                            <strong class="text-primary-blue">Dr. quantum's insight:</strong> This step is safe on the public channel because they only reveal the <strong>basis choices</strong>, not the actual measured <strong>bits</strong>. By keeping only the matches (approx. 50% of trials), they establish the <strong>raw key</strong>.
+                        </div>
+                    </div>
+                    <!-- NEW DIALOGUE ADDED HERE -->
+                    <div class="dialogue-bubble command">
+                        <div class="dialogue-speaker text-green-600" id="bob-dialogue-4-summary">Operator Bob:</div>
+                        <div class="dialogue-text">
+                           "Sifting complete. We started with <strong>32 photons</strong> and successfully generated a <strong>raw key</strong> of <strong id="sifted-key-length-display-1">0</strong> bits. This key is now ready for the critical security check."
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-xl font-bold text-gray-700 mt-8 mb-4">BASIS COMPARISON AND RAW KEY GENERATION</h2>
+                
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>INDEX</th>
+                                <th>ALICE'S BASIS</th>
+                                <th>BOB'S BASIS</th>
+                                <th>MATCH?</th>
+                                <th>ALICE'S BIT (RAW KEY A)</th>
+                                <th>BOB'S BIT (RAW KEY B)</th>
+                                <th>KEEP?</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sifting-table-body">
+                            <!-- Data populated by siftAndGenerateRawKey -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="action-section">
+                    <button class="btn btn-primary" id="btn-proceed-qber-from-sifting" onclick="runQBERCheck()" disabled>PROCEED TO STEP 5: QBER CHECK</button>
+                </div>
+            </div>
+
+            <!-- Old Step 6 -> NEW Step 5: QBER Check and Final Key Generation -->
+            <div class="step-content" id="step-5">
+                <div class="step-header">
+                    <h1 class="step-title">5. QBER Check & Final Key Generation</h1>
+                    <p class="step-subtitle">CALCULATING QUANTUM BIT ERROR RATE (QBER) ON THE RAW KEY TO DETECT EAVESDROPPING.</p>
+                </div>
+                
+                <div class="dialogue-container" id="qber-dialogue-container">
+                    <!-- Dialogue populated by JS after QBER calculation -->
+                </div>
+
+                <div class="dr-quantum-insight">
+                    <div class="dr-quantum-icon">🔬</div>
+                    <div class="dr-quantum-content">
+                        <!-- EDUCATIONAL: Explaining QBER expectations -->
+                        <strong class="text-primary-blue">Dr. quantum's insight:</strong> If <strong>eve is absent</strong>, QBER is near <strong>0%</strong>. If <strong>eve performs her attack</strong>, the QBER should be approximately <strong>25%</strong>. If the QBER exceeds the <strong>5.0% threshold</strong>, Alice and Bob know the key is compromised and <strong>must abort</strong>.
+                    </div>
+                </div>
+
+                <!-- Final Key Display Section -->
+                <h2 class="text-xl font-bold text-gray-700 mt-8 mb-4">FINAL SECURE KEY (<strong>K</strong>)</h2>
+
+                <div class="mb-6 p-4 rounded-xl bg-gray-100 border-2 border-green-500">
+                    <div class="font-bold text-lg text-green-700 mb-2">FINAL SECURE KEY:</div>
+                    <!-- Display the final secure key here -->
+                    <div id="final-key-display" class="break-words font-mono text-xl text-gray-800">---</div>
+                    <p class="text-sm text-gray-500 mt-2">LENGTH: <span id="final-key-length">0</span> BITS</p>
+                    <p class="text-sm font-bold text-red-500 mt-2" id="key-truncation-note">
+                        (NOTE: ONLY THIS **X-BIT SECURE KEY** CAN BE USED FOR ENCRYPTION.)
+                    </p>
+                </div>
+
+                <!-- New Security Block Message Area -->
+                <div id="security-block-message" class="mt-8"></div>
+
+
+                <div class="action-section">
+                    <button class="btn btn-primary" id="btn-proceed-encryption" onclick="proceedToEncryption()" disabled>
+                        PROCEED TO STEP 6: ENCRYPTION
+                    </button>
+                    <button class="btn btn-danger" id="btn-abort-mission" onclick="window.location.reload()" style="display:none;">
+                        ABORT MISSION & RESTART
+                    </button>
+                </div>
+            </div>
+
+            <!-- Old Step 7 -> NEW Step 6: Encryption -->
+            <div class="step-content" id="step-6">
+                <div class="step-header">
+                    <h1 class="step-title">6. Secure Communication: Encryption: <strong>M</strong> ⊕ <strong>K</strong> = <strong>C</strong></h1>
+                    <p class="step-subtitle">ALICE APPLIES THE FINAL QUANTUM KEY (<strong>K</strong>) AS A ONE TIME PAD.</p>
+                </div>
+                
+                <!-- NEW DIALOGUE FOR STEP 7 INTRODUCTION -->
+                <div class="dialogue-container">
+                    <div class="dialogue-bubble command">
+                        <div class="dialogue-speaker text-red-600" id="alice-dialogue-6">Captain Alice:</div>
+                        <div class="dialogue-text">
+                            "Key integrity confirmed! We are now using our <strong>provably secret quantum key</strong> (K) as a one time pad. Initiating the XOR operation on the first <strong id="otp-message-length">0</strong> bits of the message. Target locked: transmit ciphertext!"
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- DR. QUANTUM INSIGHT FOR STEP 7 -->
+                <div class="dr-quantum-insight">
+                    <div class="dr-quantum-icon">🔐</div>
+                    <div class="dr-quantum-content">
+                        <strong class="text-primary-blue">Dr. quantum's insight:</strong> For true <strong>OTP SECURITY</strong>, the key must be equal to the message length. Since <strong>QKD</strong> yielded a shorter key, we <strong>only encrypt the first portion</strong> of the message to maintain perfect secrecy.
+                    </div>
+                </div>
+
+                <!-- Encryption Block (ALICE) -->
+                <h3 class="text-xl font-bold text-red-700 mt-6 mb-3 border-b-2 border-red-400 pb-1">PHASE A: ENCRYPTION BY ALICE: <strong>M</strong> ⊕ <strong>K</strong> = <strong>C</strong></h3>
+                <div class="p-4 rounded-xl bg-red-50 border-l-4 border-red-400 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-1">
+                            <p class="text-sm text-gray-600 mb-3">ALICE PERFORMS THE XOR (⊕) OPERATION BIT BY BIT:</p>
+                            
+                            <!-- UPDATED DISPLAY: Original Text -->
+                            <div class="font-bold text-red-700 mb-2">1. MESSAGE BINARY (<strong>M</strong>) (TRUNCATED): <span id="alice-message" class="font-mono text-md text-gray-800 break-all"></span></div>
+                            <div class="font-bold text-blue-700 mb-4">2. KEY BINARY (<strong>K</strong>) (SECURE): <span id="alice-encryption-key" class="font-mono text-md text-gray-800 break-all"></span></div>
+                        </div>
+                        <div class="md:col-span-1 border-t md:border-t-0 md:border-l pt-4 md:pl-4">
+                             <div class="font-bold text-yellow-700 mb-2">3. CIPHERTEXT (<strong>C</strong>) (PUBLIC) = XOR RESULT:</div>
+                             <div id="ciphertext-display" class="font-mono text-xl font-bold break-words text-yellow-800">...</div>
+                        </div>
+                    </div>
+                    <div class="col-span-3">
+                        <h4 class="font-bold text-sm mt-3 mb-2 text-gray-700">BITWISE XOR VISUALIZATION:</h4>
+                        <div id="encryption-xor-details"></div>
+                    </div>
+                </div>
+                
+                <div class="action-section">
+                    <button class="btn btn-success" id="btn-proceed-decryption" onclick="proceedToDecryption()">
+                        SEND CIPHERTEXT TO BOB (PROCEED TO STEP 7: DECRYPTION)
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- Old Step 8 -> NEW Step 7: Decryption -->
+            <div class="step-content" id="step-7">
+                <div class="step-header">
+                    <h1 class="step-title">7. Secure Communication: Decryption: <strong>C</strong> ⊕ <strong>K</strong> = <strong>M</strong></h1>
+                    <p class="step-subtitle">BOB APPLIES THE IDENTICAL QUANTUM KEY (<strong>K</strong>) TO RECOVER THE ORIGINAL MESSAGE.</p>
+                </div>
+
+                <!-- NEW DIALOGUE FOR STEP 8 INTRODUCTION -->
+                <div class="dialogue-container">
+                    <div class="dialogue-bubble command">
+                        <div class="dialogue-speaker text-green-600" id="bob-dialogue-7">Operator Bob:</div>
+                        <div class="dialogue-text">
+                            "Ciphertext (C) received! The moment of truth. Applying our shared secure key (K) in reverse: C $\oplus$ K. <strong>Message reconstruction commencing!</strong>"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DR. QUANTUM INSIGHT FOR STEP 8 -->
+                <div class="dr-quantum-insight">
+                    <div class="dr-quantum-icon">🔑</div>
+                    <div class="dr-quantum-content">
+                        <strong class="text-primary-blue">Dr. quantum's insight:</strong> The operation is perfectly reversible. If the key is secret and identical, the original message is recovered. The security of this final message depends on the <strong>QKD PROTOCOL</strong> successfully generating a <strong>SECRET KEY</strong> in Step 5.
+                    </div>
+                </div>
+                
+                <!-- Decryption Block (BOB) -->
+                <h3 class="text-xl font-bold text-green-700 mt-6 mb-3 border-b-2 border-green-400 pb-1">PHASE B: DECRYPTION BY BOB: <strong>C</strong> ⊕ <strong>K</strong> = <strong>M</strong></h3>
+                <div class="p-4 rounded-xl bg-green-50 border-l-4 border-green-400 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        <!-- Decryption Details (Moved to top of grid) -->
+                        <div class="md:col-span-1"> 
+                            <p class="text-sm text-gray-600 mb-3">BOB USES THE RECEIVED CIPHERTEXT (<strong>C</strong>) AND THE IDENTICAL SHARED SECRET KEY (<strong>K</strong>):</p>
+                            
+                            <div class="font-bold text-yellow-700 mb-2">1. CIPHERTEXT (<strong>C</strong>) RECEIVED BY BOB: <span id="bob-ciphertext" class="font-mono text-md text-gray-800 break-all"></span></div>
+                            <div class="font-bold text-blue-700 mb-4">2. KEY BINARY (<strong>K</strong>) (SECURE): <span id="bob-decryption-key" class="font-mono text-md text-gray-800 break-all"></span></div>
+                        </div>
+
+                        <div class="md:col-span-1 border-t md:border-t-0 md:border-l pt-4 md:pl-4">
+                            <!-- UPDATED DISPLAY: Decrypted Binary -->
+                            <div class="font-bold text-green-700 mb-2">3. DECRYPTED BINARY (<strong>M</strong>):</div>
+                            <div id="decrypted-message-binary" class="font-mono text-xl font-bold break-words text-green-800">...</div>
+                            
+                            <!-- UPDATED DISPLAY: Decrypted Text -->
+                            <div class="font-bold text-green-700 mt-4 mb-2">4. DECRYPTED TEXT (<strong>M</strong>):</div>
+                            <div id="decrypted-message-text" class="font-mono text-xl font-bold break-words text-green-800">...</div>
+                        </div>
+                    </div>
+
+                    <!-- XOR Visualization (Full Width) -->
+                    <div class="col-span-3">
+                        <h4 class="font-bold text-sm mt-3 mb-2 text-gray-700">BITWISE XOR VISUALIZATION:</h4>
+                        <div id="decryption-xor-details"></div>
+                    </div>
+                </div>
+
+                <!-- NEW: Transmission Successful Banner -->
+                <div class="col-span-3 text-center p-4 bg-green-100 rounded-lg shadow-inner mt-4">
+                    <h4 class="text-2xl font-bold text-green-700">TRANSMISSION SECURED: MESSAGE RECOVERED</h4>
+                    <p class="text-green-600">THE DECRYPTED MESSAGE PERFECTLY MATCHES THE ENCRYPTED PORTION OF THE ORIGINAL MESSAGE.</p>
+                </div>
+
+
+                <div class="action-section">
+                    <button class="btn btn-primary" onclick="window.location.reload()">START NEW MISSION</button>
+                </div>
+            </div>
+
+
+        </main>
+
+        <!-- Sidebar - REMOVED DR. QUANTUM PANEL -->
+        <aside class="sidebar">
+            <!-- This section is empty as requested -->
+        </aside>
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- QBER Success Modal (Used in Step 5) -->
+    <div class="modal" id="qber-success-modal">
+        <div class="modal-content">
+            <div class="modal-header text-success-green">KEY ESTABLISHED! QBER: <span id="qber-success-rate">0.0%</span></div>
+            <div class="modal-body text-center">
+                <p class="text-3xl mb-4">🔐 ATTACK UNDETECTED 🔑</p>
+                <div id="qber-success-breakdown"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="closeModal('qber-success-modal'); handleKeyFinalization(BB84.finalKey)">CONTINUE TO FINAL KEY</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QBER Warning Modal (Used in Step 5) -->
+    <div class="modal" id="qber-warning-modal">
+        <div class="modal-content">
+            <div class="modal-header text-danger-red">SECURITY ALERT! HIGH QBER: <span id="qber-warning-rate">25.0%</span></div>
+            <div class="modal-body text-center">
+                <p class="text-3xl mb-4"><span class="text-warning-yellow">⚠️</span> EAVESDROPPER DETECTED <span class="text-warning-yellow">⚠️</span></p>
+                <div id="qber-warning-breakdown"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" onclick="closeModal('qber-warning-modal'); window.location.reload()">ABORT & RESTART</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Protocol Guide Modal -->
+    <div class="modal" id="guide-modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">BB84 PROTOCOL GUIDE</div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal()">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- GLOBAL STATE & CONSTANTS ---
+        var BB84 = {
+            keyLength: 32, // CHANGED from 16 to 32
+            QBER_THRESHOLD: 5.0, // Maximum allowable QBER for security check
+            currentStep: 1,
+            missionSelected: null,
+            messageBinary: "", // 16 bit user message
+            messageText: "", 
+            eavesdroppingEnabled: false, 
+            quantumData: [], // Full table of data
+            rawKeyA: [],    // Alice's bits where bases match
+            rawKeyB: [],    // Bob's bits where bases match (The actual raw key)
+            finalKey: "", // Final secure key (truncated rawKeyB)
+            ciphertext: "",
+            characterInfo: null,
+            // NEW QBER Tracking
+            qberErrors: 0, 
+            qberMatches: 0, 
+        };
+        
+        var BASES = ['+', 'X']; // STICKING TO 'X' in JS for ease of use.
+        
+        // Map qubit bit and basis to visual direction arrows (UNICODE)
+        var POLARIZATION_MAP = {
+            '+0': '→', '+1': '↑',
+            'X0': '↗', 'X1': '↖', // UPDATED KEY
+        };
+        
+        var ANGLE_MAP = {
+            '+0': '0°', '+1': '90°',
+            'X0': '45°', 'X1': '135°', // UPDATED KEY
+        };
+
+        // Timing constants for smoother, deliberate animation (increased speed)
+        var PHOTON_PREP_TIME_MS = 750; 
+        var DURATION_ALICE_TO_EVE = 2000;
+        var DURATION_EVE_TO_BOB = 2000;
+        var DURATION_ENCODER_TO_RECEIVER = DURATION_ALICE_TO_EVE + DURATION_EVE_TO_BOB; 
+        
+        var ANIMATION_POSITIONS = {
+            ALICE_START: '5%', ALICE_ENCODER: '20%', EVE_DETECTOR: '50%', 
+            BOB_DETECTOR: '80%', BOB_RECEIVER: '95%'
+        };
+        var currentPhotonIndex = 0;
+
+        // --- CORE BB84 LOGIC FUNCTIONS ---
+
+        function randomBit() { return Math.floor(Math.random() * 2); }
+        function randomBasis() { return BASES[Math.floor(Math.random() * 2)]; }
+
+        /** Simulates a quantum measurement. */
+        function measureQubit(inputBit, inputBasis, measureBasis) {
+            if (inputBasis === measureBasis) {
+                // Bases match: outcome is certain (no detector noise simulated in ideal scenario)
+                return inputBit;
+            }
+            // Bases mismatch: outcome is random
+            return randomBit();
+        }
+
+        /** Simple XOR encryption/decryption function using a binary key (One Time Pad) */
+        function xorEncryptDecrypt(binaryMessage, binaryKey) {
+            var result = '';
+            var messageLength = binaryKey.length; // Encrypt only up to the key length
+            
+            for (var i = 0; i < messageLength; i++) {
+                var messageBit = parseInt(binaryMessage[i]);
+                var keyBit = parseInt(binaryKey[i]); // Use key bit directly
+                result += (messageBit ^ keyBit);
+            }
+            return result;
+        }
+
+        /** Generates HTML to visualize the XOR encryption/decryption process. */
+        function visualizeXOR(key, message, result, targetElementId, isDecryption) {
+            // ... (Visualization logic remains the same)
+            isDecryption = isDecryption || false;
+            var html = '<div class="font-mono text-xs space-y-1 mt-4">';
+            html += '<div class="grid grid-cols-5 gap-2 font-bold text-gray-700 border-b pb-1 mb-1 text-center">';
+            html += '<span>NO.</span>'; 
+            html += '<span>' + (isDecryption ? 'CIPHERTEXT (<strong>C</strong>)' : 'MESSAGE (<strong>M</strong>)') + '</span>';
+            html += '<span>KEY (<strong>K</strong>)</span>';
+            html += '<span>OPERATOR (⊕)</span>'; 
+            html += '<span>' + (isDecryption ? 'RESULT (<strong>M</strong>)' : 'RESULT (<strong>C</strong>)') + '</span>';
+            html += '</div>';
+
+            var displayLength = key.length; 
+
+            for (var i = 0; i < displayLength; i++) {
+                var bit1 = message[i];
+                var bit2 = key[i];
+                var finalBit = result[i];
+
+                html += '<div class="grid grid-cols-5 gap-2 py-0.5 text-center ' + (i % 2 === 1 ? 'bg-gray-100 rounded-sm' : '') + '">';
+                html += '<span>' + (i + 1) + '</span>';
+                html += '<span class="' + (isDecryption ? 'text-yellow-700' : 'text-red-600') + '">' + bit1 + '</span>'; 
+                html += '<span class="text-blue-600">' + bit2 + '</span>';
+                html += '<span class="font-bold text-lg leading-none">⊕</span>'; 
+                html += '<span class="' + (isDecryption ? 'text-green-700' : 'text-yellow-700') + ' font-bold">' + finalBit + '</span>';
+                html += '</div>';
+            }
+            html += '</div>';
+            document.getElementById(targetElementId).innerHTML = html;
+        }
+
+        /** Converts text to a fixed 16 bit binary string (8 bits per character, max 2 chars) */
+        function textToBinary(text, length) {
+            text = text.substring(0, 2); 
+            var binary = '';
+            for (var i = 0; i < text.length; i++) {
+                var charCode = text.charCodeAt(i);
+                binary += charCode.toString(2).padStart(8, '0');
+            }
+            // Message is fixed at 16 bits (2 characters)
+            return binary.padEnd(16, '0').substring(0, 16); 
+        }
+
+        /** Converts a binary string back to text (in 8-bit chunks) */
+        function binaryToText(binary) {
+            var text = '';
+            for (var i = 0; i < binary.length; i += 8) {
+                var chunk = binary.substring(i, i + 8);
+                if (chunk.length === 8) {
+                    var charCode = parseInt(chunk, 2);
+                    if (charCode > 0) { 
+                         text += String.fromCharCode(charCode);
+                    }
+                }
+            }
+            return text.trim();
+        }
+        
+        /** Visualizes the text to binary conversion process in a table. */
+        function visualizeTextToBinary(text) {
+             // ... (Logic remains the same)
+            var container = document.getElementById('conversion-details');
+            if (!container) return;
+
+            var html = '<table class="conversion-table">';
+            html += '<thead><tr><th>CHARACTER</th><th>ASCII CODE</th><th>8 BIT BINARY (BYTE)</th><th>STATUS</th></tr></thead><tbody>';
+
+            text = text.substring(0, 2);
+            var binary_m = '';
+            var requiredLength = 16; // Message is fixed at 16 bits
+
+            for (var i = 0; i < 2; i++) {
+                var char = text[i] || '';
+                var charCode = char ? char.charCodeAt(0) : 0;
+                var byteBinary = charCode.toString(2).padStart(8, '0');
+                var status = '';
+
+                if (i < text.length) {
+                    status = '<span class="text-success-green font-bold">BYTE KEPT</span>';
+                    binary_m += byteBinary;
+                } else {
+                    status = '<span class="text-danger-red font-bold">BYTE PADDING (00000000)</span>';
+                    byteBinary = '00000000';
+                    binary_m += byteBinary;
+                }
+
+                html += `
+                    <tr>
+                        <td>${char || 'N/A'}</td>
+                        <td>${charCode}</td>
+                        <td>${byteBinary}</td>
+                        <td>${status}</td>
+                    </tr>
+                `;
+            }
+            html += '</tbody></table>';
+            
+            html += `
+                <div class="mt-4 p-3 bg-gray-100 rounded-lg shadow-inner">
+                    <p class="font-bold text-primary-blue text-sm">FINAL MESSAGE BINARY (<strong>M</strong>) = BYTE 1 + BYTE 2</p>
+                    <p class="font-mono text-lg break-all text-gray-800">${binary_m.substring(0, requiredLength)}</p>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function toggleEveAttack() {
+            BB84.eavesdroppingEnabled = document.getElementById('eve-toggle').checked;
+            var statusText = document.getElementById('eve-status-text');
+            
+            if (BB84.eavesdroppingEnabled) {
+                statusText.textContent = "ATTACK ENABLED";
+                statusText.classList.remove('text-gray-500');
+                statusText.classList.add('text-danger-red', 'font-extrabold');
+            } else {
+                statusText.textContent = "DISABLED";
+                statusText.classList.add('text-gray-500');
+                statusText.classList.remove('text-danger-red', 'font-extrabold');
+            }
+        }
+        
+        // MOVED to global scope
+        function setMissionDialogue(mission) {
+            var container = document.getElementById('mission-dialogue');
+            container.innerHTML = '';
+
+            var themes = {
+                naval: {
+                    speaker1: { role: "COMMUNICATIONS OFFICER", avatar: "📞", className: "military", color: "text-danger-red" }, // CHANGED class to className
+                    line1: "Captain, incoming alert! Fleet Command's top secret orders are ready, but traditional transmission is a guaranteed risk. Hostile signals intelligence is active.",
+                    speaker2: { role: "CAPTAIN ALICE", avatar: "👩‍✈️", className: "command", color: "text-success-green" }, // CHANGED class to className
+                    line2: "No traditional cryptography is safe enough! We need uncrackable <strong>SECURITY</strong>, immediately. Initiate <strong>BB84 PROTOCOL</strong> for key exchange now!",
+                    insight: "THIS NAVAL OPERATION DEMANDS <strong>ABSOLUTE KEY SECRECY</strong> AGAINST ADVANCED CYBER ESPIONAGE. ONLY QUANTUM MECHANICS GUARANTEES THE INTEGRITY OF THE KEY BEFORE THE ORDERS ARE SENT."
+                },
+                space: {
+                    speaker1: { role: "ENGINEER", avatar: "🛰️", className: "military", color: "text-danger-red" }, // CHANGED class to className
+                    line1: "Dr. Reed, the Mars data package is ready for download, but the cosmic distance makes the key vulnerable to interception during the classical handshake.",
+                    speaker2: { role: "DR. EVELYN REED", avatar: "👩‍🔬", className: "command", color: "text-success-green" }, // CHANGED class to className
+                    line2: "The time delay is too great for conventional countermeasures. Bob, we are switching to <strong>BB84</strong> for <strong>quantum key generation</strong>! Physics must secure this key!",
+                    insight: "In deep space, intercepted keys give adversaries too much time. <strong>BB84</strong> ensures that if the key is touched during transmission, Alice and Bob will know instantly."
+                },
+                ground: {
+                    speaker1: { role: "SOLDIER (URGENT)", avatar: "🪖", className: "military", color: "text-danger-red" }, // CHANGED class to className
+                    line1: "Sir, I have crucial intelligence on enemy movements, coordinates and vectors, I need to send them to HQ immediately! Transmission standing by!",
+                    speaker2: { role: "COMMANDER RED", avatar: "🪖", className: "command", color: "text-success-green" }, // CHANGED class to className
+                    line2: "Hold! The standard <strong>classical channel</strong> is compromised. We cannot risk interception. Abandon the conventional method, soldier. Initiate the <strong>BB84 QUANTUM KEY DISTRIBUTION PROTOCOL</strong>!",
+                    insight: "THE THREAT IS IMMEDIATE. STANDARD KEYS CAN BE CRACKED EVENTUALLY. WE USE <strong>BB84</strong> TO GENERATE A TRULY SECRET KEY GUARANTEED BY PHYSICS, PROVIDING THE ONLY SECURE METHOD FOR THIS CRITICAL MISSION DATA."
+                },
+                financial: {
+                    speaker1: { role: "COMPLIANCE OFFICER", avatar: "🏦", className: "military", color: "text-danger-red" }, // CHANGED class to className
+                    line1: "CEO Alice, we have a $500 million wire transfer ready. The cryptographic key required is too valuable to risk exposure on public networks.",
+                    speaker2: { role: "CEO ALICE", avatar: "👩‍💼", className: "command", color: "text-success-green" }, // CHANGED class to className
+                    line2: "Security is paramount. We will not rely on old protocols. Analyst Bob, prepare the <strong>quantum channel</strong> now. The <strong>transfer key</strong> must be exchanged using <strong>BB84</strong>!",
+                    insight: "Financial transactions demand keys instantly verifiable as <strong>secret</strong>. <strong>BB84</strong> allows the system to verify that no <strong>eavesdropper</strong> has learned any information about the <strong>final key</strong>."
+                },
+            };
+
+            var currentTheme = themes[mission];
+
+            if (currentTheme) {
+                // Dramatic dialogue flow for a selected mission
+                container.innerHTML = `
+                    <div class="dialogue-bubble ${currentTheme.speaker1.className}">
+                        <div class="dialogue-speaker ${currentTheme.speaker1.color}">${currentTheme.speaker1.role}:</div>
+                        <div class="dialogue-text">${currentTheme.line1}</div>
+                    </div>
+                    <div class="dialogue-bubble ${currentTheme.speaker2.className}">
+                        <div class="dialogue-speaker ${currentTheme.speaker2.color}">${currentTheme.speaker2.role}:</div>
+                        <div class="dialogue-text">${currentTheme.line2}</div>
+                    </div>
+                    <div class="dr-quantum-insight">
+                        <div class="dr-quantum-icon">💡</div>
+                        <div class="dr-quantum-content">
+                            <strong class="text-primary-blue">DR. QUANTUM'S INSIGHT:</strong> ${currentTheme.insight}
+                        </div>
+                    </div>
+                `;
+            } else {
+                 // Default initial dialogue (should match HTML static content)
+                 container.innerHTML = `
+                    <div class="dialogue-bubble command">
+                        <div class="dialogue-speaker">MISSION CONTROL:</div>
+                        <div class="dialogue-text">
+                            Welcome, operative. The integrity of our sensitive communications rests entirely on the <strong>BB84 quantum key distribution</strong> protocol. Select your mission environment below to begin key preparation.
+                        </div>
+                    </div>
+                    <div class="dr-quantum-insight">
+                        <div class="dr-quantum-icon">⚛️</div>
+                        <div class="dr-quantum-content">
+                            <strong class="text-primary-blue">DR. QUANTUM'S INSIGHT:</strong> Our goal is to generate a final, secure key between Alice and Bob that <strong>no eavesdropper can obtain undetected</strong>. The security is fundamentally guaranteed by the laws of quantum physics!
+                        </div>
+                    </div>
+                 `;
+            }
+        }
+        
+        // MOVED to global scope
+        function updateDialogueNames() {
+            if (!BB84.characterInfo) return;
+
+            var names = BB84.characterInfo;
+            
+            document.getElementById('alice-name').textContent = names.alice;
+            document.getElementById('bob-name').textContent = names.bob;
+            document.getElementById('alice-avatar').textContent = names.aliceAvatar;
+            document.getElementById('bob-avatar').textContent = names.bobAvatar;
+
+            var dialogueIds = [
+                'alice-dialogue-2-enc', // Step 2 dialogue
+                'alice-dialogue-2', 'bob-dialogue-2', 
+                'alice-dialogue-3', 'bob-dialogue-3', 
+                'alice-dialogue-4', // Step 5 dialogue needs update
+                'alice-dialogue-5', // Step 6 dialogue needs update
+                'alice-dialogue-5-alert', // Step 6 dialogue needs update
+                'alice-dialogue-6', // Step 7 dialogue needs update
+                'bob-dialogue-7' // Step 8 dialogue needs update
+            ];
+            
+            dialogueIds.forEach(function(id) {
+                var element = document.getElementById(id);
+                if (element) {
+                    var isAlice = id.startsWith('alice');
+                    element.textContent = (isAlice ? names.alice : names.bob) + ':';
+                }
+            });
+        }
+        
+        function selectMission(mission) {
+            BB84.missionSelected = mission;
+            
+            // Highlight selected card
+            document.querySelectorAll('.mission-card').forEach(function(card) { card.classList.remove('selected'); });
+            document.getElementById('mission-' + mission).classList.add('selected');
+
+            // Update dialogue and characters
+            setMissionDialogue(mission);
+
+            var names = {
+                naval: { alice: "CAPTAIN ALICE", bob: "OPERATOR BOB", aliceAvatar: '👩‍✈️', bobAvatar: '👨‍💻' },
+                space: { alice: "DR. EVELYN REED", bob: "PILOT ZETA", aliceAvatar: '👩‍🔬', bobAvatar: '🛰️' },
+                ground: { alice: "COMMANDER RED", bob: "SPECIALIST GREEN", aliceAvatar: '🪖', bobAvatar: '💂' },
+                financial: { alice: "CEO ALICE", bob: "ANALYST BOB", aliceAvatar: '👩‍💼', bobAvatar: '👨‍💼' }
+            };
+            
+            BB84.characterInfo = names[mission];
+
+            document.getElementById('alice-name').textContent = names[mission].alice;
+            document.getElementById('bob-name').textContent = names[mission].bob;
+            document.getElementById('alice-avatar').textContent = names[mission].aliceAvatar;
+            document.getElementById('bob-avatar').textContent = names[mission].bobAvatar;
+
+
+            document.getElementById('characters-section').style.display = 'flex';
+            document.getElementById('upload-section').style.display = 'block';
+            
+            handleMessageInput(); 
+        }
+
+        function handleMessageInput() {
+            var inputElement = document.getElementById('message-input');
+            var messageStatus = document.getElementById('message-status');
+            var startButton = document.getElementById('start-protocol');
+            var binaryPreview = document.getElementById('binary-preview');
+            
+            var text = inputElement.value.trim();
+            var messageLength = 16; // Message is always 16 bits
+            var transmissionLength = BB84.keyLength; // 32
+
+            var keyLengthDisplay = document.getElementById('key-length-display');
+            if (keyLengthDisplay) {
+                keyLengthDisplay.textContent = transmissionLength; 
+            }
+
+            if (text.length > 0) {
+                BB84.messageText = text;
+                BB84.messageBinary = textToBinary(text, messageLength); 
+                
+                messageStatus.textContent = 'MESSAGE CAPTURED: "' + text + '". READY TO PROCEED TO ENCODING.';
+                messageStatus.classList.remove('text-danger-red', 'text-gray-600', 'text-warning-yellow');
+                messageStatus.classList.add('text-green-700');
+                
+                binaryPreview.textContent = ''; 
+                startButton.disabled = false;
+                visualizeTextToBinary(text); 
+            } else if (BB84.missionSelected) {
+                BB84.messageText = "";
+                BB84.messageBinary = "";
+                messageStatus.textContent = "PLEASE ENTER A SHORT TEXT MESSAGE (MAX 2 CHARACTERS).";
+                messageStatus.classList.remove('text-green-700', 'text-warning-yellow');
+                messageStatus.classList.add('text-danger-red');
+                binaryPreview.textContent = ''; 
+                startButton.disabled = true;
+                document.getElementById('conversion-details').innerHTML = ''; 
+            } else {
+                 BB84.messageText = "";
+                 BB84.messageBinary = "";
+                 messageStatus.textContent = "NO MISSION SELECTED.";
+                 messageStatus.classList.remove('text-green-700', 'text-danger-red', 'text-warning-yellow');
+                 messageStatus.classList.add('text-gray-600');
+                 binaryPreview.textContent = ''; 
+                 startButton.disabled = true;
+                 document.getElementById('conversion-details').innerHTML = ''; 
+            }
+        }
+
+        function startProtocol() {
+            if (!BB84.missionSelected || BB84.messageBinary.length === 0) return; 
+            
+            // FIX: Ensure clean display of original input casing
+            document.getElementById('message-text-display-2').textContent = BB84.messageText;
+            
+            updateDialogueNames();
+            showStep(2); 
+        }
+
+        // Helper function for basis rotation animation
+        function animatePolarizer(elementId, basis) {
+             var element = document.getElementById(elementId);
+             if (element) {
+                element.setAttribute('data-basis', basis);
+             }
+        }
+
+        function startQKDTransmission() {
+            updateDialogueNames();
+            document.getElementById('btn-start-qkd').disabled = true;
+
+            BB84.quantumData = [];
+            BB84.rawKeyA = [];
+            BB84.rawKeyB = [];
+            BB84.finalKey = "";
+            BB84.ciphertext = "";
+            currentPhotonIndex = 0; 
+            document.getElementById('quantum-table-body').innerHTML = ''; 
+            
+            // Reset QBER stats
+            BB84.qberErrors = 0;
+            BB84.qberMatches = 0;
+            
+            document.getElementById('eve-station').style.display = BB84.eavesdroppingEnabled ? 'flex' : 'none';
+
+            // ALICE AND BOB RANDOMLY CHOOSE BASES INDEPENDENTLY
+            for (var i = 0; i < BB84.keyLength; i++) {
+                var aBit = randomBit();
+                var aBasis = randomBasis();
+                
+                // FIXED: Bob's basis is now independently random
+                var bBasis = randomBasis(); 
+                
+                // EVE DATA GENERATION
+                var eBasis = BB84.eavesdroppingEnabled ? randomBasis() : null;
+                var eMeas = BB84.eavesdroppingEnabled ? measureQubit(aBit, aBasis, eBasis) : null;
+                
+                BB84.quantumData.push({
+                    index: i,
+                    aBit: aBit,
+                    aBasis: aBasis,
+                    eBasis: eBasis, 
+                    eMeas: eMeas,   
+                    bBasis: bBasis,
+                    bMeas: null, 
+                    basisMatch: (aBasis === bBasis), // New field for clarity
+                    bitError: false, // Tracks if A.bit != B.bit
+                    errorSource: null
+                });
+            }
+            console.log("GENERATED QUANTUM DATA FOR " + BB84.keyLength + " QUBITS. EVE IS " + (BB84.eavesdroppingEnabled ? "ACTIVE" : "INACTIVE"));
+
+            if (BB84.eavesdroppingEnabled) {
+                var dialogueContainer = document.querySelector('#step-3 .dialogue-container');
+                var newDialogue = document.createElement('div');
+                newDialogue.id = 'eve-dialogue-3';
+                newDialogue.className = 'dialogue-bubble eve-attack';
+                var existingEveDialogue = document.getElementById('eve-dialogue-3');
+                if (existingEveDialogue) existingEveDialogue.remove(); // FIX: Corrected variable usage
+                
+                newDialogue.innerHTML = `
+                    <div class="dialogue-speaker text-purple-600">EAVESDROPPER EVE:</div>
+                    <div class="dialogue-text">
+                        "Intercepting photon stream... My <strong>reader</strong> device forces a measurement. I will <strong>resend</strong> a new photon based on my result. Alice and Bob won't know my basis choices, but my interference will leave a traceable <strong>quantum error</strong>! Mwahaha!"
+                    </div>
+                `;
+                
+                dialogueContainer.appendChild(newDialogue);
+            } else {
+                 var existingEveDialogue = document.getElementById('eve-dialogue-3');
+                 if (existingEveDialogue) existingEveDialogue.remove();
+            }
+
+            document.getElementById('key-length-total-2').textContent = BB84.keyLength;
+            document.getElementById('key-length-total-2-again').textContent = BB84.keyLength; 
+            document.getElementById('key-length-progress-2').textContent = 0;
+            document.getElementById('btn-send-photon').textContent = 'SEND NEXT PHOTON (1/' + BB84.keyLength + ')';
+            document.getElementById('btn-send-burst').textContent = 'SEND ALL PHOTONS (' + BB84.keyLength + ')';
+            document.getElementById('transmission-status').textContent = 'READY FOR QUANTUM TRANSMISSION (0 / ' + BB84.keyLength + ' PHOTONS SENT)...';
+
+            document.getElementById('btn-send-photon').disabled = false;
+            document.getElementById('btn-send-burst').disabled = false;
+            document.getElementById('btn-reconcile').disabled = true;
+            
+            showStep(3);
+        }
+
+        function animatePhoton(photonElement, targetLeft, duration) {
+            return new Promise(function(resolve) {
+                photonElement.style.transition = 'left ' + duration + 'ms linear, background 0.3s ease-out, transform 0.3s ease-out';
+                photonElement.style.left = targetLeft;
+                setTimeout(resolve, duration + 50); 
+            });
+        }
+
+        function sendPhoton() {
+            if (currentPhotonIndex >= BB84.keyLength) {
+                document.getElementById('transmission-status').textContent = 'TRANSMISSION COMPLETE!';
+                return;
+            }
+            
+            document.getElementById('btn-send-photon').disabled = true;
+            document.getElementById('btn-send-burst').disabled = true;
+
+            var data = BB84.quantumData[currentPhotonIndex];
+            
+            var polarizationState = POLARIZATION_MAP[data.aBasis + data.aBit];
+            var polarizationAngle = ANGLE_MAP[data.aBasis + data.aBit];
+
+            // 1. Set Polarizer Visuals (Animation Start) - FIXED: Eve's bases rotate here
+            animatePolarizer('alice-polarizer', data.aBasis);
+            animatePolarizer('bob-polarizer', data.bBasis);
+            
+            var eveDetectorBox = document.getElementById('eve-detector-box');
+            var eveReencoderBox = document.getElementById('eve-reencoder-box');
+            if (BB84.eavesdroppingEnabled) {
+                animatePolarizer('eve-detector-box', data.eBasis); 
+                animatePolarizer('eve-reencoder-box', data.eBasis);
+            }
+
+            var flowContainer = document.getElementById('quantum-channel-flow');
+            
+            var existingPhoton = document.getElementById('photon-' + currentPhotonIndex);
+            if (existingPhoton) flowContainer.removeChild(existingPhoton);
+
+            var photon = document.createElement('div');
+            photon.className = 'photon';
+            photon.id = 'photon-' + currentPhotonIndex;
+            photon.textContent = polarizationState; 
+            photon.style.background = 'radial-gradient(circle at center, #ffffff, #06b6d4)'; 
+            flowContainer.appendChild(photon); 
+            
+            var angleDisplay = document.createElement('div');
+            angleDisplay.className = 'photon-angle';
+            angleDisplay.textContent = polarizationAngle;
+            photon.appendChild(angleDisplay);
+
+            var currentBit = data.aBit;
+            var currentBasis = data.aBasis;
+
+            photon.style.left = ANIMATION_POSITIONS.ALICE_START; 
+            
+            new Promise(function(resolve) { setTimeout(resolve, 50); })
+            // 1. Start to Alice Encoder (5% -> 20%)
+            .then(function() {
+                document.getElementById('transmission-status').textContent = 'PHOTON ' + (currentPhotonIndex + 1) + '/' + BB84.keyLength + ": PHOTON IS PREPARED AND ENCODED BY ALICE'S " + data.aBasis + ' POLARIZER.';
+                return animatePhoton(photon, ANIMATION_POSITIONS.ALICE_ENCODER, PHOTON_PREP_TIME_MS);
+            })
+            // 2. Alice Encoder to Eve Detector (20% -> 50%)
+            .then(function() {
+                if (BB84.eavesdroppingEnabled) {
+                    document.getElementById('transmission-status').textContent = 'PHOTON ' + (currentPhotonIndex + 1) + '/' + BB84.keyLength + ': INTERCEPTED BY EVE. MEASURING WITH ' + data.eBasis + ' BASIS...';
+                    return animatePhoton(photon, ANIMATION_POSITIONS.EVE_DETECTOR, DURATION_ALICE_TO_EVE);
+                } else {
+                    document.getElementById('transmission-status').textContent = 'PHOTON ' + (currentPhotonIndex + 1) + '/' + BB84.keyLength + ': TRAVELING THROUGH THE QUANTUM CHANNEL TO BOB...';
+                    // Jump straight to Bob
+                    return animatePhoton(photon, ANIMATION_POSITIONS.BOB_DETECTOR, DURATION_ALICE_TO_EVE + DURATION_EVE_TO_BOB);
+                }
+            })
+            // 3. Eve's Measurement and Re-transmission (50% -> 80%)
+            .then(function() {
+                if (BB84.eavesdroppingEnabled) {
+                    // EVE'S MEASUREMENT & RE-ENCODING LOGIC
+                    currentBit = data.eMeas; // Photon state is now Eve's measured bit
+                    currentBasis = data.eBasis; // Photon is re-encoded using Eve's basis
+                    
+                    var measuredState = currentBasis + currentBit;
+                    photon.textContent = POLARIZATION_MAP[measuredState]; 
+                    angleDisplay.textContent = ANGLE_MAP[measuredState];
+                    photon.style.background = 'radial-gradient(circle at center, #ffffff, #c084fc)'; // Turn purple for Eve's influence
+                    
+                    document.getElementById('transmission-status').textContent = 'PHOTON ' + (currentPhotonIndex + 1) + '/' + BB84.keyLength + ': EVE MEASURED ' + data.eMeas + ' AND RE-ENCODED. TRAVELING TO BOB...';
+
+                    // Animate E -> B
+                    return animatePhoton(photon, ANIMATION_POSITIONS.BOB_DETECTOR, DURATION_EVE_TO_BOB);
+                }
+            })
+            // 4. Bob's Measurement (80% -> 95%)
+            .then(function() {
+                // BOB'S MEASUREMENT LOGIC: The incoming state is now (currentBit, currentBasis)
+                data.bMeas = measureQubit(currentBit, currentBasis, data.bBasis);
+                
+                // Determine error (Alice's original bit vs Bob's final measured bit)
+                var isError = data.aBit !== data.bMeas; 
+                data.bitError = isError;
+                
+                // Update error source metadata
+                if (isError) {
+                    data.errorSource = BB84.eavesdroppingEnabled ? "EVE INDUCED ERROR: HER MEASUREMENT CAUSED STATE COLLAPSE." : "IDEAL SIMULATION: NO NOISE ERRORS APPLIED.";
+                } else {
+                    data.errorSource = "NO ERROR RECORDED BETWEEN ALICE AND BOB.";
+                }
+
+                // Update QBER counter immediately if bases match (A vs B)
+                if (data.aBasis === data.bBasis) {
+                    BB84.qberMatches++;
+                    if (data.bitError) {
+                         BB84.qberErrors++;
+                    }
+                }
+
+                // Display Bob's measurement result status
+                if (isError) {
+                    document.getElementById('transmission-status').textContent = 'PHOTON ' + (currentPhotonIndex + 1) + '/' + BB84.keyLength + ": BOB MEASURED BIT: " + data.bMeas + ' (ERROR: A BIT NOT EQUAL B BIT).';
+                } else {
+                    document.getElementById('transmission-status').textContent = 'PHOTON ' + (currentPhotonIndex + 1) + '/' + BB84.keyLength + ": BOB MEASURED BIT: " + data.bMeas + ' (SUCCESS: A BIT EQUAL B BIT).';
+                }
+                
+                var measuredState = data.bBasis + data.bMeas;
+                photon.textContent = POLARIZATION_MAP[measuredState]; 
+                angleDisplay.textContent = ANGLE_MAP[measuredState];
+                
+                return animatePhoton(photon, ANIMATION_POSITIONS.BOB_RECEIVER, PHOTON_PREP_TIME_MS); 
+            })
+            // 5. Final steps after full transit is complete
+            .then(function() {
+                photon.style.transform = 'translateY(-50%) scale(1)'; 
+                
+                document.getElementById('transmission-status').textContent = 'PHOTON ' + (currentPhotonIndex + 1) + '/' + BB84.keyLength + ": MEASUREMENT RESULT DELIVERED TO BOB'S RECEIVER.";
+                
+                photon.style.transition = 'opacity 0.3s ease-out';
+                photon.style.opacity = '0';
+                return new Promise(function(resolve) { setTimeout(resolve, 300); })
+            })
+            .then(function() {
+                var flowContainer = document.getElementById('quantum-channel-flow');
+                if (photon.parentNode === flowContainer) {
+                    flowContainer.removeChild(photon);
+                }
+
+                updateQuantumTable(data, false);
+                
+                currentPhotonIndex++;
+                document.getElementById('key-length-progress-2').textContent = currentPhotonIndex;
+
+                if (currentPhotonIndex < BB84.keyLength) {
+                    document.getElementById('btn-send-photon').textContent = 'SEND NEXT PHOTON (1/' + BB84.keyLength + ')';
+                    document.getElementById('btn-send-burst').disabled = false;
+                    document.getElementById('btn-send-photon').disabled = false;
+                } else {
+                    document.getElementById('btn-send-photon').disabled = true;
+                    document.getElementById('btn-send-burst').disabled = true;
+                    document.getElementById('btn-reconcile').disabled = false;
+                    document.getElementById('transmission-status').textContent = 'TRANSMISSION COMPLETE! PROCEED TO STEP 4.';
+                }
+            })
+            .catch(function(error) {
+                 console.error("ANIMATION SEQUENCE FAILED:", error);
+                 document.getElementById('transmission-status').textContent = 'ERROR DURING TRANSMISSION. CHECK CONSOLE FOR DETAILS.';
+            });
+        }
+
+        function sendBurst() {
+            // Disable buttons immediately
+            document.getElementById('btn-send-photon').disabled = true;
+            document.getElementById('btn-send-burst').disabled = true;
+            
+            // Reset QBER dashboard stats for bulk update
+            BB84.qberErrors = 0;
+            BB84.qberMatches = 0;
+            
+            // Loop through remaining photons to process data instantly in burst mode
+            for (var i = currentPhotonIndex; i < BB84.keyLength; i++) {
+                var data = BB84.quantumData[i];
+                
+                var currentBit = data.aBit;
+                var currentBasis = data.aBasis;
+                
+                if (BB84.eavesdroppingEnabled) {
+                    // Eve measures Alice's photon
+                    data.eMeas = measureQubit(currentBit, currentBasis, data.eBasis);
+                    currentBit = data.eMeas; 
+                    currentBasis = data.eBasis; // Photon is re-encoded in Eve's basis
+                }
+                
+                // Bob's measurement logic
+                data.bMeas = measureQubit(currentBit, currentBasis, data.bBasis);
+
+                // Determine error (Alice's original bit vs Bob's final measured bit)
+                var bitError = data.aBit !== data.bMeas;
+                data.bitError = bitError;
+                
+                // Update error source metadata
+                if (bitError) {
+                    data.errorSource = BB84.eavesdroppingEnabled ? "EVE INDUCED ERROR: HER MEASUREMENT CAUSED STATE COLLAPSE." : "IDEAL SIMULATION: NO NOISE ERRORS APPLIED.";
+                } else {
+                     data.errorSource = "NO ERROR RECORDED BETWEEN ALICE AND BOB.";
+                }
+
+                // Update QBER counter immediately if bases match (A vs B)
+                if (data.aBasis === data.bBasis) {
+                    BB84.qberMatches++;
+                    if (data.bitError) {
+                         BB84.qberErrors++;
+                    }
+                }
+
+                updateQuantumTable(data, true); // Use quick update mode for burst
+                
+                currentPhotonIndex++;
+                document.getElementById('key-length-progress-2').textContent = currentPhotonIndex;
+            }
+
+            // Final QBER update and button state
+            // updateQBERDashboard(BB84.qberErrors, BB84.qberMatches); // Not needed as Step 5 calls the calculation
+
+            document.getElementById('transmission-status').textContent = 'TRANSMISSION COMPLETE! PROCEED TO STEP 4.';
+            document.getElementById('btn-reconcile').disabled = false;
+        }
+
+        // --- NEW STEP 4: BASIS RECONCILIATION & SIFTING (Combined) ---
+        function siftAndGenerateRawKey() {
+            showStep(4);
+            var body = document.getElementById('sifting-table-body');
+            body.innerHTML = '';
+            
+            BB84.rawKeyA = [];
+            BB84.rawKeyB = [];
+            
+            BB84.quantumData.forEach(function(data, index) {
+                var match = data.aBasis === data.bBasis;
+                var row = body.insertRow();
+                
+                // Row color based on Basis Match/Mismatch
+                var rowClass = match ? 'bg-green-50' : 'bg-red-50';
+                row.classList.add(rowClass);
+
+                var keepText = match ? '<span class="text-success-green font-extrabold">KEEP</span>' : '<span class="text-danger-red">DISCARD</span>';
+
+                row.innerHTML = `
+                    <td>${index}</td>
+                    <td>${data.aBasis}</td>
+                    <td>${data.bBasis}</td>
+                    <td>${match ? '✔' : '✘'}</td>
+                    <td>${match ? data.aBit : '-'}</td>
+                    <td>${match ? data.bMeas : '-'}</td>
+                    <td>${keepText}</td>
+                `;
+                
+                // Perform Sifting: only collect bits where bases matched
+                if (match) {
+                    BB84.rawKeyA.push(data.aBit);
+                    BB84.rawKeyB.push(data.bMeas);
+                }
+            });
+
+            var siftedLength = BB84.rawKeyB.length;
+            
+            // Update dialogue after sifting
+            var dialogueTextElement = document.querySelector('#step-4 .dialogue-container .dialogue-bubble.command .dialogue-text');
+            if (dialogueTextElement) {
+                dialogueTextElement.innerHTML = `
+                    "Acknowledged. Initiating <strong>sifting protocol</strong>. Only the positions where our random bases matched are considered reliable. Everything else is garbage data and must be discarded immediately. The resulting <strong>raw key</strong> has <strong>${siftedLength} BITS</strong>."
+                `;
+            }
+
+            // Manually set the summary dialogue
+            document.getElementById('sifted-key-length-display-1').textContent = siftedLength;
+            
+            // Check if there is enough key left to perform QBER check (min 4 bits)
+            document.getElementById('btn-proceed-qber-from-sifting').disabled = (siftedLength < 4);
+        }
+
+        // --- NEW STEP 5: QBER CHECK ---
+        function runQBERCheck() {
+            showStep(5);
+            
+            var rawKeyLength = BB84.rawKeyA.length;
+            
+            // --- 1. Determine Sample Size (25% of raw key, minimum 4 bits) ---
+            // Ensure minimum sample size is reasonable, but stick to 25% if larger
+            var checkSampleSize = Math.max(4, Math.floor(rawKeyLength * 0.25)); 
+            
+            if (rawKeyLength < 4) { 
+                // This block should theoretically be unreachable if the button was correctly disabled in Step 4.
+                var dialogueContainer = document.getElementById('qber-dialogue-container');
+                dialogueContainer.innerHTML = `
+                    <div class="dialogue-bubble eve-attack">
+                        <div class="dialogue-speaker text-purple-600">ALERT:</div>
+                        <div class="dialogue-text">
+                            "<strong>ERROR:</strong> RAW KEY LENGTH (${rawKeyLength} BITS) IS TOO SHORT TO PERFORM A SECURE QBER CHECK (MINIMUM 4 REQUIRED). <strong>PROTOCOL ABORTED.</strong>"
+                        </div>
+                    </div>
+                `;
+                document.getElementById('btn-abort-mission').style.display = 'inline-block';
+                return;
+            }
+
+            // --- 2. Randomly select the test indices (Indices relative to the RAW KEY) ---
+            var rawKeyIndicesList = Array.from({length: rawKeyLength}, (_, i) => i); 
+            var testIndices = []; 
+            
+            for (var i = 0; i < checkSampleSize; i++) {
+                // Check if there are still elements to sample
+                if (rawKeyIndicesList.length === 0) break;
+                
+                var randomIndex = Math.floor(Math.random() * rawKeyIndicesList.length);
+                var rawKeyIndex = rawKeyIndicesList.splice(randomIndex, 1)[0]; // Pulls and removes index
+                testIndices.push(rawKeyIndex);
+            }
+            
+            // --- 3. Calculate QBER ---
+            var mismatchCount = 0; 
+            testIndices.forEach(function(rawKeyIndex) {
+                var aBit = BB84.rawKeyA[rawKeyIndex];
+                var bBit = BB84.rawKeyB[rawKeyIndex];
+                if (aBit !== bBit) {
+                    mismatchCount++; 
+                }
+            });
+            
+            var testSampleSize = testIndices.length;
+            var qberRate = (mismatchCount / testSampleSize) * 100;
+            var qberDisplay = qberRate.toFixed(1) + '%';
+            
+            // --- 4. Generate Final Key (K) - Bits NOT used in the sample ---
+            var finalKeyBits = [];
+            var remainingIndices = rawKeyIndicesList; // The indices left after sampling are the secret ones
+            
+            remainingIndices.forEach(function(rawKeyIndex) {
+                finalKeyBits.push(BB84.rawKeyB[rawKeyIndex]); 
+            });
+            BB84.finalKey = finalKeyBits.join(''); 
+            
+            // 5. Build QBER Breakdown Message (Plain HTML)
+            var breakdownMessage = `
+                <p class="mb-2">MISMATCHES (ERRORS): <strong>${mismatchCount}</strong></p>
+                <p class="mb-2">TOTAL SAMPLED BITS: <strong>${testSampleSize}</strong> BITS</p>
+                <div class="mt-6 p-4 bg-gray-200 rounded-lg shadow-inner">
+                     <p class="font-bold text-xl text-primary-blue">
+                        QBER FORMULA: MISMATCHES / TOTAL SAMPLE
+                     </p>
+                     <p class="font-mono text-2xl text-red-700 mt-2">
+                        ${mismatchCount} / ${testSampleSize} = <strong>${qberDisplay}</strong>
+                     </p>
+                </div>
+                <p class="mt-4 text-xs text-gray-500">INDICES USED FOR QBER CHECK (RAW KEY INDEX): ${testIndices.join(', ')}</p>
+            `;
+
+            // 6. Security Decision and UI Updates
+            var keySecured = qberRate < BB84.QBER_THRESHOLD;
+
+            var dialogueContainer = document.getElementById('qber-dialogue-container');
+            dialogueContainer.innerHTML = '';
+            
+            if (keySecured) {
+                // --- QBER PASS ---
+                // Show Modal
+                document.getElementById('qber-success-rate').textContent = qberDisplay;
+                document.getElementById('qber-success-modal').querySelector('.modal-body').innerHTML = `
+                    <p class="text-lg font-semibold">QBER CALCULATION BREAKDOWN:</p>
+                    <div class="font-mono text-base text-gray-700 mx-auto max-w-xs p-3">${breakdownMessage}</div>
+                    <p class="mt-4 font-bold text-success-green text-xl">ATTACK UNDETECTED</p>
+                    <p>THE LOW QUANTUM BIT ERROR RATE CONFIRMS THE SECURITY OF THE KEY.</p>
+                `;
+                showModal('qber-success-modal');
+
+                // Update Dialogue
+                dialogueContainer.innerHTML = `
+                    <div class="dialogue-bubble command">
+                        <div class="dialogue-speaker text-red-600" id="alice-dialogue-5">Alice:</div>
+                        <div class="dialogue-text">
+                            "QBER calculated: <strong>${qberDisplay}</strong>. This is below the ${BB84.QBER_THRESHOLD.toFixed(1)}% threshold! Key integrity is confirmed. We proceed to finalize the key for encryption."
+                        </div>
+                    </div>
+                `;
+                
+                // Finalize key UI (The core of the user's request)
+                handleKeyFinalization(BB84.finalKey);
+
+            } else {
+                // --- QBER FAIL / ABORT ---
+                BB84.finalKey = ""; // Key must be discarded
+                
+                document.getElementById('qber-warning-rate').textContent = qberDisplay;
+                document.getElementById('qber-warning-modal').querySelector('.modal-body').innerHTML = `
+                    <p class="text-lg font-semibold">QBER CALCULATION BREAKDOWN:</p>
+                    <div class="font-mono text-base text-gray-700 mx-auto max-w-xs p-3">${breakdownMessage}</div>
+                    <p class="mt-4 font-bold text-danger-red text-xl">EAVESDROPPER DETECTED!</p>
+                    <p>THE HIGH QUANTUM BIT ERROR RATE PROVES EVE'S INTERCEPTION AND COMPROMISE OF THE KEY. PROTOCOL MUST BE ABORTED IMMEDIATELY.</p>
+                `;
+                showModal('qber-warning-modal');
+
+                // Update Dialogue
+                dialogueContainer.innerHTML = `
+                    <div class="dialogue-bubble eve-attack">
+                        <div class="dialogue-speaker text-purple-600" id="alice-dialogue-5-alert">Alert:</div>
+                        <div class="dialogue-text">
+                            "<strong>SECURITY BREACH!</strong> QBER calculated: <strong>${qberDisplay}</strong>. This high rate confirms an eavesdropping attack! The raw key is compromised and <strong>must be discarded</strong>."
+                        </div>
+                    </div>
+                `;
+
+                // Disable proceeding and show abort button
+                document.getElementById('btn-proceed-encryption').disabled = true;
+                document.getElementById('btn-abort-mission').style.display = 'inline-block';
+                document.getElementById('security-block-message').innerHTML = ''; // Clear block message on abort
+                
+                // Final display update for discarded key
+                document.getElementById('final-key-display').textContent = "KEY DISCARDED";
+                document.getElementById('final-key-length').textContent = 0;
+                document.getElementById('key-truncation-note').textContent = '(KEY WAS DISCARDED DUE TO HIGH QBER.)';
+
+            }
+            
+            updateDialogueNames();
+        }
+
+        /**
+         * Handles the UI updates and cryptographic constraints after a successful QBER check.
+         * This function enforces the OTP constraint (key < message) requested by the user.
+         */
+        function handleKeyFinalization(key) {
+            var keyLength = key.length;
+            var messageLength = 16; // Message is fixed at 16 bits (2 characters)
+
+            // Final display update regardless of constraint
+            document.getElementById('final-key-display').textContent = key;
+            document.getElementById('final-key-length').textContent = keyLength;
+            
+            // Check for the OTP constraint failure (Key must be >= Message Length for true OTP)
+            if (keyLength < messageLength) {
+                var proceedBtn = document.getElementById('btn-proceed-encryption');
+                proceedBtn.disabled = true;
+                proceedBtn.textContent = 'KEY TOO SHORT FOR MESSAGE (OTP BLOCKED)';
+
+                document.getElementById('security-block-message').innerHTML = `
+                    <div class="dr-quantum-insight" style="border-left-color: var(--warning-yellow); background: #fffde7;">
+                        <div class="dr-quantum-icon" style="color: var(--warning-yellow);">⚠️</div>
+                        <div class="dr-quantum-content" style="text-transform: none !important;">
+                            <strong class="text-warning-yellow">CRYPTOGRAPHIC BLOCK: KEY LENGTH FAILURE</strong>
+                            <p class="mt-2">THE GENERATED <strong>SECURE KEY</strong> LENGTH (${keyLength} BITS) IS SHORTER THAN THE ORIGINAL MESSAGE (${messageLength} BITS).</p>
+                            <p class="mt-2">FOR THEORETICAL <strong>ONE TIME PAD</strong> (OTP) SECURITY, KEY LENGTH MUST EQUAL MESSAGE LENGTH. SINCE THE KEY IS TOO SHORT, THE MESSAGE <strong>CANNOT BE SECURELY TRANSMITTED VIA OTP</strong>.</p>
+                            <p class="mt-2 font-bold">EDUCATIONAL CONCLUSION:</p> 
+                            <p class="text-sm">IN A REAL WORLD SCENARIO, ALICE WOULD NOW USE THIS ${keyLength} BIT KEY AS THE <strong>SESSION KEY</strong> FOR A HIGHLY SECURE SYMMETRIC ALGORITHM LIKE <strong>ADVANCED ENCRYPTION STANDARD (AES)</strong> TO ENCRYPT THE FULL MESSAGE, RATHER THAN USING PURE XOR.</p>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('key-truncation-note').textContent = `(KEY LENGTH: ${keyLength} BITS. MESSAGE CANNOT BE FULLY ENCRYPTED VIA OTP.)`;
+            } else {
+                 // This scenario is highly unlikely in the current 32-photon setup, but cryptographically safe.
+                 document.getElementById('btn-proceed-encryption').disabled = false;
+                 document.getElementById('btn-proceed-encryption').textContent = 'PROCEED TO STEP 7: ENCRYPTION';
+                 document.getElementById('security-block-message').innerHTML = '';
+                 document.getElementById('key-truncation-note').textContent = `(KEY LENGTH: ${keyLength} BITS. MESSAGE IS FULLY COVERED FOR OTP.)`;
+            }
+        }
+
+
+        // --- STEP 7: ENCRYPTION ---
+        function proceedToEncryption() {
+            var key = BB84.finalKey;
+            var keyLength = key.length;
+            
+            // Truncate message to key length for OTP
+            var message = BB84.messageBinary.substring(0, keyLength);
+            
+            var ciphertext = xorEncryptDecrypt(message, key);
+            BB84.ciphertext = ciphertext;
+
+            document.getElementById('otp-message-length').textContent = keyLength;
+            document.getElementById('alice-message').textContent = message; 
+            document.getElementById('alice-encryption-key').textContent = key;
+            document.getElementById('ciphertext-display').textContent = ciphertext;
+            visualizeXOR(key, message, ciphertext, 'encryption-xor-details', false);
+            
+            showStep(6); // Step 6 is now Encryption
+        }
+
+        // --- STEP 8: DECRYPTION ---
+        function proceedToDecryption() {
+            var key = BB84.finalKey;
+            var ciphertext = BB84.ciphertext;
+
+            var decryptedMessage = xorEncryptDecrypt(ciphertext, key);
+            var decryptedText = binaryToText(decryptedMessage); 
+            
+            document.getElementById('bob-ciphertext').textContent = ciphertext;
+            document.getElementById('bob-decryption-key').textContent = key;
+            document.getElementById('decrypted-message-binary').textContent = decryptedMessage; 
+            document.getElementById('decrypted-message-text').textContent = decryptedText; 
+            visualizeXOR(key, ciphertext, decryptedMessage, 'decryption-xor-details', true);
+            
+            showStep(7); // Step 7 is now Decryption
+        }
+
+        // --- UTILITY FUNCTIONS ---
+        function showStep(step) {
+            BB84.currentStep = step;
+            document.querySelectorAll('.step-content').forEach(function(el) { el.classList.remove('active'); });
+            document.getElementById('step-' + step).classList.add('active');
+            
+            // Re-enable necessary UI components for the current step
+            if (step === 3) {
+                var data = BB84.quantumData[currentPhotonIndex] || BB84.quantumData[0]; 
+                var eveStation = document.getElementById('eve-station');
+
+                if (BB84.eavesdroppingEnabled) {
+                    eveStation.style.display = 'flex';
+                    // Update visual basis if we are not at the start
+                    if (data) {
+                        document.getElementById('eve-detector-box').setAttribute('data-basis', data.eBasis);
+                        document.getElementById('eve-reencoder-box').setAttribute('data-basis', data.eBasis);
+                    }
+                } else {
+                    eveStation.style.display = 'none';
+                }
+                
+                // Set button state for new step
+                document.getElementById('btn-send-photon').disabled = (currentPhotonIndex >= BB84.keyLength);
+                document.getElementById('btn-send-burst').disabled = (currentPhotonIndex >= BB84.keyLength);
+                document.getElementById('btn-reconcile').disabled = (currentPhotonIndex < BB84.keyLength);
+
+                // Ensure initial QBER is displayed when starting Step 3
+                if (currentPhotonIndex === 0) {
+                     // Note: We no longer update the dashboard live in Step 3 as the panel was removed.
+                } 
+            }
+        }
+        
+        function updateQuantumTable(data, burstMode) {
+            var body = document.getElementById('quantum-table-body');
+            var row = body.insertRow();
+            
+            var basisMatch = data.aBasis === data.bBasis;
+            var matchColor = basisMatch ? 'text-success-green' : 'text-danger-red';
+            var matchText = basisMatch ? '✔' : '✘';
+            
+            var rowClass = '';
+            var tooltipText = data.errorSource;
+
+            // Determine row color based on A vs B basis match (for Step 3 color code)
+            if (basisMatch) {
+                // If bases match, color based on final bit error
+                rowClass = data.bitError ? 'error-red' : 'bg-green-50'; 
+            } else {
+                rowClass = 'bg-red-50'; // Bases mismatched (discarded later)
+            }
+            
+            row.className = rowClass;
+            row.title = tooltipText;
+
+            var eveBasisDisplay = BB84.eavesdroppingEnabled ? data.eBasis : '-';
+            var eveMeasDisplay = BB84.eavesdroppingEnabled ? data.eMeas : '-';
+            
+            var eveBitMatchColor = (BB84.eavesdroppingEnabled && data.aBit === data.eMeas) ? 'text-purple-600' : 'text-danger-red';
+            var errorIndicator = data.bitError ? '<span class="text-warning-yellow font-extrabold">⚠️</span>' : ' '; // FIX: Use yellow warning symbol
+
+            row.innerHTML = `
+                <td>${data.index}</td>
+                <td class="text-red-600">${data.aBit}</td>
+                <td class="text-red-600">${data.aBasis}</td>
+                <td class="text-purple-600">${eveBasisDisplay}</td>
+                <td class="text-purple-600">${eveBasisDisplay}</td> 
+                <td class="${eveBitMatchColor}">${eveMeasDisplay}</td>
+                <td class="text-green-600">${data.bBasis}</td>
+                <td class="text-green-600">${data.bMeas}${errorIndicator}</td>
+                <td class="${matchColor} font-extrabold">${matchText}</td>
+            `;
+            
+            if (!burstMode && body.children.length > 15) {
+                body.removeChild(body.firstChild);
+            }
+        }
+
+        function showModal(id) {
+            document.getElementById(id).classList.add('show');
+        }
+
+        function closeModal(id) {
+            var modalId = id || 'guide-modal';
+            document.getElementById(modalId).classList.remove('show');
+        }
+        
+        // Initial setup on load
+        window.onload = function() {
+             // Set up listener for message input
+             var inputSection = document.getElementById('upload-section');
+             if(inputSection) {
+                 handleMessageInput(); 
+                 toggleEveAttack(); 
+             }
+             setMissionDialogue(null);
+        };
+    </script>
+</body>
+</html>

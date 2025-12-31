@@ -15,9 +15,7 @@ export default function Login() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
-      // ⬅️ redirect to HOME
-      navigate("/");
+      navigate("/"); // ✅ redirect to HOME
     } catch (err) {
       alert(err.message);
     } finally {
@@ -27,8 +25,11 @@ export default function Login() {
 
   return (
     <div className="auth-page">
+      {/* Moving blue orb background */}
+      <div className="orb-background" />
+
       <div className="auth-card">
-        <h1 className="auth-title">Welcome</h1>
+        <h1 className="auth-title">Welcome Back</h1>
 
         <form className="auth-form" onSubmit={handleLogin}>
           <input
@@ -39,6 +40,7 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+
           <input
             className="auth-input"
             type="password"

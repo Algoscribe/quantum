@@ -19,7 +19,7 @@ const PreQuizPage = () => {
 
           <p className="quiz-hero-body">
             Before we dive into BB84 and quantum-safe encryption, this short
-            pre-quiz maps where you are right now. No grades, no pressure—just a
+            pre-quiz maps where you are right now. No grades, no pressure just a
             snapshot of your intuition about qubits, randomness, and security.
           </p>
 
@@ -44,7 +44,7 @@ const PreQuizPage = () => {
           </a>
 
           <p className="quiz-hero-meta">
-            ~5 minutes • 10 questions • Answer honestly—this is for you, not your
+            ~5 minutes • 10 questions • Answer honestly this is for you, not your
             marks.
           </p>
         </div>

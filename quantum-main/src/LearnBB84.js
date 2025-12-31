@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./LearnBB84.css";
+import QuantumBackground from './QuantumBackground';
 import BlochSphereImage from './image.png';
 import img1 from './images/img1.png';
 import img2 from './images/img2.png';
@@ -16,21 +17,21 @@ import img12 from './images/img12.png';
 import img13 from './images/img13.png';
 import img14 from './images/img14.png';
 import img15 from './images/img15.png';
-import img16 from './images/img16.png';
+
 
 const TOPICS = [
-  { 
+  {
     id: "quantum-basics",
     label: "Quantum Basics: The Qubit",
     tag: "What is a qubit?",
-    image: img16,
+    image: img1,
     bullets: [
       "A classical bit is either 0 or 1. A qubit can exist in a superposition of both 0 and 1 at the same time.",
-      "This superposition is not uncertainty—it is a real physical state.",
+      "This superposition is not uncertainty it is a real physical state.",
       "Only when a qubit is measured does it collapse into a definite value."
     ],
     longContent: {
-      description: "Understanding qubits is the first step to grasping quantum cryptography. Unlike classical bits that are definitively 0 or 1, qubits exist in superposition—a fundamental quantum property that enables QKD."
+      description: "Understanding qubits is the first step to grasping quantum cryptography. Unlike classical bits that are definitively 0 or 1, qubits exist in superposition a fundamental quantum property that enables QKD."
     }
   },
   {
@@ -41,7 +42,7 @@ const TOPICS = [
     bullets: [
       "In classical systems, you can read data without changing it.",
       "In quantum systems, measurement changes the state and destroys the original superposition.",
-      "This disturbance is unavoidable and fundamental—this single fact is the core reason QKD works."
+      "This disturbance is unavoidable and fundamental this single fact is the core reason QKD works."
     ],
     longContent: {
       description: "The measurement disturbance principle is the cornerstone of quantum security. Any attempt to observe a quantum state inevitably alters it, making eavesdropping detectable by the laws of physics themselves."
@@ -69,7 +70,7 @@ const TOPICS = [
     bullets: [
       "In BB84, two bases are used: Rectilinear basis (+) and Diagonal basis (×).",
       "If measured in the correct basis → original bit is recovered. Wrong basis → completely random result.",
-      "These bases are incompatible—knowing one gives no information about the other (complementarity)."
+      "These bases are incompatible knowing one gives no information about the other (complementarity)."
     ],
     longContent: {
       description: "Complementarity is the quantum property that makes BB84 secure. The two measurement bases are incompatible, ensuring that an eavesdropper's wrong guess produces detectable randomness.",
@@ -90,7 +91,7 @@ const TOPICS = [
     bullets: [
       "Quantum cryptography uses quantum mechanics to secure communication.",
       "Unlike classical cryptography (relies on hard math problems), it relies on physical laws that cannot be bypassed.",
-      "Information encoded in quantum states cannot be observed or copied without changing it—eavesdropping becomes detectable by nature."
+      "Information encoded in quantum states cannot be observed or copied without changing it eavesdropping becomes detectable by nature."
     ],
     longContent: {
       description: "Quantum cryptography represents a paradigm shift in secure communication. Instead of relying on computational complexity, it leverages the fundamental laws of physics to guarantee security."
@@ -131,12 +132,12 @@ const TOPICS = [
     tag: "The foundation of QKD",
     image: img8,
     bullets: [
-      "BB84 was proposed in 1984 by Charles Bennett and Gilles Brassard—the first QKD protocol.",
+      "BB84 was proposed in 1984 by Charles Bennett and Gilles Brassard the first QKD protocol.",
       "It's a prepare-and-measure protocol: Alice prepares quantum states (photons), Bob measures them.",
       "Goal: securely generate a shared secret key for encryption (e.g., one-time pad), not send messages directly."
     ],
     longContent: {
-      description: "BB84 marked the beginning of quantum cryptography. Its elegance lies in its simplicity—using only single photons and two measurement bases to achieve provable security."
+      description: "BB84 marked the beginning of quantum cryptography. Its elegance lies in its simplicity using only single photons and two measurement bases to achieve provable security."
     }
   },
   {
@@ -151,7 +152,7 @@ const TOPICS = [
       "Public but authenticated classical communication: bases are compared publicly, but key values never revealed."
     ],
     longContent: {
-      description: "BB84's security is unconditional—it doesn't depend on the computational power of adversaries. The laws of quantum mechanics themselves prevent undetectable eavesdropping."
+      description: "BB84's security is unconditional it doesn't depend on the computational power of adversaries. The laws of quantum mechanics themselves prevent undetectable eavesdropping."
     }
   },
   {
@@ -160,7 +161,7 @@ const TOPICS = [
     tag: "Photon polarization",
     image: img10,
     bullets: [
-      "Information encoded using single photons—each represents one bit (0 or 1).",
+      "Information encoded using single photons each represents one bit (0 or 1).",
       "Rectilinear basis (+): Horizontal (0°) = bit 0, Vertical (90°) = bit 1.",
       "Diagonal basis (×): 45° = bit 0, 135° = bit 1.",
       "Incompatible bases: measuring in wrong basis produces random result."
@@ -179,7 +180,7 @@ const TOPICS = [
       "2️⃣ Alice prepares photons using these bits and bases, sends to Bob over quantum channel.",
       "3️⃣ Bob independently chooses random bases to measure each photon.",
       "4️⃣ Over public channel: Alice announces bases used, Bob tells which matched.",
-      "5️⃣ Both discard mismatched bases—remaining bits form the sifted key.",
+      "5️⃣ Both discard mismatched bases remaining bits form the sifted key.",
       "6️⃣ QBER estimation, error correction, privacy amplification → final secret key."
     ],
     longContent: {
@@ -193,7 +194,7 @@ const TOPICS = [
     image: img12,
     bullets: [
       "If Eve intercepts photons, she must guess the basis. Wrong guess collapses state randomly.",
-      "Bob may receive incorrect bit even when his basis matches Alice's—creates extra errors.",
+      "Bob may receive incorrect bit even when his basis matches Alice's creates extra errors.",
       "QBER = (Incorrect bits / Total matched bits) × 100%",
       "Low QBER → secure channel. High QBER → possible eavesdropping. If QBER exceeds threshold, abort."
     ],
@@ -243,7 +244,7 @@ const TOPICS = [
       "In this lab: run BB84 under ideal conditions, introduce Eve, measure QBER, explore attacks."
     ],
     longContent: {
-      description: "BB84 is more than a protocol—it's proof that quantum mechanics can solve real-world security problems. This lab transforms these concepts into observable, interactive experiences."
+      description: "BB84 is more than a protocol it's proof that quantum mechanics can solve real-world security problems. This lab transforms these concepts into observable, interactive experiences."
     }
   }
 ];
@@ -280,19 +281,13 @@ export default function LearnBB84() {
             >
               Start with Quantum Basics →
             </button>
-            <button
-              className="learn-cta-secondary"
-              onClick={() => (window.location.href = "/prequiz")}
-            >
-              Take the Pre-Quiz
-            </button>
           </div>
 
           <div className="learn-hero-grid">
             <div className="learn-hero-card">
               <h3>Foundations</h3>
               <p>
-                Build a solid understanding of quantum mechanics principles—
+                Build a solid understanding of quantum mechanics principles 
                 qubits, superposition, measurement disturbance, and complementarity.
               </p>
             </div>
@@ -306,7 +301,7 @@ export default function LearnBB84() {
             <div className="learn-hero-card">
               <h3>Security</h3>
               <p>
-                Discover why quantum cryptography is fundamentally different—
+                Discover why quantum cryptography is fundamentally different 
                 security guaranteed by physics, not computational complexity.
               </p>
             </div>
@@ -401,7 +396,7 @@ export default function LearnBB84() {
                   Adversaries are already storing encrypted communications. Once
                   quantum computers mature, they'll decrypt historical data retroactively.
                   Quantum cryptography addresses this by making the keys themselves
-                  quantum—impossible to copy or store for later attack.
+                  quantum impossible to copy or store for later attack.
                 </p>
               </div>
             )}
@@ -507,17 +502,18 @@ export default function LearnBB84() {
         <div className="learn-final-inner">
           <h2>Ready to see it in action?</h2>
           <p>
-            You've learned the theory—now experience BB84 firsthand in the Virtual Lab.
+            You've learned the theory now experience BB84 firsthand in the Virtual Lab.
             Run simulations, activate Eve, measure QBER, and explore how quantum physics
             detects eavesdropping in real time.
           </p>
           <div className="learn-final-buttons">
             <button
               className="learn-cta-primary"
-              onClick={() => (window.location.href = "/lab")}
+              onClick={() => (window.location.href = "/prequiz")}
             >
-              Launch Virtual Lab →
+              Take Pre-Quiz →
             </button>
+
             <button
               className="learn-cta-secondary"
               onClick={() => scrollToTopic("quantum-basics")}
