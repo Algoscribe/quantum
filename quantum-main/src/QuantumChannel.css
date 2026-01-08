@@ -6,31 +6,42 @@
    - main column is the channel + table
    - right column reserved (empty)
 */
+/* ===== FORCE QUANTUM CHANNEL INTO FLOW ===== */
+
+.quantum-channel,
+.quantum-channel * {
+  position: relative;
+  max-width: 100%;
+}
+/* REMOVE VIEWPORT SIZING */
+canvas,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
 .qc-root {
-  display: grid;
-  grid-template-columns: 320px 1fr 80px; /* left controls width / main / right gutter */
-  gap: 28px;
   width: 100%;
   box-sizing: border-box;
-  padding: 18px 26px; /* small page padding; outer page navbar will remain above */
+  padding: 0;
 }
+
 
 /* If you need full-bleed under navbar, make sure parent header doesn't add extra padding.
    You asked blocks to start under navbar edge — integrate by making parent container full width. */
 
 /* Left column (empty placeholder here — your real controls live outside this component in the sidebar) */
-.qc-left-column {
-  /* keep as visual spacer */
+.qc-left-column,
+.qc-right-column {
+  display: none;
 }
 
-/* Right column (spare) */
-.qc-right-column {
-}
 
 /* Main column (channel + table) */
 .qc-main-column {
   display: flex;
   justify-content: center;
+   width: 100%;
 }
 
 /* Inner container that holds the channel card and the table */
@@ -205,7 +216,7 @@
   box-shadow: 0 8px 18px rgba(0,0,0,0.6);
   max-height: 360px;                        /* scrolling enabled after 360px */
   overflow-y: auto;                         /* vertical scroll */
-  overflow-x: hidden;                       /* no horizontal scroll */
+                   /* no horizontal scroll */
 }
 
 /* TABLE contents transparent so black background shows */
@@ -451,4 +462,125 @@
   .eve-device { width: 84px; height: 84px; transform: translateY(8px); }
   .eve-center-label { transform: translateY(12px); }
   .eve-sub-label { margin-top: 6px; font-size: 11px; }
+}
+/* ===============================
+   HARD BORDER FOR QUANTUM CHANNEL
+   =============================== */
+
+/* Main outer border */
+.quantum-channel-section {
+  border: 1px solid rgba(255,255,255,0.7)!important;
+  border-radius: 16px !important;
+
+  /* Visual breathing room */
+  padding: 26px !important;
+
+  /* Slight separation from surroundings */
+  margin-bottom: 22px;
+}
+
+/* Optional inner frame for flow area (helps alignment debugging) */
+.quantum-channel-flow {
+  outline: 1px dashed rgba(255, 255, 255, 0.08);
+  outline-offset: -10px;
+}
+/* ===============================
+   TRUE RESPONSIVE FIX (NO OVERLAP)
+   =============================== */
+
+@media (max-width: 1200px) {
+  .qc-root {
+    grid-template-columns: 1fr;   /* stack vertically */
+  }
+
+  .qc-left-column {
+    order: 1;   /* controls first */
+  }
+
+  .qc-main-column {
+    order: 2;   /* quantum channel below */
+  }
+
+  .qc-right-column {
+    display: none;
+  }
+}
+/* === FINAL INTERNAL TEXT FIX: USING ORIGINAL MEASUREMENTS === */
+
+/* 1. Stop words from collapsing or wrapping */
+.channel-label-stack, 
+.polarizer-label-stack, 
+.eve-sub-label,
+.eve-center-label,
+.polarizer-label-text {
+  white-space: nowrap !important; /* Forces text to stay in one line */
+  display: block !important;
+  text-align: center !important;
+}
+
+/* 2. ALICE and BOB labels (Original -90px height) */
+.channel-label-stack {
+  position: absolute !important;
+  top: -90px !important;  /* Your original measurement */
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+/* 3. Alice's/Bob's Polarizer labels (Original -40px height) */
+.polarizer-label-stack {
+  position: absolute !important;
+  top: -80px !important;  /* Your original measurement */
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+/* 4. EVE center label (Original -75px height) */
+.eve-center-label {
+  transform: translateY(-75px) !important; /* Your original measurement */
+}
+
+/* 5. EVE detector/re-encoder labels (Original 55px gap) */
+.eve-sub-label {
+  margin-top: 55px !important; /* Your original measurement */
+}
+
+/* 6. Station Lock: Prevents Alice/Eve/Bob from overlapping icons */
+.flow-station {
+  min-width: 120px !important; /* Gives labels room so they don't hit each other */
+  flex-shrink: 0 !important;
+}
+/* === ALIGNMENT & UNIFIED ICON SIZE === */
+
+/* 1. Move the whole channel area UP (removes extra top space) */
+.mock-container {
+  padding-top: 0 !important;
+  margin-top: -20px !important;
+}
+
+/* 2. UNIFY BOX SIZES: Alice, Bob, Detector, and Re-encoder all 90x90 */
+.polarizer, 
+.eve-device {
+  width: 90px !important;   /* Original Detector/Re-encoder size */
+  height: 90px !important;  /* Original Detector/Re-encoder size */
+  min-width: 90px !important;
+  border-radius: 14px !important;
+}
+
+/* 3. Adjust the internal line for the new 90px box size */
+.polarizer::before {
+  width: 70% !important; /* Keeps the basis line centered and properly scaled */
+}
+
+/* 4. Fix labels position for the unified 90px boxes */
+.polarizer-label-stack {
+  top: -65px !important; /* Adjust height to sit centered above the 90px boxes */
+}
+
+.channel-label-stack {
+  top: -105px !important; /* Lifts ALICE/BOB labels to clear the larger boxes */
+}
+
+/* 5. Center EVE label between the 90px boxes */
+.eve-center-label {
+  transform: translateY(-85px) !important;
 }

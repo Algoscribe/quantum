@@ -16,7 +16,6 @@
 .theory-page {
   min-height: 100vh;
   position: relative;
-  overflow-x: hidden;
   background-color: var(--bg-color);
   font-family: 'Space Grotesk', sans-serif;
   color: var(--text-primary);

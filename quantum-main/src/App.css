@@ -789,3 +789,6 @@ min-height: 300px;
 .gemini-header button:hover {
   background: rgba(0, 0, 0, 0.06);
 }
+html, body {
+  overflow-x: auto;
+}

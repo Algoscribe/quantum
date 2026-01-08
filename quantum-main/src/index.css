@@ -11,3 +11,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* === SCROLL UNLOCK (FINAL) === */
+
+body {
+  min-height: 200vh;
+  overflow-y: auto !important;
+}
+/* ===============================
+   GLOBAL SCROLL FIX (SAFE)
+   =============================== */
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  margin: 0;
+}
+
+/* React root must NOT block scroll */
+#root {
+  width: 100%;
+  min-height: 100%;
+  overflow: visible;
+}

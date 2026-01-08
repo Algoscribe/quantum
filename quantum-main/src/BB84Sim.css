@@ -29,7 +29,6 @@ body {
     min-height: 100vh;
     background: var(--dark);
     color: var(--text);
-    overflow-x: hidden;
 }
 
 /* Ensure dialogue body text uses default casing for readability */

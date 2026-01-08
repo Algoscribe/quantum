@@ -730,6 +730,7 @@ all later BB84 experiments involving disturbance, noise, and attacks.
   }
 
   return (
+    <div className="horizontal-scroll-wrapper">
     <>
       {/* ================= MODALS (TOP LEVEL) ================= */}
 
@@ -1123,6 +1124,6 @@ all later BB84 experiments involving disturbance, noise, and attacks.
         </button>
       </div>
     </>
-
+</div>
   );
 }

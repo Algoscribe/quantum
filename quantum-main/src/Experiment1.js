@@ -739,6 +739,7 @@ distance effects are compared against this zero-error benchmark.
   }
 
   return (
+    <div className="horizontal-scroll-wrapper">
     <div className="lab-container vertical-layout">
       {/* ===== BB84 ONBOARDING (Expandable Theory) ===== */}
       <div className="bb84-onboarding">
@@ -1168,6 +1169,6 @@ distance effects are compared against this zero-error benchmark.
         </button>
       </div>
     </div>
-
+  </div>
   );
 }

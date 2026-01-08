@@ -13,7 +13,7 @@
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #fff;
   position: relative;
-  overflow-x: hidden;
+  
 }
 
 /* subtle starfield */
@@ -140,7 +140,6 @@
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #fff;
   position: relative;
-  overflow-x: hidden;
 }
 
 /* subtle starfield */
@@ -1135,3 +1134,35 @@ section.bb84-onboarding {
   font-size: 17px;
 }
 
+/* === THE OVERLAP KILLER FIX === */
+
+/* 1. Force the container to be a wide "Train Track" */
+.channel-and-controls-wrapper {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important; /* Stops the lab from jumping under or over the sidebar */
+  width: 1450px !important;     /* Creates enough room for both parts */
+  align-items: flex-start !important;
+}
+
+/* 2. Lock the Sidebar size and position */
+.controls-left-column {
+  width: 350px !important;
+  min-width: 320px !important;
+  flex-shrink: 0 !important;   /* Prevents sidebar from getting squashed */
+  margin: 0 !important;
+}
+
+/* 3. Push the Lab area to the right so it starts AFTER the sidebar */
+.channel-right-area {
+  width: 1100px !important;    /* Fixed width for the Alice/Eve/Bob area */
+  min-width: 1100px !important;
+  flex-shrink: 0 !important;
+  margin-left: 300px !important; /* This GAP is what stops the overlapping */
+}
+
+/* 4. Ensure the Lab Section border stays wide */
+.quantum-channel-section {
+  width: 1050px !important;
+  min-width: 1050px !important;
+}

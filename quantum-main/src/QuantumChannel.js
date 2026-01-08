@@ -31,8 +31,8 @@ function QuantumChannel({
   eveLevel = 0, // legacy; kept for backwards compatibility
   channelNoisePercent = 0,
   channelDistanceKm = 0,
-  onMeasured = () => {},
-  registerControls = () => {},
+  onMeasured = () => { },
+  registerControls = () => { },
   forceMatchBases = false, // when true, Bob's basis = Alice's basis
   // NEW props for Eve behavior & visuals
   eveEnabled = false,
@@ -137,7 +137,7 @@ function QuantumChannel({
       const reenc = document.getElementById("eve-reencoder-box");
       if (det) det.setAttribute("data-basis", detectorBasis);
       if (reenc) reenc.setAttribute("data-basis", reencoderBasis);
-    } catch (e) {}
+    } catch (e) { }
   }
 
   function setEveActiveBadge(active, labelText = null) {
@@ -154,7 +154,7 @@ function QuantumChannel({
         badge.style.color = "#fff";
         badge.style.border = "none";
       }
-    } catch (e) {}
+    } catch (e) { }
   }
 
   async function pulseEveDevice(deviceId, activeForMs = 400) {
@@ -274,10 +274,10 @@ function QuantumChannel({
         // Use measureQubit for Eve's measurement (no extra eveProb)
         const eveResult = typeof measureQubit === "function"
           ? measureQubit(entry.aBit, entry.aBasis, eveBasis, {
-              eveProb: 0,
-              channelNoisePercent,
-              distanceKm: channelDistanceKm,
-            })
+            eveProb: 0,
+            channelNoisePercent,
+            distanceKm: channelDistanceKm,
+          })
           : null;
 
         if (eveResult && eveResult.reason === "lost") {
@@ -317,7 +317,7 @@ function QuantumChannel({
         setEveDeviceBasis("+", "+"); // neutral default
 
         setEveActiveBadge(false, "INACTIVE");
-        pulseEveDevice("eve-detector-box", 140).catch(() => {});
+        pulseEveDevice("eve-detector-box", 140).catch(() => { });
       }
 
       // traveling status
@@ -332,10 +332,10 @@ function QuantumChannel({
       try {
         bobResult = typeof measureQubit === "function"
           ? measureQubit(eveResendBit, eveResendBasis, entry.bBasis, {
-              eveProb: 0,
-              channelNoisePercent,
-              distanceKm: channelDistanceKm,
-            })
+            eveProb: 0,
+            channelNoisePercent,
+            distanceKm: channelDistanceKm,
+          })
           : null;
       } catch (err) {
         bobResult = null;
@@ -457,14 +457,14 @@ function QuantumChannel({
         // non-blocking visual cue: set bases and pulse asynchronously
         setEveDeviceBasis(eveBasis || "+", eveResendBasis || eveBasis || "+");
         setEveActiveBadge(true, "ACTIVE");
-        pulseEveDevice("eve-detector-box", 160).catch(() => {});
-        setTimeout(() => pulseEveDevice("eve-reencoder-box", 160).catch(() => {}), 140);
+        pulseEveDevice("eve-detector-box", 160).catch(() => { });
+        setTimeout(() => pulseEveDevice("eve-reencoder-box", 160).catch(() => { }), 140);
         setTimeout(() => setEveActiveBadge(false), 420);
       } else {
         // no intercept — subtle detector pulse
         setEveDeviceBasis(d.aBasis, d.aBasis);
         setEveActiveBadge(false, "INACTIVE");
-        pulseEveDevice("eve-detector-box", 120).catch(() => {});
+        pulseEveDevice("eve-detector-box", 120).catch(() => { });
       }
 
       // Bob's measurement after (possibly) Eve resent
@@ -518,7 +518,7 @@ function QuantumChannel({
     snapshots.forEach((s) => {
       try {
         onMeasured(s);
-      } catch (e) {}
+      } catch (e) { }
     });
 
     setCurrentPhotonIndex(newData.length);
@@ -571,13 +571,13 @@ function QuantumChannel({
           setEveDeviceBasis(entry.eveBasis || _chooseEveBasis(), entry.eveResendBasis || (entry.eveBasis || _chooseEveBasis()));
           setEveActiveBadge(true, "ACTIVE");
           // visual pulses but don't block too long
-          pulseEveDevice("eve-detector-box", 180).catch(() => {});
-          setTimeout(() => pulseEveDevice("eve-reencoder-box", 180).catch(() => {}), 160);
+          pulseEveDevice("eve-detector-box", 180).catch(() => { });
+          setTimeout(() => pulseEveDevice("eve-reencoder-box", 180).catch(() => { }), 160);
           setTimeout(() => setEveActiveBadge(false), 520);
         } else {
           setEveDeviceBasis(entry.aBasis, entry.aBasis);
           setEveActiveBadge(false, "INACTIVE");
-          pulseEveDevice("eve-detector-box", 120).catch(() => {});
+          pulseEveDevice("eve-detector-box", 120).catch(() => { });
         }
 
         return animatePhoton(photon, ANIMATION_POSITIONS.BOB_RECEIVER, DURATION_ENCODER_TO_RECEIVER * SLOW_FACTOR);
@@ -650,9 +650,9 @@ function QuantumChannel({
               <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
                 {/* Detector (slightly above the dotted line so it doesn't occlude polarizer labels) */}
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: 8 }}>
-  <div id="eve-detector-box" className="polarizer eve-device" data-basis="+" aria-hidden />
-  <div className="eve-sub-label">Detector</div>
-</div>
+                  <div id="eve-detector-box" className="polarizer eve-device" data-basis="+" aria-hidden />
+                  <div className="eve-sub-label">Detector</div>
+                </div>
 
 
                 {/* EVE main label — centered between polarizers */}
@@ -663,9 +663,9 @@ function QuantumChannel({
 
                 {/* Re-encoder (slightly above the dotted line) */}
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginLeft: 8 }}>
-  <div id="eve-reencoder-box" className="polarizer eve-device" data-basis="×" aria-hidden />
-  <div className="eve-sub-label">Re-encoder</div>
-</div>
+                  <div id="eve-reencoder-box" className="polarizer eve-device" data-basis="×" aria-hidden />
+                  <div className="eve-sub-label">Re-encoder</div>
+                </div>
 
               </div>
             </div>
@@ -766,20 +766,20 @@ function QuantumChannel({
 
                   {/* UPDATED: always show Eve columns with sensible fallbacks (no more bare "—") */}
                   <td style={{ textAlign: "center" }}>
-                     {r.eveIntercepted ? r.eveBasis : "—"}
+                    {r.eveIntercepted ? r.eveBasis : "—"}
                   </td>
 
                   <td style={{ textAlign: "center" }}>
-  {r.eveIntercepted
-    ? (r.eveMeas === null ? "✖" : r.eveMeas)
-    : "—"}
-</td>
+                    {r.eveIntercepted
+                      ? (r.eveMeas === null ? "✖" : r.eveMeas)
+                      : "—"}
+                  </td>
 
-<td style={{ textAlign: "center" }}>
-  {r.eveIntercepted
-    ? (r.eveResendBit === null ? "✖" : r.eveResendBit)
-    : "—"}
-</td>
+                  <td style={{ textAlign: "center" }}>
+                    {r.eveIntercepted
+                      ? (r.eveResendBit === null ? "✖" : r.eveResendBit)
+                      : "—"}
+                  </td>
 
                   <td>{r.bBasis}</td>
                   <td>{r.bMeas === null ? "—" : r.bMeas}</td>
