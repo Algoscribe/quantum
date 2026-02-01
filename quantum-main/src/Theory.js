@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Theory.css";
+import QuantumBackground from "./QuantumBackground";
 
 const STORY_CHAPTERS = [
   {
@@ -184,6 +185,8 @@ export default function App() {
 
   return (
     <div className="theory-page">
+      <QuantumBackground />
+
       <GlobalQuantumWeb />
 
       <div className="scanline-overlay"></div>
@@ -299,7 +302,6 @@ export default function App() {
                 Zero interference simulation. Experience 100% basis correlation to secure your 16-bit payload (2 characters).
               </p>
               <div className="text-mono uppercase tracking-widest" style={{ color: "var(--accent-emerald)", fontSize: "0.7rem", marginTop: "2rem", fontWeight: "700" }}>
-                INITIALIZE <span>→</span>
               </div>
             </div>
 
@@ -314,7 +316,7 @@ export default function App() {
                 Active Intercept-Resend attack. Detect the 25.0% error rate signature and abort before data leak.
               </p>
               <div className="text-mono uppercase tracking-widest" style={{ color: "var(--accent-red)", fontSize: "0.7rem", marginTop: "2rem", fontWeight: "700" }}>
-                INITIALIZE <span>→</span>
+               
               </div>
             </div>
           </div>

@@ -1,207 +1,628 @@
-/* ================================ */
-/* VIRTUAL LAB — FULLY SCOPED CSS  */
-/* ================================ */
+/* =====================================================
+   VIRTUAL LAB — QUANTUM CRYPTOGRAPHY DOCUMENTATION
+   Pure CSS Layout & Aesthetics
+   ===================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:italic&family=Inter:wght@300;400;600;700&family=JetBrains+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 
-/* Root scope */
-.virtual-lab {
-  font-family: 'Inter', sans-serif;
-  background-color: #000;
-  color: #fff;
-  min-height: 100vh;
+/* =====================================================
+   RESET & BASE
+   ===================================================== */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Typography helpers */
-.virtual-lab .serif-italic {
-  font-family: 'Instrument Serif', serif;
-  font-style: italic;
+html {
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.virtual-lab .mono {
-  font-family: 'JetBrains Mono', monospace;
+body {
+  background: #000000;
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
 
-/* ================================ */
-/* BACKGROUND GRID */
-/* ================================ */
+::selection {
+  background: #06b6d4;
+  color: #000000;
+}
 
-.virtual-lab .technical-grid {
-  background-image: radial-gradient(circle, #fff 0.5px, transparent 0.5px);
-  background-size: 40px 40px;
-  opacity: 0.05;
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* =====================================================
+   BACKGROUND EFFECTS
+   ===================================================== */
+
+.technical-grid {
   position: fixed;
   inset: 0;
+  background-image:
+    linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+  background-size: 100px 100px;
   pointer-events: none;
   z-index: 0;
+  animation: gridPulse 8s ease-in-out infinite;
 }
 
-/* ================================ */
-/* STATE / ENCODING BUBBLES */
-/* ================================ */
-
-.virtual-lab .state-bubble {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.02);
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  text-align: center;
-  transition: all 0.3s ease;
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
 }
 
-.virtual-lab .state-bubble:hover {
-  border-color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.05);
+.scanline {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(6, 182, 212, 0.05) 50%,
+    transparent 100%
+  );
+  background-size: 100% 4px;
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.3;
 }
 
-/* ================================ */
-/* TECHNICAL TABLE */
-/* ================================ */
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
 
-.virtual-lab .technical-table th {
-  text-align: left;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+/* =====================================================
+   CONTAINER & MAIN LAYOUT
+   ===================================================== */
+
+.lab-container {
+  min-height: 100vh;
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+}
+
+.lab-main {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 3rem 2rem 0;
+  position: relative;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .lab-main {
+    padding: 2rem 1.25rem 3rem;
+  }
+}
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.lab-header {
+  max-width: 900px;
+  margin-bottom: 2rem;
+  padding-left: 0.5rem;
+}
+
+.lab-title {
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.4);
-  padding: 16px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.virtual-lab .technical-table td {
-  padding: 14px 12px;
+.title-connector {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  text-transform: lowercase;
+  font-size: 0.5em;
+  opacity: 0.35;
+  font-weight: 400;
+  display: inline-block;
+  margin: 0 0.2em;
+}
+
+.lab-subtitle {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  max-width: 600px;
+  line-height: 1.6;
 }
 
-/* ================================ */
-/* DIVIDERS */
-/* ================================ */
+/* =====================================================
+   DIVIDER
+   ===================================================== */
 
-.virtual-lab .divider-label {
+.divider-label {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin: 2rem 0;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  height: 1px;
 }
 
-.virtual-lab .divider-label::after {
-  content: '';
+.divider-label::before {
+  content: "";
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.6));
+}
+
+.divider-label::after {
+  content: "";
   flex: 1;
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.15), transparent);
 }
 
-/* ================================ */
-/* SPECIALIZED CARDS */
-/* ================================ */
-
-.virtual-lab .secure-limit-tab {
-  background: #ffffff;
-  color: #000000;
-  padding: 2.5rem;
-  border-radius: 2.5rem;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.3);
-  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+.divider-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #06b6d4;
+  white-space: nowrap;
 }
 
-.virtual-lab .secure-limit-tab:hover {
-  transform: translateY(-8px);
-}
+/* =====================================================
+   SCHEMA SECTION
+   ===================================================== */
 
-.virtual-lab .xor-logic-box {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 2.5rem;
-  border-radius: 2.5rem;
-}
-
-/* ================================ */
-/* PHASE / GRID SYSTEM */
-/* ================================ */
-
-.virtual-lab .phase-container {
+.schema-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 3.5rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 4rem 2rem;
+  grid-template-columns: 280px 1fr;
+  gap: 3rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.schema-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.schema-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.schema-description {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  line-height: 1.5;
+}
+
+.schema-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2.5rem;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+}
+
+.schema-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(6, 182, 212, 0.03) 50%, 
+    transparent 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.schema-row:hover::before {
+  opacity: 1;
+}
+
+.schema-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   position: relative;
   z-index: 1;
 }
 
-.virtual-lab .phase-card {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.virtual-lab .phase-icon {
-  width: 120px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.9;
-}
-
-/* Physics note */
-.virtual-lab .physics-core {
-  margin-top: 1rem;
-  padding-left: 1rem;
-  border-left: 2px solid rgba(255, 255, 255, 0.15);
+.schema-label {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 0.85rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.65);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
 }
 
-/* ================================ */
-/* PHASE GRID (HARD FIX WITHOUT !important) */
-/* ================================ */
+.schema-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+  color: #ffffff;
+  transition: transform 0.3s ease;
+}
 
-.virtual-lab .phase-grid {
+.schema-item:hover .schema-icon {
+  transform: scale(1.2);
+}
+
+.schema-deg {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 968px) {
+  .schema-section {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .schema-row {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1rem 1.5rem;
+  }
+}
+
+/* =====================================================
+   PHASE GRID
+   ===================================================== */
+
+.phase-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  max-width: 72rem;
-  margin: 0 auto 8rem auto;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 0;
+  padding: 0;
 }
 
-.virtual-lab .phase-grid .phase-card {
-  background: #000;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2.5rem;
-}
-
-/* ================================ */
-/* SVG CONTROL — SCOPED */
-/* ================================ */
-
-.virtual-lab .phase-grid svg {
-  width: 120px;
-  height: 120px;
-}
-
-/* ================================ */
-/* ENCODING GRID */
-/* ================================ */
-
-.virtual-lab .encoding-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+@media (max-width: 1200px) {
+  .phase-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
-  .virtual-lab .encoding-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .virtual-lab .phase-grid {
+  .phase-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* =====================================================
+   PHASE CARD
+   ===================================================== */
+
+.phase-card {
+  background: #000000;
+  padding: 2.5rem;
+  min-height: 440px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+.phase-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 100% 0%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.phase-card:hover::before {
+  opacity: 1;
+}
+
+.phase-card:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.phase-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+}
+
+.card-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.phase-card:hover .card-glow {
+  opacity: 1;
+}
+
+/* Phase Header */
+.phase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+}
+
+.phase-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+}
+
+.phase-icon {
+  width: 80px;
+  height: 80px;
+  opacity: 0.12;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.phase-card:hover .phase-icon {
+  opacity: 0.25;
+  transform: scale(1.1) rotate(5deg);
+}
+
+.phase-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.phase-icon svg circle,
+.phase-icon svg line,
+.phase-icon svg rect,
+.phase-icon svg path {
+  stroke: currentColor;
+  fill: none;
+}
+
+.phase-icon svg circle.filled,
+.phase-icon svg rect.filled {
+  fill: currentColor;
+  stroke: none;
+}
+
+.phase-icon svg.error-icon {
+  color: #ef4444;
+}
+
+/* Phase Info */
+.phase-info {
+  flex: 1;
+  margin-bottom: 2rem;
+}
+
+.phase-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  transition: color 0.3s ease;
+  line-height: 1.2;
+}
+
+.phase-card:hover .phase-title {
+  color: #06b6d4;
+}
+
+.phase-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 1.25rem;
+}
+
+.phase-desc {
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Phase Theory */
+.phase-theory {
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.phase-card:hover .phase-theory {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.theory-line {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #06b6d4, transparent);
+  margin-bottom: 1rem;
+}
+
+.theory-text {
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.theory-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #06b6d4;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .phase-card {
+    padding: 2rem;
+    min-height: auto;
+  }
+  
+  .phase-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .phase-title {
+    font-size: 1.25rem;
+  }
+  
+  .phase-theory {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================================
+   RESPONSIVE REFINEMENTS
+   ===================================================== */
+
+@media (max-width: 480px) {
+  .lab-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .divider-label {
+    margin: 0;
+  }
+  
+  .schema-row {
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+  }
+  
+  .schema-item {
+    gap: 0.5rem;
+  }
+  
+  .schema-label {
+    font-size: 0.65rem;
+  }
+  
+  .schema-icon {
+    font-size: 1.25rem;
+  }
+}
+
+/* =====================================================
+   UTILITY CLASSES
+   ===================================================== */
+
+.text-gradient {
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =====================================================
+   PRINT STYLES
+   ===================================================== */
+
+@media print {
+  .technical-grid,
+  .scanline,
+  .card-glow {
+    display: none;
+  }
+  
+  .phase-theory {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* =====================================================
+   NUCLEAR SPACING FIX - OVERRIDE EVERYTHING
+   ===================================================== */
+
+section.schema-section {
+  margin-bottom: 0 !important;
+}
+
+.divider-label {
+  display: none !important;
+}
+
+section.phase-grid {
+  margin-top: 0 !important;
+  border-top: none !important;
 }

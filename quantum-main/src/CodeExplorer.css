@@ -261,3 +261,8 @@
     font-size: 0.8rem;
   }
 }
+.bb84-container .bb84-content {
+  background: rgba(255, 255, 255, 0.03); /* almost invisible */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
