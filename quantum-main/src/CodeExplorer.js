@@ -3,8 +3,9 @@ import "./CodeExplorer.css";
 import QuantumBackground from "./QuantumBackground";
 
 const BB84Page = () => {
+  // Updated URL with your new Google Colab link
   const ipynbUrl =
-    "https://colab.research.google.com/drive/1l2mLWm88IaPHNrY0yDPHkSQrwZJnvbeu";
+    "https://colab.research.google.com/drive/1PbWvoreGXcaiauVaMEH2FHPM_fh-qCLy?usp=sharing";
 
   return (
     <div className="bb84-container">

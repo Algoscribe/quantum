@@ -1580,3 +1580,7 @@ footer p {
 /* ===============================
    Responsive (Mobile)
    =============================== */
+   /* Home page: add extra top space below navbar */
+#hero {
+  padding-top: 200px; /* increase as needed: 160–220px */
+}

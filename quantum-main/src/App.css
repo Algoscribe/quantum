@@ -18,13 +18,13 @@ body {
   overflow-x: hidden;
 }
 
-/* Optional helper: wrapper to keep content under navbar */
 .qx-page {
   min-height: 100vh;
   position: relative;
   z-index: 1;
-  padding-top: 90px;
+  padding-top: 0;   /* ← NO GAP EVER */
 }
+
 
 
 
@@ -791,4 +791,19 @@ min-height: 300px;
 }
 html, body {
   overflow-x: auto;
+}
+/* ================================
+   GLOBAL PAGE LAYOUT
+   ================================ */
+
+.lab-container.vertical-layout {
+  max-width: 100%;
+  margin: 0;
+  padding: 0 14px 40px 14px; /* ✅ NO TOP GAP ANYWHERE */
+  min-height: 100vh;
+  background: #000;
+}
+/* FIX: remove top gap on non-experiment pages */
+section {
+  align-items: flex-start !important;
 }

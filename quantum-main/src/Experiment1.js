@@ -730,7 +730,7 @@ distance effects are compared against this zero-error benchmark.
           </div>
 
           <div className="qber-value" style={{ fontSize: 22, color: "#fff" }}>
-            {finalQBER}%
+            {finalQBER}%``
           </div>
         </div>
 
