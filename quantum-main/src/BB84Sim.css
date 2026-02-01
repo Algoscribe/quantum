@@ -98,7 +98,7 @@ body {
 .main-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 3rem 2rem;
+    padding: 1.5rem 1rem;
     min-height: calc(100vh - 80px);
 }
 
@@ -1047,3 +1047,143 @@ strong,
         padding: 1.5rem;
     }
 }
+/* =========================================
+   MONOCHROME QUANTUM CHANNEL (WHITE ONLY)
+   ========================================= */
+
+/* Kill all theme colors & glows inside quantum channel */
+.quantum-channel-section,
+.quantum-channel-section * {
+  color: #ffffff !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+/* Channel container */
+.quantum-channel-section {
+  background: #000000 !important;
+  border: 1px solid #ffffff !important;
+}
+
+/* Remove decorative background overlays */
+.quantum-channel-section::before {
+  display: none !important;
+}
+
+/* Flow area */
+.quantum-channel-flow {
+  background: transparent !important;
+}
+
+/* Photon track → white dashed line */
+.photon-track {
+  background: repeating-linear-gradient(
+    to right,
+    #ffffff,
+    #ffffff 8px,
+    transparent 8px,
+    transparent 16px
+  ) !important;
+  opacity: 0.6;
+}
+
+/* Polarizers (Alice, Bob, Eve devices) */
+.polarizer,
+.eve-device-color {
+  background: transparent !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Polarizer basis line */
+.polarizer::before,
+.eve-device-color::before {
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Photon (NO gradient, NO glow) */
+.photon {
+  background: transparent !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+}
+
+/* Photon angle label */
+.photon-angle {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+
+/* Channel title */
+.channel-title {
+  background: transparent !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Labels (Alice, Bob, Eve, Detector, Re-encoder) */
+.channel-label-stack,
+.eve-sub-label,
+.eve-center-label {
+  color: #ffffff !important;
+}
+
+/* Eve emoji / icon */
+#eve-station span,
+.text-purple-600 {
+  color: #ffffff !important;
+}
+
+/* Transmission status box */
+#transmission-status {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+}
+/* =========================================
+   REDUCE PHOTON CIRCLE SIZE (ARROW FOCUS)
+   ========================================= */
+
+.photon {
+  width: 50px !important;     /* smaller circle */
+  height: 50px !important;
+  font-size: 30px !important; /* arrow size */
+  border-width: 2px !important;
+}
+/* =========================================
+   REMOVE DOT INSIDE 0 (90°, 0° etc.)
+   ========================================= */
+
+/* ================================
+   FIX: 0 looking like 8 in 90°
+   ================================ */
+
+.photon-angle {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+  font-weight: 600;
+  font-feature-settings: normal !important;
+}
+/* =========================================
+   HARD FIX: REMOVE AUTO PUSH
+   ========================================= */
+
+.channel-and-controls-wrapper {
+  justify-content: flex-start !important;
+}
+
+.channel-and-controls-wrapper > * {
+  margin-left: 0 !important;
+}
+.channel-and-controls-wrapper {
+  gap: 100px !important;
+}
+.channel-and-controls-wrapper {
+  padding-left: 80px;
+  padding-right: 32px;
+}
+
