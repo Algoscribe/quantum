@@ -12,8 +12,10 @@ import LearnBB84 from "./LearnBB84";
 import LabBB84 from "./LabBB84";
 
 import Theory from "./Theory";
-import Ideal from "./Ideal";
-import NonIdeal from "./NonIdeal";
+//import Ideal from "./Ideal";
+//import NonIdeal from "./NonIdeal";
+
+
 
 import Virtuallab from './VirtualLab';
 import Experiment1 from './Experiment1';
@@ -49,102 +51,102 @@ function App() {
       {/* Top navigation always visible */}
       <QXNavbar onOpenGemini={() => setGeminiOpen(true)} />
 
-{/* Gemini Panel */}
-{geminiOpen && (
-  <div className="gemini-panel">
+      {/* Gemini Panel */}
+      {geminiOpen && (
+        <div className="gemini-panel">
 
-    {/* HORIZONTAL RESIZE */}
-    <div
-      className="gemini-resizer-x"
-      onMouseDown={(e) => {
-        e.preventDefault();
-        const panel = e.target.parentElement;
-        const startX = e.clientX;
-        const startWidth = panel.offsetWidth;
+          {/* HORIZONTAL RESIZE */}
+          <div
+            className="gemini-resizer-x"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              const panel = e.target.parentElement;
+              const startX = e.clientX;
+              const startWidth = panel.offsetWidth;
 
-        const onMouseMove = (ev) => {
-          const newWidth = startWidth - (ev.clientX - startX);
-          panel.style.width = `${Math.min(Math.max(newWidth, 280), 520)}px`;
-        };
+              const onMouseMove = (ev) => {
+                const newWidth = startWidth - (ev.clientX - startX);
+                panel.style.width = `${Math.min(Math.max(newWidth, 280), 520)}px`;
+              };
 
-        const stop = () => {
-          document.removeEventListener("mousemove", onMouseMove);
-          document.removeEventListener("mouseup", stop);
-        };
+              const stop = () => {
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", stop);
+              };
 
-        document.addEventListener("mousemove", onMouseMove);
-        document.addEventListener("mouseup", stop);
-      }}
-    />
+              document.addEventListener("mousemove", onMouseMove);
+              document.addEventListener("mouseup", stop);
+            }}
+          />
 
-    {/* VERTICAL RESIZE */}
-    <div
-      className="gemini-resizer-y"
-      onMouseDown={(e) => {
-        e.preventDefault();
-        const panel = e.target.parentElement;
-        const startY = e.clientY;
-        const startHeight = panel.offsetHeight;
+          {/* VERTICAL RESIZE */}
+          <div
+            className="gemini-resizer-y"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              const panel = e.target.parentElement;
+              const startY = e.clientY;
+              const startHeight = panel.offsetHeight;
 
-        const onMouseMove = (ev) => {
-          const newHeight = startHeight + (ev.clientY - startY);
-          panel.style.height = `${Math.min(
-            Math.max(newHeight, 300),
-            window.innerHeight - 120
-          )}px`;
-        };
+              const onMouseMove = (ev) => {
+                const newHeight = startHeight + (ev.clientY - startY);
+                panel.style.height = `${Math.min(
+                  Math.max(newHeight, 300),
+                  window.innerHeight - 120
+                )}px`;
+              };
 
-        const stop = () => {
-          document.removeEventListener("mousemove", onMouseMove);
-          document.removeEventListener("mouseup", stop);
-        };
+              const stop = () => {
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", stop);
+              };
 
-        document.addEventListener("mousemove", onMouseMove);
-        document.addEventListener("mouseup", stop);
-      }}
-    />
+              document.addEventListener("mousemove", onMouseMove);
+              document.addEventListener("mouseup", stop);
+            }}
+          />
 
-    {/* HEADER */}
-    <div className="gemini-header">
-      <span>Gemini</span>
-      <button onClick={() => setGeminiOpen(false)}>✕</button>
-    </div>
+          {/* HEADER */}
+          <div className="gemini-header">
+            <span>Gemini</span>
+            <button onClick={() => setGeminiOpen(false)}>✕</button>
+          </div>
 
-    {/* BODY */}
-    <div className="gemini-body">
-      <p style={{ marginBottom: "12px" }}>
-        Gemini is available as your Quantum Lab Assistant.
-      </p>
+          {/* BODY */}
+          <div className="gemini-body">
+            <p style={{ marginBottom: "12px" }}>
+              Gemini is available as your Quantum Lab Assistant.
+            </p>
 
-      <p style={{ marginBottom: "16px", opacity: 0.8 }}>
-        It understands BB84, QBER, eavesdropping detection, and what you are
-        seeing in the QKD-Xplore simulations.
-      </p>
+            <p style={{ marginBottom: "16px", opacity: 0.8 }}>
+              It understands BB84, QBER, eavesdropping detection, and what you are
+              seeing in the QKD-Xplore simulations.
+            </p>
 
-      <button
-        onClick={() =>
-          window.open(
-            "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%22197tSeEspYwXv794H97TDNe3VoLkUw4CA%22%5D,%22action%22:%22open%22,%22userId%22:%22106046785362817472380%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing",
-            "_blank"
-          )
-        }
-        style={{
-          padding: "10px 14px",
-          borderRadius: "10px",
-          background: "#000",
-          color: "#fff",
-          border: "1px solid #000",
-          cursor: "pointer",
-          fontWeight: 600,
-          width: "100%"
-        }}
-      >
-        Launch Gemini Assistant →
-      </button>
-    </div>
+            <button
+              onClick={() =>
+                window.open(
+                  "https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%22197tSeEspYwXv794H97TDNe3VoLkUw4CA%22%5D,%22action%22:%22open%22,%22userId%22:%22106046785362817472380%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing",
+                  "_blank"
+                )
+              }
+              style={{
+                padding: "10px 14px",
+                borderRadius: "10px",
+                background: "#000",
+                color: "#fff",
+                border: "1px solid #000",
+                cursor: "pointer",
+                fontWeight: 600,
+                width: "100%"
+              }}
+            >
+              Launch Gemini Assistant →
+            </button>
+          </div>
 
-  </div>
-)}
+        </div>
+      )}
 
 
 
@@ -178,9 +180,7 @@ function App() {
         {/* BB84 Simulation + Theory/Ideal/Non-Ideal */}
         <Route path="/bb84-simulation" element={<BB84sim />} />
         <Route path="/bb84-theory" element={<Theory />} />
-        <Route path="/bb84-ideal" element={<Ideal />} />
-        <Route path="/bb84-notideal" element={<NonIdeal />} />
-
+        
         {/* Others */}
         <Route path="/code-explorer" element={<CodeExplorer />} />
         <Route path="/prequiz" element={<PreQuiz />} />

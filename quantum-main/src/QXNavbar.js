@@ -61,13 +61,9 @@ export default function QXNavbar({ onOpenGemini }) {
               }`}
           >
             <Link to="/bb84-theory">Theory</Link>
-            <a href="/ideal.html" className="dropdown-item">
-              Ideal
-            </a>
+            <a href="/IDEAL.html" className="dropdown-item">Ideal</a>
 
-            <a href="/nonideal.html" className="dropdown-item">
-              NONIdeal
-            </a>
+           <a href="/NONIDEAL.html" className="dropdown-item">NonIdeal</a>
 
           </div>
         </li>
