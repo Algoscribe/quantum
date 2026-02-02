@@ -584,3 +584,24 @@ svg {
 .eve-center-label {
   transform: translateY(-85px) !important;
 }
+/* ===== FORCE ACTION BUTTONS INTO ONE ROW (FINAL OVERRIDE) ===== */
+.action-section {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 16px !important;
+  width: 100%;
+}
+
+.action-section .btn,
+.action-section button,
+#btn-send-photon,
+#btn-send-burst {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: unset !important;
+  max-width: unset !important;
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}

@@ -263,6 +263,7 @@ export default function LearnBB84() {
 
   return (
     <div className="learn-page qx-page">
+         
       {/* HERO SECTION */}
       <section className="learn-hero">
         <div className="learn-hero-inner">
