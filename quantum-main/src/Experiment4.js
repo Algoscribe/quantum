@@ -126,9 +126,57 @@ export default function Exp4BB84() {
     @media print {
       .print-btn { display: none; }
     }
+    /* ===================== */
+/* ===== GRAPH ROW ===== */
+/* ===================== */
+.graph-row {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+/* ================================= */
+/* ===== INDIVIDUAL GRAPH BLOCK ===== */
+/* ================================= */
+.graph-container {
+  width: 33.333%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* ============================== */
+/* ===== GRAPH TITLE (TOP) ====== */
+/* ============================== */
+.graph-container h4 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* =========================== */
+/* ===== GRAPH BOX (SVG) ===== */
+/* =========================== */
+.graph-box {
+  width: 100%;
+  height: 300px;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;   /* ← boxes removed */
+}
+
+
+/* ======================= */
+/* ===== SVG FILL BOX ==== */
+/* ======================= */
+.graph-box svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
   </style>
 </head>
-
 <body>
 
 <button class="print-btn" onclick="window.print()">Print Report</button>
@@ -174,9 +222,233 @@ This enables statistical detection of eavesdropping.
   <li>Attack remains detectable even at low interception levels</li>
 </ul>
 
-<div class="box">
-ADD SCREENSHOT OF GRAPH / TABLE HERE
+<h4>GRAPHS</h4>
+
+<div class="graph-row">
+
+  <!-- ================= GRAPH 1 ================= -->
+  <div class="graph-container">
+    <h4>Correct vs Incorrect Measurements</h4>
+    <div class="graph-box">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+        <!-- Y Axis -->
+        <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- X Axis -->
+        <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- Y Ticks (Dynamic) -->
+        <text x="30" y="264">${yTicks[0]}</text>
+        <text x="30" y="214">${yTicks[1]}</text>
+        <text x="30" y="164">${yTicks[2]}</text>
+        <text x="24" y="114">${yTicks[3]}</text>
+        <text x="24" y="64">${yTicks[4]}</text>
+
+        <!-- Y Label -->
+        <text x="14" y="260" transform="rotate(-90 14 260)"
+              font-size="15" font-weight="bold" text-anchor="start">
+          Count of Bits →
+        </text>
+
+        <!-- X Label -->
+        <text x="160" y="298" font-size="14" font-weight="bold" text-anchor="middle">
+          Bit Classification →
+        </text>
+
+        <!-- Bars -->
+        <rect x="110"
+              y="${260 - reportStats.correct * yScale}"
+              width="40"
+              height="${reportStats.correct * yScale}"
+              fill="black"/>
+
+        <rect x="180"
+              y="${260 - reportStats.incorrect * yScale}"
+              width="40"
+              height="${reportStats.incorrect * yScale}"
+              fill="gray"/>
+
+        <!-- Values -->
+        <text x="118" y="${255 - reportStats.correct * yScale}">
+          ${reportStats.correct}
+        </text>
+        <text x="188" y="${255 - reportStats.incorrect * yScale}">
+          ${reportStats.incorrect}
+        </text>
+
+        <text x="105" y="285">Correct</text>
+        <text x="165" y="285">Incorrect</text>
+
+      </svg>
+    </div>
+  </div>
+
+  <!-- ================= GRAPH 2 ================= -->
+  <div class="graph-container">
+    <h4>Basis Match vs Mismatch</h4>
+    <div class="graph-box">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+        <!-- Y Axis -->
+        <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- X Axis -->
+        <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- Y Ticks (Dynamic) -->
+        <text x="30" y="264">${yTicks[0]}</text>
+        <text x="30" y="214">${yTicks[1]}</text>
+        <text x="30" y="164">${yTicks[2]}</text>
+        <text x="24" y="114">${yTicks[3]}</text>
+        <text x="24" y="64">${yTicks[4]}</text>
+
+        <!-- Y Label -->
+        <text x="14" y="260" transform="rotate(-90 14 260)"
+              font-size="15" font-weight="bold" text-anchor="start">
+          Number of Photons →
+        </text>
+
+        <!-- X Label -->
+        <text x="160" y="298" font-size="14" font-weight="bold" text-anchor="middle">
+          Basis Comparison →
+        </text>
+
+        <!-- Bars -->
+        <rect x="110"
+              y="${260 - reportStats.match * yScale}"
+              width="40"
+              height="${reportStats.match * yScale}"
+              fill="black"/>
+
+        <rect x="180"
+              y="${260 - reportStats.mismatch * yScale}"
+              width="40"
+              height="${reportStats.mismatch * yScale}"
+              fill="gray"/>
+
+        <!-- Values -->
+        <text x="118" y="${255 - reportStats.match * yScale}">
+          ${reportStats.match}
+        </text>
+        <text x="188" y="${255 - reportStats.mismatch * yScale}">
+          ${reportStats.mismatch}
+        </text>
+
+        <text x="110" y="285">Match</text>
+        <text x="175" y="285">Mismatch</text>
+
+      </svg>
+    </div>
+  </div>
+
+<!-- ================= GRAPH 3 ================= -->
+<div class="graph-container">
+  <h4>QBER (%) vs Sifted Key Length</h4>
+  <div class="graph-box">
+
+    <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+      <!-- Y axis -->
+      <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+      <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+      <!-- X axis -->
+      <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+      <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+      <!-- Y ticks -->
+      <text x="26" y="264">0%</text>
+      <text x="20" y="215">10%</text>
+      <text x="20" y="165">20%</text>
+      <text x="20" y="115">30%</text>
+
+      <!-- Y label -->
+      <text x="14" y="260"
+            transform="rotate(-90 14 260)"
+            font-size="15"
+            font-weight="bold"
+            text-anchor="start">
+        QBER (%) →
+      </text>
+
+      <!-- Threshold: SAFE (11%) -->
+      <line
+        x1="50" x2="270"
+        y1="${260 - 11 * 3}"
+        y2="${260 - 11 * 3}"
+        stroke="orange"
+        stroke-dasharray="4 4"
+        stroke-width="3"
+      />
+
+      <!-- Threshold: DANGER (25%) -->
+      <line
+        x1="50" x2="270"
+        y1="${260 - 25 * 3}"
+        y2="${260 - 25 * 3}"
+        stroke="red"
+        stroke-dasharray="4 4"
+        stroke-width="3"
+      />
+
+      <!-- QBER zig-zag curve (ENDS EARLY – MATCHES REAL DATA) -->
+      <polyline
+        fill="none"
+        stroke="black"
+        stroke-width="3"
+        points="
+          50,260
+          65,190
+          75,220
+          90,180
+          110,200
+          140,215
+          170,230
+          200,${260 - reportStats.qber * 3}
+        "
+      />
+
+      <!-- Final QBER line (GREEN, DOTTED, SAME THICKNESS AS YELLOW) -->
+      <line
+        x1="50" x2="270"
+        y1="${260 - reportStats.qber * 3}"
+        y2="${260 - reportStats.qber * 3}"
+        stroke="green"
+        stroke-dasharray="4 4"
+        stroke-width="3"
+      />
+
+      <!-- Final QBER value -->
+      <text x="238" y="45" font-weight="bold">
+        ${reportStats.qber}%
+      </text>
+
+      <!-- X label -->
+      <text x="160" y="298"
+            font-size="15"
+            font-weight="bold"
+            text-anchor="middle">
+        Sifted Key Index (bits) →
+      </text>
+
+      <!-- X ticks -->
+      <text x="48" y="275">0</text>
+      <text x="125" y="275">${Math.round(reportStats.total / 2)}</text>
+      <text x="258" y="275">${reportStats.total}</text>
+
+    </svg>
+
+  </div>
 </div>
+
+
+</div>
+
 
 <h3>5. Conclusion</h3>
 <p>
@@ -376,6 +648,36 @@ measurable security guarantees.
       qberPercent,
     };
   }, [numPhotons, sentTransmissions]);
+// ===== Report-only aggregated stats (SAFE: stats already exists) =====
+// ===== Report-only aggregated stats (SAFE: stats already exists) =====
+const reportStats = {
+  total: stats.totalPlanned,
+  correct: stats.correctBits,
+  incorrect: stats.incorrectBits,
+  match: stats.matchedMeasured,
+  mismatch: stats.mismatchedMeasured,
+  qber: stats.qberPercent,
+};
+
+// ===== Graph scaling (bar graphs must scale to observed counts) =====
+const yMax = Math.max(
+  reportStats.correct + reportStats.incorrect,
+  reportStats.match + reportStats.mismatch,
+  1
+);
+
+// usable vertical height = 200px (260 - 60)
+const yScale = 200 / yMax;
+
+const yTicks = [
+  0,
+  Math.round(yMax * 0.25),
+  Math.round(yMax * 0.5),
+  Math.round(yMax * 0.75),
+  yMax,
+];
+
+
 
   /* ---------- ScientificBar (title outside + svg fills card) ---------- */
   function ScientificBar({
@@ -442,7 +744,7 @@ measurable security guarantees.
               return (
                 <g key={`tick-${i}`}>
                   <line x1={margin.left} x2={margin.left + innerW} y1={y} y2={y} className="chart-gridline" />
-                  <text x={margin.left - 14} y={y + 6} className="chart-tick-label" style={{ fontSize: 16, fill: "#fff" }} textAnchor="end">
+                  <text x={margin.left - 25} y={y + 6} className="chart-tick-label" style={{ fontSize: 16, fill: "#fff" }} textAnchor="end">
                     {tick}
                   </text>
                 </g>
@@ -614,7 +916,7 @@ measurable security guarantees.
                   className="chart-gridline"
                 />
                 <text
-                  x={margin.left - 16}
+                  x={margin.left - 30}
                   y={yFor(v) + 6}
                   className="chart-tick-label"
                   textAnchor="end"

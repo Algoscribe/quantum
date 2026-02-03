@@ -131,9 +131,57 @@ export default function Exp5BB84() {
     @media print {
       .print-btn { display: none; }
     }
+  /* ===================== */
+/* ===== GRAPH ROW ===== */
+/* ===================== */
+.graph-row {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+/* ================================= */
+/* ===== INDIVIDUAL GRAPH BLOCK ===== */
+/* ================================= */
+.graph-container {
+  width: 33.333%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* ============================== */
+/* ===== GRAPH TITLE (TOP) ====== */
+/* ============================== */
+.graph-container h4 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* =========================== */
+/* ===== GRAPH BOX (SVG) ===== */
+/* =========================== */
+.graph-box {
+  width: 100%;
+  height: 300px;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;   /* ← boxes removed */
+}
+
+
+/* ======================= */
+/* ===== SVG FILL BOX ==== */
+/* ======================= */
+.graph-box svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
   </style>
 </head>
-
 <body>
 
 <button class="print-btn" onclick="window.print()">Print Report</button>
@@ -392,21 +440,33 @@ trustworthy security metrics.
       qberPercent,
     };
   }, [numPhotons, sentTransmissions]);
-  useEffect(() => {
-    if (
-      sentTransmissions.length === numPhotons &&
-      numPhotons > 0 &&
-      !runCompletedRef.current
-    ) {
-      qberHistoryRef.current.push({
-        N: numPhotons,
-        qber: stats.qberPercent,
-      });
+// ===== Report-only aggregated stats (SAFE: stats already exists) =====
+const reportStats = {
+  total: stats.totalPlanned,
+  correct: stats.correctBits,
+  incorrect: stats.incorrectBits,
+  match: stats.matchedMeasured,
+  mismatch: stats.mismatchedMeasured,
+  qber: stats.qberPercent,
+};
 
-      runCompletedRef.current = true;
-      forceUpdate(v => v + 1);
-    }
-  }, [sentTransmissions.length]);
+// ===== Graph scaling (bar graphs must scale to observed counts) =====
+const yMax = Math.max(
+  reportStats.correct + reportStats.incorrect,
+  reportStats.match + reportStats.mismatch,
+  1
+);
+
+// usable vertical height = 200px (260 - 60)
+const yScale = 200 / yMax;
+
+const yTicks = [
+  0,
+  Math.round(yMax * 0.25),
+  Math.round(yMax * 0.5),
+  Math.round(yMax * 0.75),
+  yMax,
+];
 
 
   /* ---------- ScientificBar (title outside + svg fills card) ---------- */
@@ -474,7 +534,7 @@ trustworthy security metrics.
               return (
                 <g key={`tick-${i}`}>
                   <line x1={margin.left} x2={margin.left + innerW} y1={y} y2={y} className="chart-gridline" />
-                  <text x={margin.left - 14} y={y + 6} className="chart-tick-label" style={{ fontSize: 16, fill: "#fff" }} textAnchor="end">
+                  <text x={margin.left - 25} y={y + 6} className="chart-tick-label" style={{ fontSize: 16, fill: "#fff" }} textAnchor="end">
                     {tick}
                   </text>
                 </g>
@@ -857,7 +917,7 @@ trustworthy security metrics.
                   className="chart-gridline"
                 />
                 <text
-                  x={margin.left - 16}
+                  x={margin.left - 30}
                   y={yFor(v) + 6}
                   className="chart-tick-label"
                   textAnchor="end"

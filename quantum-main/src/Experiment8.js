@@ -472,6 +472,34 @@ but practically limited by physical channel properties.
             qber,
         };
     }, [numPhotons, sentTransmissions]);
+    // ===== Report-only aggregated stats (SAFE: stats already exists) =====
+const reportStats = {
+  total: stats.totalPlanned,
+  correct: stats.correctBits,
+  incorrect: stats.incorrectBits,
+  match: stats.matchedMeasured,
+  mismatch: stats.mismatchedMeasured,
+  qber: stats.qberPercent,
+};
+
+// ===== Graph scaling (bar graphs must scale to observed counts) =====
+const yMax = Math.max(
+  reportStats.correct + reportStats.incorrect,
+  reportStats.match + reportStats.mismatch,
+  1
+);
+
+// usable vertical height = 200px (260 - 60)
+const yScale = 200 / yMax;
+
+const yTicks = [
+  0,
+  Math.round(yMax * 0.25),
+  Math.round(yMax * 0.5),
+  Math.round(yMax * 0.75),
+  yMax,
+];
+
 
     useEffect(() => {
         if (sentTransmissions.length !== numPhotons) return;
@@ -545,7 +573,7 @@ but practically limited by physical channel properties.
                                 <g key={`tick-${i}`}>
                                     <line x1={margin.left} x2={margin.left + innerW} y1={y} y2={y} className="chart-gridline" />
                                     <text
-                                        x={margin.left - 14}
+                                        x={margin.left - 25}
                                         y={y + 6}
                                         className="chart-tick-label"
                                         style={{ fontSize: 16, fill: "#fff" }}

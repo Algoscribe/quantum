@@ -53,6 +53,7 @@ export default function Exp3BB84() {
 
   // Helpers
   const updateStatus = (message) => setStatusMessage(message);
+
   // ================= REPORT WINDOW (PRINT-SAFE) =================
   const openReportWindow = () => {
     const width = 900;
@@ -66,6 +67,57 @@ export default function Exp3BB84() {
       "_blank",
       `width=${width},height=${height},left=${left},top=${top}`
     );
+    // ===== REPORT QBER CURVE (MATCHES LIVE GRAPH) =====
+    let matched = 0;
+    let errors = 0;
+    const qberPoints = [];
+
+    sentTransmissions.forEach(t => {
+      if (t.bMeas !== null && t.match) {
+        matched++;
+        if (t.aBit !== t.bMeas) errors++;
+
+        if (matched >= 5) {
+          qberPoints.push({
+            step: matched,
+            qber: (errors / matched) * 100
+          });
+        }
+      }
+    });
+
+    // SVG geometry (MUST MATCH REPORT SVG)
+    const X_MIN = 50;
+    const X_MAX = 270;
+    const Y_MIN = 260;
+    const Y_MAX = 30;
+
+    const finalQBER =
+      qberPoints.length === 0
+        ? 0
+        : qberPoints[qberPoints.length - 1].qber;
+
+    const MAX_QBER = Math.max(
+      30,
+      Math.ceil((finalQBER * 1.1) / 10) * 10
+    );
+
+    const MAX_X = Math.max(1, reportStats.total);
+
+
+    const qberPolyline = qberPoints
+      .map(p => {
+        const x = X_MIN + (p.step / MAX_X) * (X_MAX - X_MIN);
+        const y = Y_MIN - (p.qber / MAX_QBER) * (Y_MIN - Y_MAX);
+
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      })
+      .join(" ");
+    const qberTicks = [];
+    for (let v = 0; v <= MAX_QBER; v += 10) {
+      qberTicks.push(v);
+    }
+
 
     w.document.write(`
 <!DOCTYPE html>
@@ -127,9 +179,57 @@ export default function Exp3BB84() {
     @media print {
       .print-btn { display: none; }
     }
+      /* ===================== */
+/* ===== GRAPH ROW ===== */
+/* ===================== */
+.graph-row {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+/* ================================= */
+/* ===== INDIVIDUAL GRAPH BLOCK ===== */
+/* ================================= */
+.graph-container {
+  width: 33.333%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* ============================== */
+/* ===== GRAPH TITLE (TOP) ====== */
+/* ============================== */
+.graph-container h4 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* =========================== */
+/* ===== GRAPH BOX (SVG) ===== */
+/* =========================== */
+.graph-box {
+  width: 100%;
+  height: 300px;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;   /* ← boxes removed */
+}
+
+
+/* ======================= */
+/* ===== SVG FILL BOX ==== */
+/* ======================= */
+.graph-box svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
   </style>
 </head>
-
 <body>
 
 <button class="print-btn" onclick="window.print()">Print Report</button>
@@ -182,9 +282,363 @@ For a full intercept–resend attack, quantum theory predicts:
   <li>QBER stabilizes near 25% for a full attack</li>
 </ul>
 
-<div class="box">
-ADD SCREENSHOT OF QBER GRAPH / TRANSMISSION TABLE HERE
+<p><strong>Graph Observations:</strong></p>
+<ul>
+  <li>Incorrect measurements increase due to Eve’s intercept–resend attack</li>
+  <li>Errors appear even when Alice’s and Bob’s bases match</li>
+  <li>Observed QBER is a direct indicator of eavesdropping</li>
+</ul>
+
+<h3>4. Observations</h3>
+
+<p>
+Total Photons: ${reportStats.total}<br/>
+Correct Measurements: ${reportStats.correct}<br/>
+Incorrect Measurements: ${reportStats.incorrect}<br/>
+QBER: ${reportStats.qber}%<br/>
+Result:
+<strong>
+${stats.qberPercent < 11
+        ? "SAFE (No Eavesdropping Detected)"
+        : stats.qberPercent <= 25
+          ? "EAVESDROPPING SUSPECTED"
+          : "EAVESDROPPING CONFIRMED"}
+</strong>
+</p>
+
+<h4>GRAPHS</h4>
+
+<div class="graph-row">
+
+ <!-- ================= GRAPH 1 ================= -->
+<div class="graph-container">
+  <h4>Correct vs Incorrect</h4>
+  <div class="graph-box">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+      <!-- Y axis -->
+      <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+      <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+      <!-- X axis -->
+      <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+      <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+      <!-- Y ticks (DYNAMIC) -->
+      <text x="30" y="264">${yTicks[0]}</text>
+      <text x="30" y="214">${yTicks[1]}</text>
+      <text x="30" y="164">${yTicks[2]}</text>
+      <text x="24" y="114">${yTicks[3]}</text>
+      <text x="24" y="64">${yTicks[4]}</text>
+
+      <!-- Y label -->
+      <text x="14" y="260"
+            transform="rotate(-90 14 260)"
+            font-size="15"
+            font-weight="bold"
+            text-anchor="start">
+        Count of Bits →
+      </text>
+
+      <!-- X label -->
+      <text x="160" y="298"
+            font-size="14"
+            font-weight="bold"
+            text-anchor="middle">
+        Bit Classification →
+      </text>
+
+      <!-- Bars (DYNAMIC SCALE) -->
+      <rect x="110"
+            y="${260 - reportStats.correct * yScale}"
+            width="40"
+            height="${reportStats.correct * yScale}"
+            fill="black"/>
+
+      <rect x="180"
+            y="${260 - reportStats.incorrect * yScale}"
+            width="40"
+            height="${reportStats.incorrect * yScale}"
+            fill="gray"/>
+
+      <!-- Values -->
+      <text x="118" y="${255 - reportStats.correct * yScale}">
+        ${reportStats.correct}
+      </text>
+      <text x="188" y="${255 - reportStats.incorrect * yScale}">
+        ${reportStats.incorrect}
+      </text>
+
+      <text x="105" y="285">Correct</text>
+      <text x="165" y="285">Incorrect</text>
+
+    </svg>
+  </div>
 </div>
+
+
+  <!-- ================= GRAPH 2 ================= -->
+<div class="graph-container">
+  <h4>Basis Match vs Mismatch</h4>
+  <div class="graph-box">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+      <!-- Y axis -->
+      <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+      <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+      <!-- X axis -->
+      <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+      <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+      <!-- Y ticks (DYNAMIC) -->
+      <text x="30" y="264">${yTicks[0]}</text>
+      <text x="30" y="214">${yTicks[1]}</text>
+      <text x="30" y="164">${yTicks[2]}</text>
+      <text x="24" y="114">${yTicks[3]}</text>
+      <text x="24" y="64">${yTicks[4]}</text>
+
+      <!-- Y label -->
+      <text x="14" y="260"
+            transform="rotate(-90 14 260)"
+            font-size="15"
+            font-weight="bold"
+            text-anchor="start">
+        Number of Photons →
+      </text>
+
+      <!-- X label -->
+      <text x="160" y="298"
+            font-size="14"
+            font-weight="bold"
+            text-anchor="middle">
+        Basis Comparison →
+      </text>
+
+      <!-- Bars (DYNAMIC SCALE) -->
+      <rect x="110"
+            y="${260 - reportStats.match * yScale}"
+            width="40"
+            height="${reportStats.match * yScale}"
+            fill="black"/>
+
+      <rect x="180"
+            y="${260 - reportStats.mismatch * yScale}"
+            width="40"
+            height="${reportStats.mismatch * yScale}"
+            fill="gray"/>
+
+      <!-- Values -->
+      <text x="118" y="${255 - reportStats.match * yScale}">
+        ${reportStats.match}
+      </text>
+      <text x="188" y="${255 - reportStats.mismatch * yScale}">
+        ${reportStats.mismatch}
+      </text>
+
+      <text x="110" y="285">Match</text>
+      <text x="175" y="285">Mismatch</text>
+
+    </svg>
+  </div>
+</div>
+
+<!-- ================= GRAPH 3 ================= -->
+<div class="graph-container">
+  <h4>QBER (%) vs Sifted Key Length</h4>
+  <div class="graph-box">
+
+    <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+      <!-- ===== Y AXIS + ARROW ===== -->
+      <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+      <polyline points="50,30 44,40 56,40"
+                stroke="black" stroke-width="2" fill="none"/>
+
+      <!-- ===== X AXIS + ARROW ===== -->
+      <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+      <polyline points="270,260 260,254 260,266"
+                stroke="black" stroke-width="2" fill="none"/>
+
+      <!-- ===== Y AXIS LABEL ===== -->
+      <text x="14" y="260"
+            transform="rotate(-90 14 260)"
+            font-size="14"
+            font-weight="bold">
+        QBER (%) →
+      </text>
+
+      <!-- ===== Y TICKS (DYNAMIC) ===== -->
+      ${Array.from({ length: MAX_QBER / 10 + 1 }, (_, i) => {
+            const v = i * 10;
+            return `
+          <text x="18"
+                y="${260 - (v / MAX_QBER) * 230}"
+                font-size="11">
+            ${v}%
+          </text>
+        `;
+          }).join("")}
+
+      <!-- ===== SECURITY THRESHOLDS ===== -->
+      <!-- 11% -->
+      <line x1="50" x2="270"
+            y1="${260 - (11 / MAX_QBER) * 230}"
+            y2="${260 - (11 / MAX_QBER) * 230}"
+            stroke="black"
+            stroke-dasharray="4 4"
+            stroke-width="1.6"/>
+      <text x="54"
+            y="${260 - (11 / MAX_QBER) * 230 - 4}"
+            font-size="11">11%</text>
+
+      <!-- 25% -->
+      <line x1="50" x2="270"
+            y1="${260 - (25 / MAX_QBER) * 230}"
+            y2="${260 - (25 / MAX_QBER) * 230}"
+            stroke="black"
+            stroke-dasharray="2 4"
+            stroke-width="1.6"/>
+      <text x="54"
+            y="${260 - (25 / MAX_QBER) * 230 - 4}"
+            font-size="11">25%</text>
+
+      <!-- ===== REAL QBER CURVE ===== -->
+      <polyline
+        points="${qberPolyline}"
+        fill="none"
+        stroke="black"
+        stroke-width="2.5"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+      />
+
+      <!-- ===== FINAL QBER VALUE ===== -->
+      <text x="265"
+            y="${260 - (reportStats.qber / MAX_QBER) * 230 - 6}"
+            font-weight="bold"
+            text-anchor="end">
+        ${reportStats.qber}%
+      </text>
+
+      <!-- ===== X TICKS ===== -->
+      <text x="48" y="275">0</text>
+      <text x="160" y="275">${Math.round(reportStats.total / 2)}</text>
+      <text x="258" y="275">${reportStats.total}</text>
+
+      <!-- ===== X LABEL ===== -->
+      <text x="160" y="298"
+            font-size="14"
+            font-weight="bold"
+            text-anchor="middle">
+        Sifted Key Index (bits) →
+      </text>
+
+    </svg>
+  </div>
+</div>
+
+
+</div>
+<h3>Key Analysis & Security Verification</h3>
+
+<h4>1. Sifted Key Length</h4>
+<p>
+The sifted key consists of all bits for which Alice’s encoding basis matches
+Bob’s measurement basis and successful detection occurs.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+n<sub>sifted</sub> = | { bits where basis match AND detection occurs } |
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+n<sub>sifted</sub> = ${stats.matchedMeasured} bits
+</p>
+
+<hr/>
+
+<h4>2. Quantum Bit Error Rate (QBER)</h4>
+<p>
+QBER represents the fraction of erroneous bits in the sifted key and indicates
+the presence of noise or eavesdropping in the quantum channel.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+QBER = ( Number of erroneous bits ) / ( Total number of bits compared )
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+QBER = (${stats.incorrectBits} / ${stats.matchedMeasured || 1}) = ${stats.qberPercent}%
+</p>
+
+<hr/>
+
+<h4>3. Security Thresholds</h4>
+<ul>
+  <li>QBER &lt; 11% → <b>SAFE</b></li>
+  <li>11% ≤ QBER ≤ 25% → <b>BEWARE</b></li>
+  <li>QBER &gt; 25% → <b>DANGER</b> (Abort Key)</li>
+</ul>
+
+<p>
+<b>Current Status:</b>
+${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+</p>
+
+<hr/>
+
+<h4>Analysis Results</h4>
+
+<table border="1" cellspacing="0" cellpadding="8" width="100%">
+  <tr>
+    <th align="left">Metric</th>
+    <th align="left">Value</th>
+    <th align="left">Description</th>
+  </tr>
+
+  <tr>
+    <td>Total Transmissions</td>
+    <td>${stats.totalPlanned}</td>
+    <td>Raw photons sent by Alice</td>
+  </tr>
+
+  <tr>
+    <td>Sifted Key Length</td>
+    <td>${stats.matchedMeasured}</td>
+    <td>Bits where bases matched and detection occurred</td>
+  </tr>
+
+  <tr>
+    <td>Detected Errors</td>
+    <td>${stats.incorrectBits}</td>
+    <td>Mismatched bits in the sifted key</td>
+  </tr>
+
+  <tr>
+    <td>QBER</td>
+    <td>${stats.qberPercent}%</td>
+    <td>Quantum Bit Error Rate</td>
+  </tr>
+
+  <tr>
+    <td>Abort Threshold</td>
+    <td>11%</td>
+    <td>Maximum acceptable QBER</td>
+  </tr>
+
+  <tr>
+    <td>Security Status</td>
+    <td>
+      ${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+    </td>
+    <td>Channel security decision</td>
+  </tr>
+</table>
 
 <h3>5. Conclusion</h3>
 <p>
@@ -390,6 +844,39 @@ to infer the presence of an eavesdropper using QBER alone.
       qberPercent,
     };
   }, [numPhotons, sentTransmissions]);
+  // ===== Report-only aggregated stats (SAFE: stats already exists) =====
+  const reportStats = {
+    total: stats.totalPlanned,
+    correct: stats.correctBits,
+    incorrect: stats.incorrectBits,
+    match: stats.matchedMeasured,
+    mismatch: stats.mismatchedMeasured,
+    qber: stats.qberPercent,
+  };
+  // ===== QBER AXIS SCALE (REPORT GRAPH 3) =====
+  const MAX_QBER = Math.max(
+    30,
+    Math.ceil(reportStats.qber / 10) * 10
+  );
+
+  // ===== Graph scaling (bar graphs must scale to observed counts) =====
+  const yMax = Math.max(
+    reportStats.correct + reportStats.incorrect,
+    reportStats.match + reportStats.mismatch,
+    1
+  );
+
+  // usable vertical height = 200px (260 - 60)
+  const yScale = 200 / yMax;
+
+  const yTicks = [
+    0,
+    Math.round(yMax * 0.25),
+    Math.round(yMax * 0.5),
+    Math.round(yMax * 0.75),
+    yMax,
+  ];
+
 
   /* ---------- ScientificBar (title outside + svg fills card) ---------- */
   function ScientificBar({
@@ -457,7 +944,7 @@ to infer the presence of an eavesdropper using QBER alone.
               return (
                 <g key={`tick-${i}`}>
                   <line x1={margin.left} x2={margin.left + innerW} y1={y} y2={y} className="chart-gridline" />
-                  <text x={margin.left - 14} y={y + 6} className="chart-tick-label" style={{ fontSize: 16, fill: "#fff" }} textAnchor="end">
+                  <text x={margin.left - 25} y={y + 6} className="chart-tick-label" style={{ fontSize: 16, fill: "#fff" }} textAnchor="end">
                     {tick}
                   </text>
                 </g>
@@ -483,6 +970,7 @@ to infer the presence of an eavesdropper using QBER alone.
 
             {/* X axis */}
             <line x1={margin.left} x2={margin.left + innerW} y1={baselineY} y2={baselineY} className="chart-axis-main" />
+
             <polyline
               points={`${margin.left + innerW},${baselineY} ${margin.left + innerW - 14},${baselineY - 10} ${margin.left + innerW - 14},${baselineY + 10}`}
               className="chart-axis-arrow"
@@ -581,7 +1069,13 @@ to infer the presence of an eavesdropper using QBER alone.
     const innerH = vbH - margin.top - margin.bottom;
 
 
-    const MAX_QBER = 30; // ← critical for Exp 3
+    const MAX_QBER = Math.max(
+      30,
+      Math.ceil((finalQBER * 1.1) / 10) * 10
+    );
+
+
+
     const maxX = Math.max(1, totalPlanned);
 
 
@@ -592,8 +1086,13 @@ to infer the presence of an eavesdropper using QBER alone.
 
 
 
+    const TOP_PAD = 14; // pixels — matches stroke thickness safely
+
     const yFor = (v) =>
-      margin.top + innerH - (Math.min(v, MAX_QBER) / MAX_QBER) * innerH;
+      margin.top + TOP_PAD +
+      (innerH - TOP_PAD) * (1 - v / MAX_QBER);
+
+
 
 
     const pathD = points
@@ -619,8 +1118,10 @@ to infer the presence of an eavesdropper using QBER alone.
           >
 
 
-            {/* Grid lines + Y ticks */}
-            {[0, 5, 10, 15, 20, 25, 30].map((v) => (
+            {Array.from(
+              { length: MAX_QBER / 10 + 1 },
+              (_, i) => i * 10
+            ).map((v) => (
               <g key={v}>
                 <line
                   x1={margin.left}
@@ -630,7 +1131,7 @@ to infer the presence of an eavesdropper using QBER alone.
                   className="chart-gridline"
                 />
                 <text
-                  x={margin.left - 16}
+                  x={margin.left - 30}
                   y={yFor(v) + 6}
                   className="chart-tick-label"
                   textAnchor="end"
@@ -639,6 +1140,7 @@ to infer the presence of an eavesdropper using QBER alone.
                 </text>
               </g>
             ))}
+
 
             {/* Security Thresholds */}
             <line
@@ -716,6 +1218,29 @@ to infer the presence of an eavesdropper using QBER alone.
               y2={margin.top + innerH}
               className="chart-axis-main"
             />
+            {/* Y-axis arrow */}
+            <polyline
+              points={`
+    ${margin.left},${margin.top}
+    ${margin.left - 10},${margin.top + 18}
+    ${margin.left + 10},${margin.top + 18}
+  `}
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="2"
+            />
+            {/* X-axis arrow */}
+            <polyline
+              points={`
+    ${margin.left + innerW},${margin.top + innerH}
+    ${margin.left + innerW - 18},${margin.top + innerH - 10}
+    ${margin.left + innerW - 18},${margin.top + innerH + 10}
+  `}
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="2"
+            />
+
 
             {/* Axis labels */}
             <text
@@ -749,7 +1274,7 @@ to infer the presence of an eavesdropper using QBER alone.
 
             {/* Final QBER */}
             <text
-              x={margin.left + innerW + 8}
+              x={margin.left + innerW - 30}
               y={margin.top + 18}
               className="chart-tick-label"
             >
