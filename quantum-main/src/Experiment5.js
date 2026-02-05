@@ -9,6 +9,7 @@ import "./KeyAnalysisPanel.css";
 export default function Exp5BB84() {
   // Committed (current) state
   const [numPhotons, setNumPhotons] = useState(16);
+  const AXIS_TICK_COUNT = 5;
 
   // For Experiment 2 default Eve is ON — but slider should NOT start at 100%.
   // Set a sensible interactive default (change this if you prefer another starting %).
@@ -34,10 +35,10 @@ export default function Exp5BB84() {
   // Modal & UI
   const [showSliderConfirm, setShowSliderConfirm] = useState(false);
   const reportDate = new Date().toLocaleDateString("en-IN", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
 
   // Transmission tracking
@@ -57,6 +58,7 @@ export default function Exp5BB84() {
 
   // Helpers
   const updateStatus = (message) => setStatusMessage(message);
+
   // ================= REPORT WINDOW (PRINT-SAFE) =================
   const openReportWindow = () => {
     const width = 900;
@@ -186,8 +188,8 @@ export default function Exp5BB84() {
 
 <button class="print-btn" onclick="window.print()">Print Report</button>
 
-<h1>Photon Count & QBER</h1>
-<h2>Experiment 5 — Statistical Confidence in BB84</h2>
+<h1>LAR REPORT - EXPERIMENT 5</h1>
+<h2>Effect of Photon Count on QBER in BB84</h2>
 
 <h3>1. Aim</h3>
 <p>
@@ -230,10 +232,360 @@ This statistical convergence follows the law of large numbers.
   <li>Correct vs Incorrect bits scale proportionally with N</li>
   <li>Basis match ratio remains approximately 50%</li>
 </ul>
+<h3>4. Observations</h3>
 
-<div class="box">
-ADD SCREENSHOT OF GRAPH / TABLE HERE
+<p>
+Total Photons: ${reportStats.total}<br/>
+Correct Measurements: ${reportStats.correct}<br/>
+Incorrect Measurements: ${reportStats.incorrect}<br/>
+QBER: ${reportStats.qber}%<br/>
+Result:
+<strong>
+${stats.qberPercent < 11
+        ? "SAFE (No Eavesdropping Detected)"
+        : stats.qberPercent <= 25
+          ? "EAVESDROPPING SUSPECTED"
+          : "EAVESDROPPING CONFIRMED"}
+</strong>
+</p>
+<h4>GRAPHS</h4>
+
+<div class="graph-row">
+
+  <!-- ================= GRAPH 1 ================= -->
+  <div class="graph-container">
+    <h4>Correct vs Incorrect</h4>
+    <div class="graph-box">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+        <!-- Y axis -->
+        <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- X axis -->
+        <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- Y ticks -->
+        <text x="30" y="264">${yTicks[0]}</text>
+        <text x="30" y="214">${yTicks[1]}</text>
+        <text x="30" y="164">${yTicks[2]}</text>
+        <text x="24" y="114">${yTicks[3]}</text>
+        <text x="24" y="64">${yTicks[4]}</text>
+
+        <!-- Y label -->
+        <text x="14" y="260"
+              transform="rotate(-90 14 260)"
+              font-size="15"
+              font-weight="bold">
+          Count of Bits →
+        </text>
+
+        <!-- X label -->
+        <text x="160" y="298"
+              font-size="14"
+              font-weight="bold"
+              text-anchor="middle">
+          Bit Classification →
+        </text>
+
+        <!-- Bars -->
+        <rect x="110"
+              y="${260 - reportStats.correct * yScale}"
+              width="40"
+              height="${reportStats.correct * yScale}"
+              fill="black"/>
+
+        <rect x="180"
+              y="${260 - reportStats.incorrect * yScale}"
+              width="40"
+              height="${reportStats.incorrect * yScale}"
+              fill="gray"/>
+
+        <!-- Values -->
+        <text x="118" y="${255 - reportStats.correct * yScale}">
+          ${reportStats.correct}
+        </text>
+        <text x="188" y="${255 - reportStats.incorrect * yScale}">
+          ${reportStats.incorrect}
+        </text>
+
+        <text x="105" y="285">Correct</text>
+        <text x="165" y="285">Incorrect</text>
+
+      </svg>
+    </div>
+  </div>
+
+  <!-- ================= GRAPH 2 ================= -->
+  <div class="graph-container">
+    <h4>Basis Match vs Mismatch</h4>
+    <div class="graph-box">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+        <!-- Y axis -->
+        <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- X axis -->
+        <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- Y ticks -->
+        <text x="30" y="264">${yTicks[0]}</text>
+        <text x="30" y="214">${yTicks[1]}</text>
+        <text x="30" y="164">${yTicks[2]}</text>
+        <text x="24" y="114">${yTicks[3]}</text>
+        <text x="24" y="64">${yTicks[4]}</text>
+
+        <!-- Y label -->
+        <text x="14" y="260"
+              transform="rotate(-90 14 260)"
+              font-size="15"
+              font-weight="bold">
+          Number of Photons →
+        </text>
+
+        <!-- X label -->
+        <text x="160" y="298"
+              font-size="14"
+              font-weight="bold"
+              text-anchor="middle">
+          Basis Comparison →
+        </text>
+
+        <!-- Bars -->
+        <rect x="110"
+              y="${260 - reportStats.match * yScale}"
+              width="40"
+              height="${reportStats.match * yScale}"
+              fill="black"/>
+
+        <rect x="180"
+              y="${260 - reportStats.mismatch * yScale}"
+              width="40"
+              height="${reportStats.mismatch * yScale}"
+              fill="gray"/>
+
+        <!-- Values -->
+        <text x="118" y="${255 - reportStats.match * yScale}">
+          ${reportStats.match}
+        </text>
+        <text x="188" y="${255 - reportStats.mismatch * yScale}">
+          ${reportStats.mismatch}
+        </text>
+
+        <text x="110" y="285">Match</text>
+        <text x="175" y="285">Mismatch</text>
+
+      </svg>
+    </div>
+  </div>
+
+ <!-- ================= GRAPH 3 ================= -->
+<div class="graph-container">
+  <h4>QBER (%) vs Photon Count (N)</h4>
+  <div class="graph-box">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+      <!-- Y axis -->
+      <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+      <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+      <!-- X axis -->
+      <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+      <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+      <!-- Y label -->
+      <text x="14" y="260"
+            transform="rotate(-90 14 260)"
+            font-size="14"
+            font-weight="bold">
+        QBER (%) →
+      </text>
+      <!-- ===== X AXIS VALUES ===== -->
+${xAxisValues.map(v => `
+  <text
+    x="${50 + (v / maxPhotonCount) * 220}"
+    y="275"
+    font-size="11"
+    text-anchor="middle">
+    ${v}
+  </text>
+`).join("")}
+  <!-- ===== Y AXIS VALUES ===== -->
+${yAxisValues.map(v => `
+  <text
+    x="18"
+    y="${260 - (v / qberYMax) * 230}"
+    font-size="11">
+    ${Math.round(v)}%
+  </text>
+`).join("")}
+     
+
+      <!-- ===== SECURITY THRESHOLDS (LIVE) ===== -->
+
+<line
+  x1="50"
+  x2="270"
+  y1="${260 - (11 / qberYMax) * 230}"
+  y2="${260 - (11 / qberYMax) * 230}"
+  stroke="#000000"
+  stroke-dasharray="4 4"
+  stroke-width="1.4"
+/>
+
+<text
+  x="275"
+  y="${260 - (11 / qberYMax) * 230 + 4}"
+  font-size="10"
+  fill="#000000"
+>
+  
+</text>
+<line
+  x1="50"
+  x2="270"
+  y1="${260 - (25 / qberYMax) * 230}"
+  y2="${260 - (25 / qberYMax) * 230}"
+  stroke="#000000"
+  stroke-dasharray="4 4"
+  stroke-width="1.4"
+/>
+
+<text
+  x="275"
+  y="${260 - (25 / qberYMax) * 230 + 4}"
+  font-size="10"
+  fill="#000000"
+>
+  
+</text>
+      
+
+      <!-- QBER DATA POINTS -->
+      ${qberPointsSVG.map(p => `
+        <circle cx="${p.x}" cy="${p.y}" r="4" fill="black"/>
+        <text x="${p.x}" y="${p.y - 8}" font-size="11" text-anchor="middle">
+          ${p.qber}%
+        </text>
+      `).join("")}
+
+      <!-- X label -->
+      <text x="160" y="298"
+            font-size="14"
+            font-weight="bold"
+            text-anchor="middle">
+        Photon Count (N) →
+      </text>
+
+    </svg>
+  </div>
 </div>
+  </div>
+
+</div>
+<h3>Key Analysis & Security Verification</h3>
+
+<h4>1. Sifted Key Length</h4>
+<p>
+The sifted key consists of all bits for which Alice’s encoding basis matches
+Bob’s measurement basis and successful detection occurs.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+n<sub>sifted</sub> = | { bits where basis match AND detection occurs } |
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+n<sub>sifted</sub> = ${stats.matchedMeasured} bits
+</p>
+
+<hr/>
+
+<h4>2. Quantum Bit Error Rate (QBER)</h4>
+<p>
+QBER represents the fraction of erroneous bits in the sifted key and indicates
+the presence of noise or eavesdropping in the quantum channel.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+QBER = ( Number of erroneous bits ) / ( Total number of bits compared )
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+QBER = (${stats.incorrectBits} / ${stats.matchedMeasured || 1}) = ${stats.qberPercent}%
+</p>
+
+<hr/>
+
+<h4>3. Security Thresholds</h4>
+<ul>
+  <li>QBER &lt; 11% → <b>SAFE</b></li>
+  <li>11% ≤ QBER ≤ 25% → <b>BEWARE</b></li>
+  <li>QBER &gt; 25% → <b>DANGER</b> (Abort Key)</li>
+</ul>
+
+<p>
+<b>Current Status:</b>
+${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+</p>
+
+<hr/>
+
+<h4>Analysis Results</h4>
+
+<table border="1" cellspacing="0" cellpadding="8" width="100%">
+  <tr>
+    <th align="left">Metric</th>
+    <th align="left">Value</th>
+    <th align="left">Description</th>
+  </tr>
+
+  <tr>
+    <td>Total Transmissions</td>
+    <td>${stats.totalPlanned}</td>
+    <td>Raw photons sent by Alice</td>
+  </tr>
+
+  <tr>
+    <td>Sifted Key Length</td>
+    <td>${stats.matchedMeasured}</td>
+    <td>Bits where bases matched and detection occurred</td>
+  </tr>
+
+  <tr>
+    <td>Detected Errors</td>
+    <td>${stats.incorrectBits}</td>
+    <td>Mismatched bits in the sifted key</td>
+  </tr>
+
+  <tr>
+    <td>QBER</td>
+    <td>${stats.qberPercent}%</td>
+    <td>Quantum Bit Error Rate</td>
+  </tr>
+
+  <tr>
+    <td>Abort Threshold</td>
+    <td>11%</td>
+    <td>Maximum acceptable QBER</td>
+  </tr>
+
+  <tr>
+    <td>Security Status</td>
+    <td>
+      ${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+    </td>
+    <td>Channel security decision</td>
+  </tr>
+</table>
+
 
 <h3>5. Conclusion</h3>
 <p>
@@ -440,34 +792,133 @@ trustworthy security metrics.
       qberPercent,
     };
   }, [numPhotons, sentTransmissions]);
-// ===== Report-only aggregated stats (SAFE: stats already exists) =====
-const reportStats = {
-  total: stats.totalPlanned,
-  correct: stats.correctBits,
-  incorrect: stats.incorrectBits,
-  match: stats.matchedMeasured,
-  mismatch: stats.mismatchedMeasured,
-  qber: stats.qberPercent,
-};
+  useEffect(() => {
+    // wait until ALL photons are measured
+    if (
+      sentTransmissions.length === numPhotons &&
+      !runCompletedRef.current
+    ) {
+      qberHistoryRef.current.push({
+        N: numPhotons,
+        qber: stats.qberPercent,
+      });
 
-// ===== Graph scaling (bar graphs must scale to observed counts) =====
-const yMax = Math.max(
-  reportStats.correct + reportStats.incorrect,
-  reportStats.match + reportStats.mismatch,
-  1
-);
+      runCompletedRef.current = true;
+      forceUpdate(v => v + 1); // force graph redraw
+    }
+  }, [sentTransmissions.length, numPhotons, stats.qberPercent]);
+  // ===== Report-only aggregated stats (SAFE: stats already exists) =====
+  const reportStats = {
+    total: stats.totalPlanned,
+    correct: stats.correctBits,
+    incorrect: stats.incorrectBits,
+    match: stats.matchedMeasured,
+    mismatch: stats.mismatchedMeasured,
+    qber: stats.qberPercent,
+  };
+  const qberData = qberHistoryRef.current;
+  const safeQberData = qberData.length > 0 ? qberData : [];
+  const maxPhotonCount =
+    safeQberData.length > 0
+      ? Math.max(...safeQberData.map(d => d.N))
+      : 1;
 
-// usable vertical height = 200px (260 - 60)
-const yScale = 200 / yMax;
+  const xAxisValues = Array.from(
+    { length: AXIS_TICK_COUNT + 1 },
+    (_, i) => Math.round((i / AXIS_TICK_COUNT) * maxPhotonCount)
+  );
+  // ===== QBER DATA (MATCH LIVE GRAPH) =====
 
-const yTicks = [
-  0,
-  Math.round(yMax * 0.25),
-  Math.round(yMax * 0.5),
-  Math.round(yMax * 0.75),
-  yMax,
-];
 
+  // Safety: if no completed runs yet
+
+  const Y_TICK_COUNT = 5;
+  const X_TICK_COUNT = 5;
+  // ===== SVG GEOMETRY (MATCH LIVE GRAPH STYLE) =====
+  const X_MIN = 50;
+  const X_MAX = 270;
+  const Y_MIN = 260;
+  const Y_MAX = 30;
+
+  const maxN =
+    safeQberData.length > 0
+      ? Math.max(...safeQberData.map(d => d.N))
+      : 1;
+
+  const MAX_QBER = 30; // fixed (same as live graph)
+
+  // Convert data to SVG points
+  const qberPointsSVG = safeQberData.map(d => {
+    const x = X_MIN + (d.N / maxN) * (X_MAX - X_MIN);
+    const y = Y_MIN - (d.qber / MAX_QBER) * (Y_MIN - Y_MAX);
+    return { x, y, qber: d.qber };
+  });
+
+  // ===== Graph scaling (bar graphs must scale to observed counts) =====
+  const yMax = Math.max(
+    reportStats.correct + reportStats.incorrect,
+    reportStats.match + reportStats.mismatch,
+    1
+  );
+
+  // usable vertical height = 200px (260 - 60)
+  const yScale = 200 / yMax;
+
+  const yTicks = [
+    0,
+    Math.round(yMax * 0.25),
+    Math.round(yMax * 0.5),
+    Math.round(yMax * 0.75),
+    yMax,
+  ];
+
+  const qberSeries = (() => {
+    let matched = 0;
+    let errors = 0;
+    const series = [];
+
+    sentTransmissions.forEach(t => {
+      if (t.match && t.bMeas !== null) {
+        matched++;
+        if (t.aBit !== t.bMeas) errors++;
+
+        series.push({
+          step: matched,
+          qber: matched === 0 ? 0 : (errors / matched) * 100
+        });
+      }
+    });
+
+    return series;
+  })();
+  const maxObservedQBER =
+    qberSeries.length === 0
+      ? 1
+      : Math.max(...qberSeries.map(p => p.qber));
+  const QBER_ABORT = 11;
+  const QBER_THEORETICAL = 25;
+  const qberYMax = Math.ceil(
+    Math.max(maxObservedQBER, QBER_ABORT, QBER_THEORETICAL)
+  );
+  const yAxisValues = Array.from(
+    { length: AXIS_TICK_COUNT + 1 },
+    (_, i) => (i / AXIS_TICK_COUNT) * qberYMax
+
+
+  );
+  const qberPolyline = (() => {
+    if (qberSeries.length === 0) return "";
+
+    return qberSeries.map(p => {
+      const x =
+        50 + (p.step / reportStats.total) * 220;
+
+      const y =
+        260 - (p.qber / qberYMax) * 230;
+
+      return `${x},${y}`;
+    }).join(" ");
+  })();
 
   /* ---------- ScientificBar (title outside + svg fills card) ---------- */
   function ScientificBar({
@@ -680,6 +1131,15 @@ const yTicks = [
               y2={margin.top + innerH}
               className="chart-axis-main"
             />
+            {/* Y ARROW */}
+            <polyline
+              points={`${margin.left},${margin.top}
+           ${margin.left - 12},${margin.top + 18}
+           ${margin.left + 12},${margin.top + 18}`}
+              stroke="#fff"
+              strokeWidth="2"
+              fill="none"
+            />
 
             {/* ===== X AXIS ===== */}
             <line
@@ -689,7 +1149,15 @@ const yTicks = [
               y2={margin.top + innerH}
               className="chart-axis-main"
             />
-
+            {/* X ARROW */}
+            <polyline
+              points={`${margin.left + innerW},${margin.top + innerH}
+           ${margin.left + innerW - 16},${margin.top + innerH - 12}
+           ${margin.left + innerW - 16},${margin.top + innerH + 12}`}
+              stroke="#fff"
+              strokeWidth="2"
+              fill="none"
+            />
             {(() => {
               const TICK_COUNT = 5; // ← adjust to 6 or 7 if you want
               const step = Math.ceil(maxN / TICK_COUNT);
@@ -1176,7 +1644,7 @@ const yTicks = [
           >
             <div className="theory-top">
               <h2 className="theory-title">
-                Photon Count & QBER (Statistical Confidence)
+                Effect of Photon Count on QBER in BB84
 
                 <br />
 

@@ -92,15 +92,17 @@ export default function Exp3BB84() {
     const Y_MIN = 260;
     const Y_MAX = 30;
 
-    const finalQBER =
-      qberPoints.length === 0
-        ? 0
-        : qberPoints[qberPoints.length - 1].qber;
+    // ===== SCALE USING TRUE PEAK (NOT FINAL VALUE) =====
+const peakQBER =
+  qberPoints.length > 0
+    ? Math.max(...qberPoints.map(p => p.qber))
+    : 0;
 
-    const MAX_QBER = Math.max(
-      30,
-      Math.ceil((finalQBER * 1.1) / 10) * 10
-    );
+// Add headroom so peaks never touch border
+const MAX_QBER = Math.max(
+  30,
+  Math.ceil((peakQBER * 1.15) / 10) * 10
+);
 
     const MAX_X = Math.max(1, reportStats.total);
 
@@ -117,7 +119,6 @@ export default function Exp3BB84() {
     for (let v = 0; v <= MAX_QBER; v += 10) {
       qberTicks.push(v);
     }
-
 
     w.document.write(`
 <!DOCTYPE html>
@@ -234,8 +235,8 @@ export default function Exp3BB84() {
 
 <button class="print-btn" onclick="window.print()">Print Report</button>
 
-<h1>BB84 Quantum Key Distribution</h1>
-<h2>Experiment 3 — Detecting Eavesdropping Using Measurement Disturbance</h2>
+<h1>LAB REPORT - EXPERIMENT 3</h1>
+<h2>Detecting Eavesdropping — Intercept–Resend Attack</h2>
 
 <h3>1. Aim</h3>
 <p>
@@ -1069,11 +1070,17 @@ to infer the presence of an eavesdropper using QBER alone.
     const innerH = vbH - margin.top - margin.bottom;
 
 
-    const MAX_QBER = Math.max(
-      30,
-      Math.ceil((finalQBER * 1.1) / 10) * 10
-    );
+   // Determine peak from ALL points (not final value)
+const peakQBER =
+  points.length > 0
+    ? Math.max(...points.map(p => p.qber))
+    : 0;
 
+// Add scientific headroom
+const MAX_QBER = Math.max(
+  30,
+  Math.ceil((peakQBER * 1.15) / 10) * 10
+);
 
 
     const maxX = Math.max(1, totalPlanned);

@@ -143,15 +143,63 @@ export default function Exp8BB84() {
     @media print {
       .print-btn { display: none; }
     }
+  /* ===================== */
+/* ===== GRAPH ROW ===== */
+/* ===================== */
+.graph-row {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+/* ================================= */
+/* ===== INDIVIDUAL GRAPH BLOCK ===== */
+/* ================================= */
+.graph-container {
+  width: 33.333%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* ============================== */
+/* ===== GRAPH TITLE (TOP) ====== */
+/* ============================== */
+.graph-container h4 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* =========================== */
+/* ===== GRAPH BOX (SVG) ===== */
+/* =========================== */
+.graph-box {
+  width: 100%;
+  height: 300px;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;   /* ← boxes removed */
+}
+
+
+/* ======================= */
+/* ===== SVG FILL BOX ==== */
+/* ======================= */
+.graph-box svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
   </style>
 </head>
-
 <body>
 
 <button class="print-btn" onclick="window.print()">Print Report</button>
 
 <h1>LAB REPORT — Experiment 8</h1>
-<h2>Distance & Attenuation: Limits of Quantum Transmission</h2>
+<h2>Distance Effects on Key Generation in BB84</h2>
 
 <h3>1. Aim</h3>
 <p>
@@ -211,9 +259,360 @@ but practical key generation fails beyond a certain distance.
   <li>Secure key generation stops beyond a threshold distance</li>
 </ul>
 
-<div class="box">
-ADD SCREENSHOT OF KEY RATE vs DISTANCE GRAPH HERE
+<h3>4. Observations</h3>
+
+<p>
+Total Photons Sent: ${stats.totalSent}<br/>
+Detected Photons: ${stats.detected}<br/>
+Lost Photons: ${stats.lost}<br/>
+Sifted Key Length: ${stats.siftedKeyBits}<br/>
+Errors in Key: ${stats.errors}<br/>
+QBER: ${stats.qber}%<br/>
+
+<strong>
+${stats.qber < 11
+                ? "Within operational distance range"
+                : "Distance exceeded practical BB84 range"}
+</strong>
+</p>
+<h4>GRAPHS</h4>
+
+<div class="graph-row">
+
+  <!-- ================= GRAPH 1 ================= -->
+  <div class="graph-container">
+    <h4>Correct vs Incorrect</h4>
+    <div class="graph-box">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+        <!-- Y axis -->
+        <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- X axis -->
+        <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+        
+        <text x="18" y="264">${yTicks[0]}</text>
+<text x="18" y="214">${yTicks[1]}</text>
+<text x="18" y="164">${yTicks[2]}</text>
+<text x="18" y="114">${yTicks[3]}</text>
+<text x="18" y="64">${yTicks[4]}</text>
+
+        <!-- Y label -->
+        <text x="14" y="260"
+              transform="rotate(-90 14 260)"
+              font-size="15"
+              font-weight="bold">
+          Count of Bits →
+        </text>
+
+        <!-- X label -->
+        <text x="160" y="298"
+              font-size="14"
+              font-weight="bold"
+              text-anchor="middle">
+          Bit Classification →
+        </text>
+
+        <!-- Bars -->
+        <rect x="110"
+              y="${260 - reportStats.correct * yScale}"
+              width="40"
+              height="${reportStats.correct * yScale}"
+              fill="black"/>
+
+        <rect x="180"
+              y="${260 - reportStats.incorrect * yScale}"
+              width="40"
+              height="${reportStats.incorrect * yScale}"
+              fill="gray"/>
+
+        <!-- Values -->
+        <text x="118" y="${255 - reportStats.correct * yScale}">
+          ${reportStats.correct}
+        </text>
+        <text x="188" y="${255 - reportStats.incorrect * yScale}">
+          ${reportStats.incorrect}
+        </text>
+
+        <text x="105" y="285">Correct</text>
+        <text x="165" y="285">Incorrect</text>
+
+      </svg>
+    </div>
+  </div>
+
+  <!-- ================= GRAPH 2 ================= -->
+  <div class="graph-container">
+    <h4>Basis Match vs Mismatch</h4>
+    <div class="graph-box">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+        <!-- Y axis -->
+        <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- X axis -->
+        <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- Y ticks -->
+        <text x="18" y="264">${yTicks[0]}</text>
+<text x="18" y="214">${yTicks[1]}</text>
+<text x="18" y="164">${yTicks[2]}</text>
+<text x="18" y="114">${yTicks[3]}</text>
+<text x="18" y="64">${yTicks[4]}</text>
+
+        <!-- Y label -->
+        <text x="14" y="260"
+              transform="rotate(-90 14 260)"
+              font-size="15"
+              font-weight="bold">
+          Number of Photons →
+        </text>
+
+        <!-- X label -->
+        <text x="160" y="298"
+              font-size="14"
+              font-weight="bold"
+              text-anchor="middle">
+          Basis Comparison →
+        </text>
+
+        <!-- Bars -->
+        <rect x="110"
+              y="${260 - reportStats.match * yScale}"
+              width="40"
+              height="${reportStats.match * yScale}"
+              fill="black"/>
+
+        <rect x="180"
+              y="${260 - reportStats.mismatch * yScale}"
+              width="40"
+              height="${reportStats.mismatch * yScale}"
+              fill="gray"/>
+
+        <!-- Values -->
+        <text x="118" y="${255 - reportStats.match * yScale}">
+          ${reportStats.match}
+        </text>
+        <text x="188" y="${255 - reportStats.mismatch * yScale}">
+          ${reportStats.mismatch}
+        </text>
+
+        <text x="110" y="285">Match</text>
+        <text x="175" y="285">Mismatch</text>
+
+      </svg>
+    </div>
+  </div>
+
+ <!-- ================= GRAPH 3 ================= -->
+<div class="graph-container">
+  <h4>Key Rate vs Distance</h4>
+
+  <div class="graph-box">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+      <!-- Axes -->
+      <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+      <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+
+      <!-- Arrowheads -->
+      <polyline points="50,30 44,40 56,40" stroke="black" fill="none"/>
+      <polyline points="270,260 260,254 260,266" stroke="black" fill="none"/>
+
+      <!-- Labels -->
+      <text x="14" y="260"
+        transform="rotate(-90 14 260)"
+        font-size="14"
+        font-weight="bold">
+        Sifted Key Length →
+      </text>
+
+      <text x="160" y="295"
+        font-size="14"
+        font-weight="bold"
+        text-anchor="middle">
+        Distance (km) →
+      </text>
+
+      <!-- Y ticks (no duplicate zero) -->
+      ${[0.25, 0.5, 0.75, 1].map(f => `
+        <text x="30"
+          y="${260 - f * 230}"
+          font-size="11">
+          ${Math.round(f * axisMax)}
+        </text>`).join("")}
+
+      <!-- X ticks -->
+      ${[0, 50, 100, 150, 200].map(d => `
+        <text x="${50 + (d / 200) * 220}"
+          y="275"
+          font-size="11"
+          text-anchor="middle">
+          ${d}
+        </text>`).join("")}
+
+      <!-- Data -->
+      ${keyRateVsDistance.map(p => `
+        <circle
+          cx="${50 + (p.distance / 200) * 220}"
+          cy="${260 - (p.keyRate / axisMax) * 230}"
+          r="3"
+          fill="black"
+        />`).join("")}
+        <!-- Data + Labels -->
+${keyRateVsDistance.map((p, i) => `
+  <circle
+    cx="${50 + (p.distance / 200) * 220}"
+    cy="${260 - (p.keyRate / axisMax) * 230}"
+    r="3"
+    fill="black"
+  />
+
+  <!-- VALUE ABOVE DOT -->
+  <text
+    x="${50 + (p.distance / 200) * 220}"
+    y="${260 - (p.keyRate / axisMax) * 230 - 10}"
+    font-size="10"
+    text-anchor="middle"
+    font-weight="bold">
+    ${p.keyRate}
+  </text>
+
+  <!-- RUN INDEX -->
+  <text
+    x="${50 + (p.distance / 200) * 220}"
+    y="${260 - (p.keyRate / axisMax) * 230 + 12}"
+    font-size="9"
+    text-anchor="middle">
+    (${i + 1})
+  </text>
+`).join("")}
+     <!-- Connecting line -->
+<polyline
+  fill="none"
+  stroke="black"
+  stroke-width="1.5"
+  points="
+${keyRateVsDistance
+                .slice()
+                .sort((a, b) => a.distance - b.distance)
+                .map(p => `
+    ${50 + (p.distance / 200) * 220},
+    ${260 - (p.keyRate / axisMax) * 230}
+  `).join(" ")}
+"
+/>
+    </svg>
+  </div>
 </div>
+
+</svg>
+  </div>
+
+</div>
+<h3>Key Analysis & Security Verification</h3>
+
+<h4>1. Sifted Key Length</h4>
+<p>
+The sifted key consists of all bits for which Alice’s encoding basis matches
+Bob’s measurement basis and successful detection occurs.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+n<sub>sifted</sub> = | { bits where basis match AND detection occurs } |
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+n<sub>sifted</sub> = ${stats.matchedMeasured} bits
+</p>
+
+<hr/>
+
+<h4>2. Quantum Bit Error Rate (QBER)</h4>
+<p>
+QBER represents the fraction of erroneous bits in the sifted key and indicates
+the presence of noise or eavesdropping in the quantum channel.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+QBER = ( Number of erroneous bits ) / ( Total number of bits compared )
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+QBER = (${stats.incorrectBits} / ${stats.matchedMeasured || 1}) = ${stats.qberPercent}%
+</p>
+
+<hr/>
+
+<h4>3. Security Thresholds</h4>
+<ul>
+  <li>QBER &lt; 11% → <b>SAFE</b></li>
+  <li>11% ≤ QBER ≤ 25% → <b>BEWARE</b></li>
+  <li>QBER &gt; 25% → <b>DANGER</b> (Abort Key)</li>
+</ul>
+
+<p>
+<b>Current Status:</b>
+${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+</p>
+
+<hr/>
+
+<h4>Analysis Results</h4>
+
+<table border="1" cellspacing="0" cellpadding="8" width="100%">
+  <tr>
+    <th align="left">Metric</th>
+    <th align="left">Value</th>
+    <th align="left">Description</th>
+  </tr>
+
+  <tr>
+    <td>Total Transmissions</td>
+    <td>${stats.totalPlanned}</td>
+    <td>Raw photons sent by Alice</td>
+  </tr>
+
+  <tr>
+    <td>Sifted Key Length</td>
+    <td>${stats.matchedMeasured}</td>
+    <td>Bits where bases matched and detection occurred</td>
+  </tr>
+
+  <tr>
+    <td>Detected Errors</td>
+    <td>${stats.incorrectBits}</td>
+    <td>Mismatched bits in the sifted key</td>
+  </tr>
+
+  <tr>
+    <td>QBER</td>
+    <td>${stats.qberPercent}%</td>
+    <td>Quantum Bit Error Rate</td>
+  </tr>
+
+  <tr>
+    <td>Abort Threshold</td>
+    <td>11%</td>
+    <td>Maximum acceptable QBER</td>
+  </tr>
+
+  <tr>
+    <td>Security Status</td>
+    <td>
+      ${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+    </td>
+    <td>Channel security decision</td>
+  </tr>
+</table>
 
 <h3>5. Conclusion</h3>
 <p>
@@ -268,7 +667,7 @@ but practically limited by physical channel properties.
         setEveLevel(DEFAULT_EVE_PERCENT);
         setTempEveLevel(DEFAULT_EVE_PERCENT);
         setChannelNoisePercent(0);
-        setChannelDistanceKm(0);
+        setChannelDistanceKm(tempChannelDistanceKm);
 
         initializeProtocol(sliderTempValue);
         setSentTransmissions([]);
@@ -292,9 +691,13 @@ but practically limited by physical channel properties.
 
     // ---------- Channel options ----------
     const applyChannelOptions = () => {
+
+        // ⭐ sync slider → committed state
+        setChannelDistanceKm(tempChannelDistanceKm);
+
         initializeProtocol(numPhotons);
-        setSentTransmissions([]);     // reset photons only
-        setChannelKey((k) => k + 1);
+        setSentTransmissions([]);
+        setChannelKey(k => k + 1);
 
         updateStatus(
             `Channel updated: Distance = ${channelDistanceKm} km · Run experiment`
@@ -473,52 +876,51 @@ but practically limited by physical channel properties.
         };
     }, [numPhotons, sentTransmissions]);
     // ===== Report-only aggregated stats (SAFE: stats already exists) =====
-const reportStats = {
-  total: stats.totalPlanned,
-  correct: stats.correctBits,
-  incorrect: stats.incorrectBits,
-  match: stats.matchedMeasured,
-  mismatch: stats.mismatchedMeasured,
-  qber: stats.qberPercent,
-};
+    const reportStats = {
+        total: stats.totalSent,
+        correct: stats.matched - stats.errors,
+        incorrect: stats.errors,
+        match: stats.matched,
+        mismatch: stats.totalSent - stats.matched,
+        qber: stats.qber,
+    };
+    const observedMax =
+        keyRateVsDistance.length === 0
+            ? numPhotons
+            : Math.max(...keyRateVsDistance.map(p => p.keyRate));
 
-// ===== Graph scaling (bar graphs must scale to observed counts) =====
-const yMax = Math.max(
-  reportStats.correct + reportStats.incorrect,
-  reportStats.match + reportStats.mismatch,
-  1
-);
+    const axisMax = Math.ceil(observedMax * 1.2);
 
-// usable vertical height = 200px (260 - 60)
-const yScale = 200 / yMax;
+    // ===== Graph scaling (bar graphs must scale to observed counts) =====
+    const yMax = Math.max(
+        reportStats.correct + reportStats.incorrect,
+        reportStats.match + reportStats.mismatch,
+        1
+    );
 
-const yTicks = [
-  0,
-  Math.round(yMax * 0.25),
-  Math.round(yMax * 0.5),
-  Math.round(yMax * 0.75),
-  yMax,
-];
+    // usable vertical height = 200px (260 - 60)
+    const yScale = 200 / yMax;
+
+    const yTicks = [
+        0,
+        Math.round(yMax * 0.25),
+        Math.round(yMax * 0.5),
+        Math.round(yMax * 0.75),
+        yMax,
+    ];
 
 
     useEffect(() => {
         if (sentTransmissions.length !== numPhotons) return;
 
-        setKeyRateVsDistance(prev => {
-            const filtered = prev.filter(
-                p => p.distance !== channelDistanceKm
-            );
-
-            return [
-                ...filtered,
-                {
-                    distance: channelDistanceKm,
-                    keyRate: stats.siftedKeyBits,
-                    qber: stats.qber,
-                },
-            ];
-        });
-
+        setKeyRateVsDistance(prev => [
+            ...prev,
+            {
+                distance: channelDistanceKm,
+                keyRate: stats.siftedKeyBits,
+                qber: stats.qber,
+            },
+        ]);
         if (stats.qber > 11) {
             updateStatus(
                 "QBER exceeded threshold — secure key generation aborted"
@@ -545,7 +947,10 @@ const yTicks = [
 
         const domainMax = Math.max(1, maxY ? maxY : leftValue, rightValue);
         const yTicks = 5;
-        const tickStep = Math.ceil(domainMax / yTicks);
+
+        // Clean rounded scale
+        const niceMax = Math.ceil(domainMax / 5) * 5;
+        const tickStep = niceMax / yTicks;
 
         const barWidth = Math.min(360, innerW * 0.26);
         const spacing = Math.max(24, Math.round(innerW * 0.04));
@@ -555,17 +960,19 @@ const yTicks = [
         const baselineY = margin.top + innerH;
 
         const valueToY = (v) => {
-            const frac = Math.min(1, v / (tickStep * yTicks));
+            const frac = Math.min(1, v / niceMax);
             return Math.round(baselineY - frac * innerH);
         };
 
         const ticks = [];
-        for (let i = 0; i <= yTicks; i++) ticks.push(i * tickStep);
+        for (let i = 0; i <= yTicks; i++)
+            ticks.push(Math.round(i * tickStep));
 
         return (
             <div className="chart-wrapper" role="group" aria-label={title}>
                 <div className="chart-title-outside">{title}</div>
                 <div className="chart-card" style={{ padding: 8 }}>
+
                     <svg viewBox={`0 0 ${vbW} ${vbH}`} className="chart-svg" preserveAspectRatio="none">
                         {ticks.map((tick, i) => {
                             const y = margin.top + innerH - (i / yTicks) * innerH;
@@ -586,8 +993,34 @@ const yTicks = [
                         })}
 
                         <line x1={margin.left} x2={margin.left} y1={margin.top} y2={margin.top + innerH} className="chart-axis-main" />
-                        <line x1={margin.left} x2={margin.left + innerW} y1={baselineY} y2={baselineY} className="chart-axis-main" />
 
+                        <line x1={margin.left} x2={margin.left + innerW} y1={baselineY} y2={baselineY} className="chart-axis-main" />
+                        {/* ===== Y AXIS LABEL ===== */}
+                        <text
+                            x={margin.left - 70}
+                            y={margin.top + innerH / 2}
+                            transform={`rotate(-90 ${margin.left - 70} ${margin.top + innerH / 2})`}
+                            className="chart-axis-label"
+                            style={{ fontSize: 20, fill: "#fff" }}
+                        >
+                            {yLabel}
+                        </text>
+
+                        {/* Axis arrows */}
+                        {/* Y axis */}
+                        <line x1={margin.left} x2={margin.left} y1={margin.top} y2={margin.top + innerH} className="chart-axis-main" />
+                        <polyline
+                            points={`${margin.left},${margin.top} ${margin.left - 10},${margin.top + 20} ${margin.left + 10},${margin.top + 20}`}
+                            className="chart-axis-arrow"
+                            fill="none"
+                        />
+                        <polyline
+                            points={`${margin.left + innerW},${baselineY}
+          ${margin.left + innerW - 14},${baselineY - 10}
+          ${margin.left + innerW - 14},${baselineY + 10}`}
+                            className="chart-axis-arrow"
+                            fill="none"
+                        />
                         {xLabel && (
                             <text x={margin.left + innerW / 2} y={vbH - 12} className="chart-axis-label">
                                 {xLabel} →
@@ -713,7 +1146,7 @@ const yTicks = [
                 <div className="experiment-theory-wrapper">
                     <div className="experiment-theory-box" role="region" aria-label="Experiment 7 theory">
                         <div className="theory-top">
-                            <h2 className="theory-title">Distance & Attenuation: Limits of Quantum Transmission</h2>
+                            <h2 className="theory-title">Distance Effects on Key Generation in BB84n</h2>
                         </div>
 
                         <div className="theory-body">
@@ -995,11 +1428,11 @@ const yTicks = [
                                     min="0"
                                     max="200"
                                     step="10"
-                                    value={channelDistanceKm}
+                                    value={tempChannelDistanceKm}
                                     className="exp-slider"
-                                    onChange={(e) => setChannelDistanceKm(Number(e.target.value))}
+                                    onChange={handleDistanceChange}
                                 />
-                                <span className="slider-value">{channelDistanceKm} km</span>
+                                <span className="slider-value">{tempChannelDistanceKm} km</span>
 
 
                             </div>
@@ -1074,6 +1507,7 @@ const yTicks = [
                             <div className="chart-title-outside">Key Rate vs Distance</div>
 
                             <div className="chart-card" style={{ padding: 8 }}>
+
                                 <svg
                                     viewBox="0 0 700 400"
                                     className="chart-svg"
@@ -1095,6 +1529,13 @@ const yTicks = [
 
                                     {/* Y Axis */}
                                     <line x1="120" y1="50" x2="120" y2="330" className="chart-axis-main" />
+
+                                    <polyline
+                                        points="120,50 110,70 130,70"
+                                        className="chart-axis-arrow"
+                                        fill="none"
+                                    />
+
                                     <text
                                         x="60"
                                         y="200"
@@ -1106,6 +1547,12 @@ const yTicks = [
 
                                     {/* X Axis */}
                                     <line x1="120" y1="330" x2="640" y2="330" className="chart-axis-main" />
+
+                                    <polyline
+                                        points="640,330 626,320 626,340"
+                                        className="chart-axis-arrow"
+                                        fill="none"
+                                    />
                                     <text x="380" y="388" className="chart-axis-label">
                                         Distance (km) →
                                     </text>
@@ -1128,22 +1575,43 @@ const yTicks = [
                                         );
                                     })}
 
-                                    {/* Y-axis ticks */}
-                                    {[0, 0.25, 0.5, 0.75, 1].map((f, i) => {
-                                        const y = 330 - f * 280;
-                                        const value = Math.round(f * numPhotons);
-                                        return (
-                                            <text
-                                                key={i}
-                                                x="110"
-                                                y={y + 5}
-                                                textAnchor="end"
-                                                className="chart-tick-label"
-                                            >
-                                                {value}
-                                            </text>
-                                        );
-                                    })}
+                                    {/* ===== Dynamic Y ticks (7 divisions, no duplicate zero) ===== */}
+                                    {(() => {
+                                        const TICK_COUNT = 5;
+
+                                        const yTop = 50;
+                                        const yBottom = 330;
+                                        const axisX = 120;
+
+                                        const height = yBottom - yTop;
+                                        const stepValue = axisMax / TICK_COUNT;
+
+                                        return Array.from({ length: TICK_COUNT }, (_, i) => {
+                                            const value = Math.round((i + 1) * stepValue);
+                                            const y = yBottom - ((i + 1) / TICK_COUNT) * height;
+
+                                            return (
+                                                <g key={i}>
+                                                    <line
+                                                        x1={axisX - 4}
+                                                        x2={axisX}
+                                                        y1={y}
+                                                        y2={y}
+                                                        className="chart-tick"
+                                                    />
+
+                                                    <text
+                                                        x={axisX - 14}
+                                                        y={y + 5}
+                                                        textAnchor="end"
+                                                        className="chart-tick-label"
+                                                    >
+                                                        {value}
+                                                    </text>
+                                                </g>
+                                            );
+                                        });
+                                    })()}
 
                                     {/* ================= GRID ================= */}
                                     {[0, 1, 2, 3, 4, 5].map((i) => {
@@ -1184,38 +1652,50 @@ const yTicks = [
 
                                     {/* ================= DATA POINTS ================= */}
                                     {keyRateVsDistance.map((p, i) => {
-                                        const x = 120 + (p.distance / 200) * 520;
-                                        const y = 330 - (p.keyRate / numPhotons) * 280;
+                                        const baseX = 120 + (p.distance / 200) * 520;
+                                        const y = 330 - (p.keyRate / axisMax) * 280;
+
+                                        // Horizontal label offset pattern
+                                        const labelOffset = (i % 5 - 2) * 10;
+                                        const x = baseX + labelOffset;
 
                                         return (
                                             <g key={i}>
-                                                {/* Data point */}
-                                                <circle cx={x} cy={y} r="5" fill="#fff" />
 
-                                                {/* Key rate value */}
+                                                {/* DOT */}
+                                                <circle
+                                                    cx={baseX}
+                                                    cy={y}
+                                                    r="6"
+                                                    fill="#fff"
+                                                    stroke="#000"
+                                                    strokeWidth="1"
+                                                />
+
+                                                {/* VALUE ABOVE DOT */}
                                                 <text
-                                                    x={x}
-                                                    y={y - 14}
+                                                    x={baseX}
+                                                    y={y - 10}
                                                     textAnchor="middle"
                                                     className="chart-tick-label"
+                                                    style={{ fontSize: 12, fontWeight: 700 }}
                                                 >
                                                     {p.keyRate}
                                                 </text>
 
-                                                {/* Run number */}
+                                                {/* ITERATION BELOW DOT — shifted */}
                                                 <text
                                                     x={x}
-                                                    y={y - 2}
+                                                    y={y + 14}
                                                     textAnchor="middle"
-                                                    style={{ fontSize: "12px", fill: "rgba(255,255,255,0.7)" }}
+                                                    style={{ fontSize: 10 }}
                                                 >
                                                     ({i + 1})
                                                 </text>
+
                                             </g>
                                         );
                                     })}
-
-
                                     {/* ================= CONNECTING LINE ================= */}
                                     {keyRateVsDistance.length > 1 && (
                                         <polyline
@@ -1229,7 +1709,7 @@ const yTicks = [
                                                 .sort((a, b) => a.distance - b.distance)
                                                 .map((p) => {
                                                     const x = 120 + (p.distance / 200) * 520;
-                                                    const y = 330 - (p.keyRate / numPhotons) * 280;
+                                                    const y = 330 - (p.keyRate / axisMax) * 280;
                                                     return `${x},${y}`;
                                                 })
                                                 .join(" ")}

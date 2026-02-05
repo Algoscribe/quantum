@@ -67,7 +67,7 @@ export default function Credits() {
             <div className="team-card">Arundhati Nair</div>
             <div className="team-card">Harsh Mhadgut</div>
             <div className="team-card">Shantaram Chari</div>
-            <div className="team-card">Sharavani Kale</div>
+            <div className="team-card">Shravani Kale</div>
             <div className="team-card">Tejas Naringrekar</div>
           </div>
         </div>

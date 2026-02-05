@@ -65,7 +65,8 @@ export default function Exp4BB84() {
       "_blank",
       `width=${width},height=${height},left=${left},top=${top}`
     );
-
+    const REPORT_MAX_QBER = Math.max(30, Math.ceil(reportStats.qber / 10) * 10);
+    const QBER_SCALE = 230 / REPORT_MAX_QBER; // 260 - 30
     w.document.write(`
 <!DOCTYPE html>
 <html>
@@ -181,8 +182,8 @@ export default function Exp4BB84() {
 
 <button class="print-btn" onclick="window.print()">Print Report</button>
 
-<h1>Partial Eavesdropping in BB84</h1>
-<h2>Experiment 4 — Statistical Detection of Intercept–Resend</h2>
+<h1>LAB REPORT - EXPERIMENT 4</h1>
+<h2>Partial eavesdropping in BB84</h2>
 
 <h3>1. Aim</h3>
 <p>
@@ -379,8 +380,8 @@ This enables statistical detection of eavesdropping.
       <!-- Threshold: SAFE (11%) -->
       <line
         x1="50" x2="270"
-        y1="${260 - 11 * 3}"
-        y2="${260 - 11 * 3}"
+        y1="${260 - 260 - 11 * 3 + 10}"
+        y2="${260 - 260 - 11 * 3 + 10}"
         stroke="orange"
         stroke-dasharray="4 4"
         stroke-width="3"
@@ -389,42 +390,25 @@ This enables statistical detection of eavesdropping.
       <!-- Threshold: DANGER (25%) -->
       <line
         x1="50" x2="270"
-        y1="${260 - 25 * 3}"
-        y2="${260 - 25 * 3}"
+        y1="${260 - 260 - 25 * 3 + 10}"
+        y2="${260 - 260 - 25 * 3 + 10}"
         stroke="red"
         stroke-dasharray="4 4"
         stroke-width="3"
       />
 
-      <!-- QBER zig-zag curve (ENDS EARLY – MATCHES REAL DATA) -->
-      <polyline
-        fill="none"
-        stroke="black"
-        stroke-width="3"
-        points="
-          50,260
-          65,190
-          75,220
-          90,180
-          110,200
-          140,215
-          170,230
-          200,${260 - reportStats.qber * 3}
-        "
-      />
-
       <!-- Final QBER line (GREEN, DOTTED, SAME THICKNESS AS YELLOW) -->
       <line
         x1="50" x2="270"
-        y1="${260 - reportStats.qber * 3}"
-        y2="${260 - reportStats.qber * 3}"
+        y1="${260 - Math.min(reportStats.qber, 30) * 3 + 10}"
+        y2="${260 - Math.min(reportStats.qber, 30) * 3 + 10}"
         stroke="green"
         stroke-dasharray="4 4"
         stroke-width="3"
       />
 
       <!-- Final QBER value -->
-      <text x="238" y="45" font-weight="bold">
+      <text x="220" y="45" font-weight="bold">
         ${reportStats.qber}%
       </text>
 
@@ -446,10 +430,106 @@ This enables statistical detection of eavesdropping.
   </div>
 </div>
 
-
 </div>
+<h3>Key Analysis & Security Verification</h3>
 
+<h4>1. Sifted Key Length</h4>
+<p>
+The sifted key consists of all bits for which Alice’s encoding basis matches
+Bob’s measurement basis and successful detection occurs.
+</p>
 
+<p><b>Formula:</b></p>
+<p>
+n<sub>sifted</sub> = | { bits where basis match AND detection occurs } |
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+n<sub>sifted</sub> = ${stats.matchedMeasured} bits
+</p>
+
+<hr/>
+
+<h4>2. Quantum Bit Error Rate (QBER)</h4>
+<p>
+QBER represents the fraction of erroneous bits in the sifted key and indicates
+the presence of noise or eavesdropping in the quantum channel.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+QBER = ( Number of erroneous bits ) / ( Total number of bits compared )
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+QBER = (${stats.incorrectBits} / ${stats.matchedMeasured || 1}) = ${stats.qberPercent}%
+</p>
+
+<hr/>
+
+<h4>3. Security Thresholds</h4>
+<ul>
+  <li>QBER &lt; 11% → <b>SAFE</b></li>
+  <li>11% ≤ QBER ≤ 25% → <b>BEWARE</b></li>
+  <li>QBER &gt; 25% → <b>DANGER</b> (Abort Key)</li>
+</ul>
+
+<p>
+<b>Current Status:</b>
+${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+</p>
+
+<hr/>
+
+<h4>Analysis Results</h4>
+
+<table border="1" cellspacing="0" cellpadding="8" width="100%">
+  <tr>
+    <th align="left">Metric</th>
+    <th align="left">Value</th>
+    <th align="left">Description</th>
+  </tr>
+
+  <tr>
+    <td>Total Transmissions</td>
+    <td>${stats.totalPlanned}</td>
+    <td>Raw photons sent by Alice</td>
+  </tr>
+
+  <tr>
+    <td>Sifted Key Length</td>
+    <td>${stats.matchedMeasured}</td>
+    <td>Bits where bases matched and detection occurred</td>
+  </tr>
+
+  <tr>
+    <td>Detected Errors</td>
+    <td>${stats.incorrectBits}</td>
+    <td>Mismatched bits in the sifted key</td>
+  </tr>
+
+  <tr>
+    <td>QBER</td>
+    <td>${stats.qberPercent}%</td>
+    <td>Quantum Bit Error Rate</td>
+  </tr>
+
+  <tr>
+    <td>Abort Threshold</td>
+    <td>11%</td>
+    <td>Maximum acceptable QBER</td>
+  </tr>
+
+  <tr>
+    <td>Security Status</td>
+    <td>
+      ${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+    </td>
+    <td>Channel security decision</td>
+  </tr>
+</table>
 <h3>5. Conclusion</h3>
 <p>
 This experiment demonstrates that BB84 security does not require
@@ -876,10 +956,12 @@ const yTicks = [
       margin.left + (step / maxX) * innerW;
 
 
+    const TOP_PAD = 12;  // space from top border
 
-
-    const yFor = (v) =>
-      margin.top + innerH - (Math.min(v, MAX_QBER) / MAX_QBER) * innerH;
+const yFor = (v) =>
+  margin.top + TOP_PAD +
+  (innerH - TOP_PAD) *
+  (1 - Math.min(v, MAX_QBER) / MAX_QBER);
 
 
     const pathD = points
@@ -1035,7 +1117,7 @@ const yTicks = [
 
             {/* Final QBER */}
             <text
-              x={margin.left + innerW + 8}
+              x={margin.left + innerW - 25}
               y={margin.top + 18}
               className="chart-tick-label"
             >

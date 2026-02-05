@@ -215,7 +215,7 @@ const yTicks = [
 <button class="print-btn" onclick="window.print()">Print Report</button>
 
 <h1>BB84 Quantum Key Distribution</h1>
-<h2>Experiment 1 — Ideal BB84 Transmission: Zero Error Quantum Communication</h2>
+<h2>Ideal BB84 Transmission: Zero Error Quantum Communication</h2>
 
 <h3>1. Aim</h3>
 <p>

@@ -16,16 +16,16 @@ export default function Exp7BB84() {
     const [channelNoisePercent, setChannelNoisePercent] = useState(0);
     const [photonLossPercent, setPhotonLossPercent] = useState(0);
     const [keyRateVsLoss, setKeyRateVsLoss] = useState([]);
-
+    
     const [eveLevel, setEveLevel] = useState(DEFAULT_EVE_PERCENT);
     const [channelDistanceKm, setChannelDistanceKm] = useState(0);
     const [showInstructions, setShowInstructions] = useState(false);
 
     const reportDate = new Date().toLocaleDateString("en-IN", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
 
 
 
@@ -142,6 +142,54 @@ export default function Exp7BB84() {
     @media print {
       .print-btn { display: none; }
     }
+    /* ===================== */
+/* ===== GRAPH ROW ===== */
+/* ===================== */
+.graph-row {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+/* ================================= */
+/* ===== INDIVIDUAL GRAPH BLOCK ===== */
+/* ================================= */
+.graph-container {
+  width: 33.333%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* ============================== */
+/* ===== GRAPH TITLE (TOP) ====== */
+/* ============================== */
+.graph-container h4 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* =========================== */
+/* ===== GRAPH BOX (SVG) ===== */
+/* =========================== */
+.graph-box {
+  width: 100%;
+  height: 300px;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;   /* ← boxes removed */
+}
+
+
+/* ======================= */
+/* ===== SVG FILL BOX ==== */
+/* ======================= */
+.graph-box svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
   </style>
 </head>
 
@@ -213,9 +261,337 @@ This property makes BB84 suitable for long-distance quantum communication.
   <li>No disturbance signature appears</li>
 </ul>
 
-<div class="box">
-ADD SCREENSHOT OF KEY LENGTH vs PHOTON LOSS GRAPH HERE
+<p>
+Total Photons: ${reportStats.total}<br/>
+Correct Measurements: ${reportStats.correct}<br/>
+Incorrect Measurements: ${reportStats.incorrect}<br/>
+QBER: ${reportStats.qber}%<br/>
+Result:
+<strong>
+Photon loss reduced key length to ${reportStats.match} usable bits.
+QBER remained ${reportStats.qber}% — indicating security unaffected.
+</strong>
+</p>
+<h4>GRAPHS</h4>
+
+<div class="graph-row">
+
+  <!-- ================= GRAPH 1 ================= -->
+  <div class="graph-container">
+    <h4>Correct vs Incorrect</h4>
+    <div class="graph-box">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+        <!-- Y axis -->
+        <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- X axis -->
+        <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- Y ticks -->
+        <text x="30" y="264">${yTicks[0]}</text>
+        <text x="30" y="214">${yTicks[1]}</text>
+        <text x="30" y="164">${yTicks[2]}</text>
+        <text x="24" y="114">${yTicks[3]}</text>
+        <text x="24" y="64">${yTicks[4]}</text>
+
+        <!-- Y label -->
+        <text x="14" y="260"
+              transform="rotate(-90 14 260)"
+              font-size="15"
+              font-weight="bold">
+          Count of Bits →
+        </text>
+
+        <!-- X label -->
+        <text x="160" y="298"
+              font-size="14"
+              font-weight="bold"
+              text-anchor="middle">
+          Bit Classification →
+        </text>
+
+        <!-- Bars -->
+        <rect x="110"
+              y="${260 - reportStats.correct * yScale}"
+              width="40"
+              height="${reportStats.correct * yScale}"
+              fill="black"/>
+
+        <rect x="180"
+              y="${260 - reportStats.incorrect * yScale}"
+              width="40"
+              height="${reportStats.incorrect * yScale}"
+              fill="gray"/>
+
+        <!-- Values -->
+        <text x="118" y="${255 - reportStats.correct * yScale}">
+          ${reportStats.correct}
+        </text>
+        <text x="188" y="${255 - reportStats.incorrect * yScale}">
+          ${reportStats.incorrect}
+        </text>
+
+        <text x="105" y="285">Correct</text>
+        <text x="165" y="285">Incorrect</text>
+
+      </svg>
+    </div>
+  </div>
+
+  <!-- ================= GRAPH 2 ================= -->
+  <div class="graph-container">
+    <h4>Usable vs Discarded Photons</h4>
+    <div class="graph-box">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+        <!-- Y axis -->
+        <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- X axis -->
+        <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- Y ticks -->
+        <text x="30" y="264">${yTicks[0]}</text>
+        <text x="30" y="214">${yTicks[1]}</text>
+        <text x="30" y="164">${yTicks[2]}</text>
+        <text x="24" y="114">${yTicks[3]}</text>
+        <text x="24" y="64">${yTicks[4]}</text>
+
+        <!-- Y label -->
+        <text x="14" y="260"
+              transform="rotate(-90 14 260)"
+              font-size="15"
+              font-weight="bold">
+          Number of Photons →
+        </text>
+
+        <!-- X label -->
+        <text x="160" y="298"
+              font-size="14"
+              font-weight="bold"
+              text-anchor="middle">
+          Photon Outcome →
+        </text>
+
+        <!-- Bars -->
+        <rect x="110"
+              y="${260 - reportStats.match * yScale}"
+              width="40"
+              height="${reportStats.match * yScale}"
+              fill="black"/>
+
+        <rect x="180"
+              y="${260 - reportStats.mismatch * yScale}"
+              width="40"
+              height="${reportStats.mismatch * yScale}"
+              fill="gray"/>
+
+        <!-- Values -->
+        <text x="118" y="${255 - reportStats.match * yScale}">
+          ${reportStats.match}
+        </text>
+        <text x="188" y="${255 - reportStats.mismatch * yScale}">
+          ${reportStats.mismatch}
+        </text>
+
+        <text x="110" y="285">Match</text>
+        <text x="175" y="285">Mismatch</text>
+
+      </svg>
+    </div>
+  </div>
+
+ <!-- ================= GRAPH 3 ================= -->
+<div class="graph-container">
+  <h4>Key Length vs Photon Loss</h4>
+  <div class="graph-box">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+      <!-- Axes -->
+      <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+      <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+
+      <!-- Arrows -->
+      <polyline points="50,30 44,40 56,40" stroke="black" fill="none"/>
+      <polyline points="270,260 260,254 260,266" stroke="black" fill="none"/>
+
+      <!-- Y label -->
+      <text x="14" y="260"
+            transform="rotate(-90 14 260)"
+            font-size="14"
+            font-weight="bold">
+        Key Length →
+      </text>
+
+      <!-- X label -->
+      <text x="160" y="295"
+            font-size="14"
+            font-weight="bold"
+            text-anchor="middle">
+        Photon Loss (%) →
+      </text>
+
+      <!-- Y ticks -->
+      ${[0, 0.25, 0.5, 0.75, 1].map(f => `
+        <text x="25"
+              y="${260 - f * 230}"
+              font-size="11">
+          ${Math.round(f * reportStats.total)}
+        </text>
+      `).join("")}
+
+      <!-- X ticks -->
+      ${[0, 25, 50, 75, 100].map(v => `
+        <text x="${50 + (v / 100) * 220}"
+              y="275"
+              font-size="11"
+              text-anchor="middle">
+          ${v}
+        </text>
+      `).join("")}
+
+      <!-- Line path -->
+      ${keyRateVsLoss.length > 1 ? `
+  <polyline
+    fill="none"
+    stroke="black"
+    stroke-width="2"
+    points="
+      ${keyRateVsLoss.map(p =>
+            `${50 + (p.loss / 100) * 220},
+         ${260 - ((p.keyRate / axisMax)) * 230}`
+        ).join(" ")}
+    "
+  />
+` : ""}
+
+      <!-- Points -->
+      ${keyRateVsLoss.map(p => `
+  <circle
+    cx="${50 + (p.loss / 100) * 220}"
+    cy="${260 - ((p.keyRate / axisMax)) * 230}"
+    r="4"
+    fill="black"/>
+  <text
+    x="${50 + (p.loss / 100) * 220}"
+    y="${260 - ((p.keyRate / axisMax)) * 230 - 6}"
+    font-size="11"
+    text-anchor="middle">
+    ${p.keyRate}
+  </text>
+`).join("")}
+
+    </svg>
+  </div>
 </div>
+  </div>
+
+</div>
+<h3>Key Analysis & Security Verification</h3>
+
+<h4>1. Sifted Key Length</h4>
+<p>
+The sifted key consists of all bits for which Alice’s encoding basis matches
+Bob’s measurement basis and successful detection occurs.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+n<sub>sifted</sub> = | { bits where basis match AND detection occurs } |
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+n<sub>sifted</sub> = ${stats.matchedMeasured} bits
+</p>
+
+<hr/>
+
+<h4>2. Quantum Bit Error Rate (QBER)</h4>
+<p>
+QBER represents the fraction of erroneous bits in the sifted key and indicates
+the presence of noise or eavesdropping in the quantum channel.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+QBER = ( Number of erroneous bits ) / ( Total number of bits compared )
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+QBER = (${stats.incorrectBits} / ${stats.matchedMeasured || 1}) = ${stats.qberPercent}%
+</p>
+
+<hr/>
+
+<h4>3. Security Thresholds</h4>
+<ul>
+  <li>QBER &lt; 11% → <b>SAFE</b></li>
+  <li>11% ≤ QBER ≤ 25% → <b>BEWARE</b></li>
+  <li>QBER &gt; 25% → <b>DANGER</b> (Abort Key)</li>
+</ul>
+
+<p>
+<b>Current Status:</b>
+${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+</p>
+
+<hr/>
+
+<h4>Analysis Results</h4>
+
+<table border="1" cellspacing="0" cellpadding="8" width="100%">
+  <tr>
+    <th align="left">Metric</th>
+    <th align="left">Value</th>
+    <th align="left">Description</th>
+  </tr>
+
+  <tr>
+    <td>Total Transmissions</td>
+    <td>${stats.totalPlanned}</td>
+    <td>Raw photons sent by Alice</td>
+  </tr>
+
+  <tr>
+    <td>Sifted Key Length</td>
+    <td>${stats.matchedMeasured}</td>
+    <td>Bits where bases matched and detection occurred</td>
+  </tr>
+
+  <tr>
+    <td>Detected Errors</td>
+    <td>${stats.incorrectBits}</td>
+    <td>Mismatched bits in the sifted key</td>
+  </tr>
+
+  <tr>
+    <td>QBER</td>
+    <td>${stats.qberPercent}%</td>
+    <td>Quantum Bit Error Rate</td>
+  </tr>
+
+  <tr>
+    <td>Abort Threshold</td>
+    <td>11%</td>
+    <td>Maximum acceptable QBER</td>
+  </tr>
+
+  <tr>
+    <td>Security Status</td>
+    <td>
+      ${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+    </td>
+    <td>Channel security decision</td>
+  </tr>
+</table>
+
 
 <h3>5. Conclusion</h3>
 <p>
@@ -450,34 +826,43 @@ as long as the remaining photons are correctly measured.
             errors,
             qber,
         };
+        
     }, [numPhotons, sentTransmissions]);
     // ===== Report-only aggregated stats (SAFE: stats already exists) =====
-const reportStats = {
-  total: stats.totalPlanned,
-  correct: stats.correctBits,
-  incorrect: stats.incorrectBits,
-  match: stats.matchedMeasured,
-  mismatch: stats.mismatchedMeasured,
-  qber: stats.qberPercent,
-};
+    const reportStats = {
+        total: stats.totalSent,
+        correct: stats.matched - stats.errors,
+        incorrect: stats.errors,
+        match: stats.matched,
+        mismatch: stats.totalSent - stats.matched,
+        qber: stats.qber,
+    };
+   // ===== Dynamic Y-axis scaling =====
+const observedMax =
+  keyRateVsLoss.length === 0
+    ? 1
+    : Math.max(...keyRateVsLoss.map(p => p.keyRate));
 
-// ===== Graph scaling (bar graphs must scale to observed counts) =====
-const yMax = Math.max(
-  reportStats.correct + reportStats.incorrect,
-  reportStats.match + reportStats.mismatch,
-  1
-);
+const axisMax = Math.ceil(observedMax * 1.25);
 
-// usable vertical height = 200px (260 - 60)
-const yScale = 200 / yMax;
 
-const yTicks = [
-  0,
-  Math.round(yMax * 0.25),
-  Math.round(yMax * 0.5),
-  Math.round(yMax * 0.75),
-  yMax,
-];
+    // ===== Graph scaling (bar graphs must scale to observed counts) =====
+    const yMax = Math.max(
+        reportStats.correct + reportStats.incorrect,
+        reportStats.match + reportStats.mismatch,
+        1
+    );
+
+    // usable vertical height = 200px (260 - 60)
+    const yScale = 200 / yMax;
+
+    const yTicks = [
+        0,
+        Math.round(yMax * 0.25),
+        Math.round(yMax * 0.5),
+        Math.round(yMax * 0.75),
+        yMax,
+    ];
 
 
     useEffect(() => {
@@ -494,6 +879,7 @@ const yTicks = [
                 },
             ];
         });
+
     }, [sentTransmissions, photonLossPercent, numPhotons, stats.siftedKeyBits]);
 
 
@@ -557,8 +943,53 @@ const yTicks = [
                             );
                         })}
 
-                        <line x1={margin.left} x2={margin.left} y1={margin.top} y2={margin.top + innerH} className="chart-axis-main" />
-                        <line x1={margin.left} x2={margin.left + innerW} y1={baselineY} y2={baselineY} className="chart-axis-main" />
+                        {/* Y AXIS */}
+                        <line
+                            x1={margin.left}
+                            x2={margin.left}
+                            y1={margin.top}
+                            y2={margin.top + innerH}
+                            className="chart-axis-main"
+                        />
+
+                        {/* Y ARROW */}
+                        <polyline
+                            points={`${margin.left},${margin.top}
+           ${margin.left - 8},${margin.top + 12}
+           ${margin.left + 8},${margin.top + 12}`}
+                            fill="none"
+                            stroke="#ffffff"
+                            strokeWidth="2"
+                        />
+
+                        {/* Y LABEL */}
+                        <text
+                            x={margin.left - 70}
+                            y={margin.top + innerH / 2}
+                            transform={`rotate(-90 ${margin.left - 70} ${margin.top + innerH / 2})`}
+                            className="chart-axis-label"
+                        >
+                            {yLabel} →
+                        </text>
+
+                        {/* X AXIS */}
+                        <line
+                            x1={margin.left}
+                            x2={margin.left + innerW}
+                            y1={baselineY}
+                            y2={baselineY}
+                            className="chart-axis-main"
+                        />
+
+                        {/* X ARROW */}
+                        <polyline
+                            points={`${margin.left + innerW},${baselineY}
+           ${margin.left + innerW - 12},${baselineY - 8}
+           ${margin.left + innerW - 12},${baselineY + 8}`}
+                            fill="none"
+                            stroke="#ffffff"
+                            strokeWidth="2"
+                        />
 
                         {xLabel && (
                             <text x={margin.left + innerW / 2} y={vbH - 12} className="chart-axis-label">
@@ -1049,13 +1480,13 @@ const yTicks = [
 
                         {/* GRAPH 2 — Basis Match vs Basis Mismatch */}
                         <ScientificBar
-                            title="Basis Match vs Basis Mismatch"
-                            leftLabel="Match"
-                            rightLabel="Mismatch"
+                            title="Usable vs Discarded Photons"
+                            leftLabel="Usable"
+                            rightLabel="Discarded"
                             leftValue={stats.matched}
                             rightValue={stats.totalSent - stats.matched}
                             yLabel="Number of Photons"
-                            xLabel="Basis Comparison"
+                            xLabel="Photon Outcome"
                             maxY={stats.totalSent}
                         />
 
@@ -1064,8 +1495,9 @@ const yTicks = [
                             <div className="chart-title-outside">
                                 Key Length vs Photon Loss (Loss ≠ Insecurity)
                             </div>
-
+                                
                             <div className="chart-card">
+                                
                                 <svg viewBox="0 0 700 400" className="chart-svg" preserveAspectRatio="none">
 
                                     {/* Y axis */}
@@ -1076,17 +1508,17 @@ const yTicks = [
                                         transform="rotate(-90 60 190)"
                                         className="chart-axis-label"
                                     >
-                                        Key Length
+                                        Key Length →
                                     </text>
                                     {/* Y-axis tick labels */}
                                     {[0, 0.25, 0.5, 0.75, 1].map((f, i) => {
                                         const y = 330 - f * 280;
-                                        const value = Math.round(f * stats.totalSent);
+                                        const value = Math.round(f * axisMax);
 
                                         return (
                                             <text
                                                 key={`y-tick-${i}`}
-                                                x="110"
+                                                x="95"
                                                 y={y + 5}
                                                 textAnchor="end"
                                                 className="chart-tick-label"
@@ -1095,7 +1527,12 @@ const yTicks = [
                                             </text>
                                         );
                                     })}
-
+                                    <polyline
+                                        points="120,50 112,62 128,62"
+                                        fill="none"
+                                        stroke="#ffffff"
+                                        strokeWidth="2"
+                                    />
                                     {/* X axis */}
                                     <line x1="120" x2="640" y1="330" y2="330" className="chart-axis-main" />
                                     <text x="380" y="388" className="chart-axis-label">
@@ -1117,7 +1554,12 @@ const yTicks = [
                                             </text>
                                         );
                                     })}
-
+                                    <polyline
+                                        points="640,330 628,322 628,338"
+                                        fill="none"
+                                        stroke="#ffffff"
+                                        strokeWidth="2"
+                                    />
                                     {/* Grid lines */}
                                     {[0, 1, 2, 3, 4, 5].map((i) => {
                                         const y = 50 + (280 * i) / 5;
@@ -1141,7 +1583,7 @@ const yTicks = [
                                                 .sort((a, b) => a.loss - b.loss)
                                                 .map((p, i) => {
                                                     const x = 120 + (p.loss / 100) * 520;
-                                                    const y = 330 - (p.keyRate / stats.totalSent) * 280;
+                                                    const y = 330 - (p.keyRate / axisMax) * 280;
                                                     return i === 0 ? `M ${x} ${y}` : `L ${x} ${y}`;
                                                 })
                                                 .join(" ")}
@@ -1154,7 +1596,7 @@ const yTicks = [
                                     {/* Points */}
                                     {keyRateVsLoss.map((p, i) => {
                                         const x = 120 + (p.loss / 100) * 520;
-                                        const y = 330 - (p.keyRate / stats.totalSent) * 280;
+                                        const y = 330 - (p.keyRate / axisMax) * 280;
 
                                         return (
                                             <g key={i}>

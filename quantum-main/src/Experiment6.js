@@ -31,10 +31,10 @@ export default function Exp6BB84() {
   const qberHistoryRef = useRef([]);
 
   const reportDate = new Date().toLocaleDateString("en-IN", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
 
   // Modal & UI
@@ -188,8 +188,8 @@ export default function Exp6BB84() {
 
 <button class="print-btn" onclick="window.print()">Print Report</button>
 
-<h1>Channel Noise in BB84</h1>
-<h2>Experiment 6 — Environmental Disturbance Without Eavesdropping</h2>
+<h1>LAB REPORT — Experiment 6</h1>
+<h2>Channel Noice : Environmental Disturbance Without Eavesdropping</h2>
 
 <h3>1. Aim</h3>
 <p>
@@ -229,9 +229,362 @@ BB84 protocols are designed to tolerate limited noise while remaining secure.
   <li>No sharp QBER jump toward 25% is observed</li>
 </ul>
 
-<div class="box">
-ADD SCREENSHOT OF GRAPH / TABLE HERE
+<p>
+Total Photons: ${reportStats.total}<br/>
+Correct Measurements: ${reportStats.correct}<br/>
+Incorrect Measurements: ${reportStats.incorrect}<br/>
+QBER: ${reportStats.qber}%<br/>
+Result:
+<strong>
+${stats.qberPercent < 11
+        ? "SAFE (No Eavesdropping Detected)"
+        : stats.qberPercent <= 25
+          ? "EAVESDROPPING SUSPECTED"
+          : "EAVESDROPPING CONFIRMED"}
+</strong>
+</p>
+<h4>GRAPHS</h4>
+
+<div class="graph-row">
+
+  <!-- ================= GRAPH 1 ================= -->
+  <div class="graph-container">
+    <h4>Correct vs Incorrect</h4>
+    <div class="graph-box">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+        <!-- Y axis -->
+        <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- X axis -->
+        <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- Y ticks -->
+        <text x="30" y="264">${yTicks[0]}</text>
+        <text x="30" y="214">${yTicks[1]}</text>
+        <text x="30" y="164">${yTicks[2]}</text>
+        <text x="24" y="114">${yTicks[3]}</text>
+        <text x="24" y="64">${yTicks[4]}</text>
+
+        <!-- Y label -->
+        <text x="14" y="260"
+              transform="rotate(-90 14 260)"
+              font-size="15"
+              font-weight="bold">
+          Count of Bits →
+        </text>
+
+        <!-- X label -->
+        <text x="160" y="298"
+              font-size="14"
+              font-weight="bold"
+              text-anchor="middle">
+          Bit Classification →
+        </text>
+
+        <!-- Bars -->
+        <rect x="110"
+              y="${260 - reportStats.correct * yScale}"
+              width="40"
+              height="${reportStats.correct * yScale}"
+              fill="black"/>
+
+        <rect x="180"
+              y="${260 - reportStats.incorrect * yScale}"
+              width="40"
+              height="${reportStats.incorrect * yScale}"
+              fill="gray"/>
+
+        <!-- Values -->
+        <text x="118" y="${255 - reportStats.correct * yScale}">
+          ${reportStats.correct}
+        </text>
+        <text x="188" y="${255 - reportStats.incorrect * yScale}">
+          ${reportStats.incorrect}
+        </text>
+
+        <text x="105" y="285">Correct</text>
+        <text x="165" y="285">Incorrect</text>
+
+      </svg>
+    </div>
+  </div>
+
+  <!-- ================= GRAPH 2 ================= -->
+  <div class="graph-container">
+    <h4>Basis Match vs Mismatch</h4>
+    <div class="graph-box">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+        <!-- Y axis -->
+        <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="50,30 44,40 56,40" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- X axis -->
+        <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+        <polyline points="270,260 260,254 260,266" stroke="black" stroke-width="2" fill="none"/>
+
+        <!-- Y ticks -->
+        <text x="30" y="264">${yTicks[0]}</text>
+        <text x="30" y="214">${yTicks[1]}</text>
+        <text x="30" y="164">${yTicks[2]}</text>
+        <text x="24" y="114">${yTicks[3]}</text>
+        <text x="24" y="64">${yTicks[4]}</text>
+
+        <!-- Y label -->
+        <text x="14" y="260"
+              transform="rotate(-90 14 260)"
+              font-size="15"
+              font-weight="bold">
+          Number of Photons →
+        </text>
+
+        <!-- X label -->
+        <text x="160" y="298"
+              font-size="14"
+              font-weight="bold"
+              text-anchor="middle">
+          Basis Comparison →
+        </text>
+
+        <!-- Bars -->
+        <rect x="110"
+              y="${260 - reportStats.match * yScale}"
+              width="40"
+              height="${reportStats.match * yScale}"
+              fill="black"/>
+
+        <rect x="180"
+              y="${260 - reportStats.mismatch * yScale}"
+              width="40"
+              height="${reportStats.mismatch * yScale}"
+              fill="gray"/>
+
+        <!-- Values -->
+        <text x="118" y="${255 - reportStats.match * yScale}">
+          ${reportStats.match}
+        </text>
+        <text x="188" y="${255 - reportStats.mismatch * yScale}">
+          ${reportStats.mismatch}
+        </text>
+
+        <text x="110" y="285">Match</text>
+        <text x="175" y="285">Mismatch</text>
+
+      </svg>
+    </div>
+  </div>
+
+ <!-- ================= GRAPH 3 ================= -->
+<div class="graph-container">
+  <h4>QBER (%) vs Channel Noise (No Eve)</h4>
+  <div class="graph-box">
+    <svg viewBox="0 0 300 300" preserveAspectRatio="none">
+
+      <!-- Axes -->
+      <line x1="50" y1="30" x2="50" y2="260" stroke="black" stroke-width="2"/>
+      <line x1="50" y1="260" x2="270" y2="260" stroke="black" stroke-width="2"/>
+
+      <!-- Axis arrows -->
+      <polyline points="50,30 44,40 56,40" stroke="black" fill="none"/>
+      <polyline points="270,260 260,254 260,266" stroke="black" fill="none"/>
+
+      <!-- Y label -->
+      <text x="14" y="260"
+            transform="rotate(-90 14 260)"
+            font-size="14"
+            font-weight="bold">
+        QBER (%) →
+      </text>
+
+      <!-- X label -->
+      <text x="160" y="295"
+            font-size="14"
+            font-weight="bold"
+            text-anchor="middle">
+        Channel Noise (%) →
+      </text>
+      
+
+      <!-- Y ticks -->
+      ${qberTicks.map(v => `
+        <text
+          x="25"
+          y="${260 - (v / reportMaxQBER) * 230}"
+          font-size="11">
+          ${v}%
+        </text>
+      `).join("")}
+<!-- ===== SECURITY THRESHOLDS ===== -->
+
+<!-- 11% WARNING THRESHOLD -->
+<line
+  x1="50"
+  x2="270"
+  y1="${260 - (11 / reportMaxQBER) * 230}"
+  y2="${260 - (11 / reportMaxQBER) * 230}"
+  stroke="black"
+  stroke-dasharray="5 5"
+  stroke-width="1.5"
+/>
+<text
+  x="54"
+  y="${260 - (11 / reportMaxQBER) * 230 - 4}"
+  font-size="11">
+  
+</text>
+
+<!-- 25% ABORT THRESHOLD -->
+<line
+  x1="50"
+  x2="270"
+  y1="${260 - (25 / reportMaxQBER) * 230}"
+  y2="${260 - (25 / reportMaxQBER) * 230}"
+  stroke="black"
+  stroke-dasharray="5 5"
+  stroke-width="1.5"
+/>
+<text
+  x="54"
+  y="${260 - (25 / reportMaxQBER) * 230 - 4}"
+  font-size="11">
+  
+</text>
+      <!-- X ticks -->
+      ${noiseTicks.map(v => `
+        <text
+          x="${50 + (v / reportMaxNoise) * 220}"
+          y="275"
+          font-size="11"
+          text-anchor="middle">
+          ${v}
+        </text>
+      `).join("")}
+
+      <!-- Data points -->
+      ${reportQberData.map(d => `
+        <circle
+          cx="${50 + (d.noise / reportMaxNoise) * 220}"
+          cy="${260 - (d.qber / reportMaxQBER) * 230}"
+          r="4"
+          fill="black"/>
+        <text
+          x="${50 + (d.noise / reportMaxNoise) * 220}"
+          y="${260 - (d.qber / reportMaxQBER) * 230 - 6}"
+          font-size="11"
+          text-anchor="middle">
+          ${d.qber}%
+        </text>
+      `).join("")}
+
+    </svg>
+  </div>
 </div>
+  </div>
+
+</div>
+<h3>Key Analysis & Security Verification</h3>
+
+<h4>1. Sifted Key Length</h4>
+<p>
+The sifted key consists of all bits for which Alice’s encoding basis matches
+Bob’s measurement basis and successful detection occurs.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+n<sub>sifted</sub> = | { bits where basis match AND detection occurs } |
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+n<sub>sifted</sub> = ${stats.matchedMeasured} bits
+</p>
+
+<hr/>
+
+<h4>2. Quantum Bit Error Rate (QBER)</h4>
+<p>
+QBER represents the fraction of erroneous bits in the sifted key and indicates
+the presence of noise or eavesdropping in the quantum channel.
+</p>
+
+<p><b>Formula:</b></p>
+<p>
+QBER = ( Number of erroneous bits ) / ( Total number of bits compared )
+</p>
+
+<p><b>Calculation:</b></p>
+<p>
+QBER = (${stats.incorrectBits} / ${stats.matchedMeasured || 1}) = ${stats.qberPercent}%
+</p>
+
+<hr/>
+
+<h4>3. Security Thresholds</h4>
+<ul>
+  <li>QBER &lt; 11% → <b>SAFE</b></li>
+  <li>11% ≤ QBER ≤ 25% → <b>BEWARE</b></li>
+  <li>QBER &gt; 25% → <b>DANGER</b> (Abort Key)</li>
+</ul>
+
+<p>
+<b>Current Status:</b>
+${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+</p>
+
+<hr/>
+
+<h4>Analysis Results</h4>
+
+<table border="1" cellspacing="0" cellpadding="8" width="100%">
+  <tr>
+    <th align="left">Metric</th>
+    <th align="left">Value</th>
+    <th align="left">Description</th>
+  </tr>
+
+  <tr>
+    <td>Total Transmissions</td>
+    <td>${stats.totalPlanned}</td>
+    <td>Raw photons sent by Alice</td>
+  </tr>
+
+  <tr>
+    <td>Sifted Key Length</td>
+    <td>${stats.matchedMeasured}</td>
+    <td>Bits where bases matched and detection occurred</td>
+  </tr>
+
+  <tr>
+    <td>Detected Errors</td>
+    <td>${stats.incorrectBits}</td>
+    <td>Mismatched bits in the sifted key</td>
+  </tr>
+
+  <tr>
+    <td>QBER</td>
+    <td>${stats.qberPercent}%</td>
+    <td>Quantum Bit Error Rate</td>
+  </tr>
+
+  <tr>
+    <td>Abort Threshold</td>
+    <td>11%</td>
+    <td>Maximum acceptable QBER</td>
+  </tr>
+
+  <tr>
+    <td>Security Status</td>
+    <td>
+      ${stats.qberPercent < 11 ? "SAFE" : stats.qberPercent <= 25 ? "BEWARE" : "DANGER"}
+    </td>
+    <td>Channel security decision</td>
+  </tr>
+</table>
+
 
 <h3>5. Conclusion</h3>
 <p>
@@ -437,33 +790,82 @@ Understanding error sources is essential for real-world quantum security.
       qberPercent,
     };
   }, [numPhotons, sentTransmissions]);
-// ===== Report-only aggregated stats (SAFE: stats already exists) =====
-const reportStats = {
-  total: stats.totalPlanned,
-  correct: stats.correctBits,
-  incorrect: stats.incorrectBits,
-  match: stats.matchedMeasured,
-  mismatch: stats.mismatchedMeasured,
-  qber: stats.qberPercent,
-};
+  // ===== Report-only aggregated stats (SAFE: stats already exists) =====
+  const reportStats = {
+    total: stats.totalPlanned,
+    correct: stats.correctBits,
+    incorrect: stats.incorrectBits,
+    match: stats.matchedMeasured,
+    mismatch: stats.mismatchedMeasured,
+    qber: stats.qberPercent,
+  };
 
-// ===== Graph scaling (bar graphs must scale to observed counts) =====
-const yMax = Math.max(
-  reportStats.correct + reportStats.incorrect,
-  reportStats.match + reportStats.mismatch,
-  1
-);
+  // ===== SAFE QBER DATA FOR REPORT =====
+  const reportQberData = qberHistoryRef.current ?? [];
 
-// usable vertical height = 200px (260 - 60)
-const yScale = 200 / yMax;
+  // Dynamic ranges (NO hardcoding)
+  const reportMaxNoise =
+    reportQberData.length > 0
+      ? Math.max(...reportQberData.map(d => d.noise))
+      : 1;
 
-const yTicks = [
-  0,
-  Math.round(yMax * 0.25),
-  Math.round(yMax * 0.5),
-  Math.round(yMax * 0.75),
-  yMax,
-];
+  const reportMaxQBER =
+    reportQberData.length > 0
+      ? Math.max(
+        ...reportQberData.map(d => d.qber),
+        25,   // include threshold
+        11
+      )
+      : 25;
+
+  const AXIS_TICKS = 5;
+
+  const noiseTicks = Array.from(
+    { length: AXIS_TICKS + 1 },
+    (_, i) => Math.round((i / AXIS_TICKS) * reportMaxNoise)
+  );
+
+  const qberTicks = Array.from(
+    { length: AXIS_TICKS + 1 },
+    (_, i) => Math.round((i / AXIS_TICKS) * reportMaxQBER)
+  );
+
+  useEffect(() => {
+    if (
+      sentTransmissions.length >= numPhotons &&
+      !runCompletedRef.current
+    ) {
+      qberHistoryRef.current.push({
+        noise: channelNoisePercent,
+        qber: stats.qberPercent,
+      });
+
+      runCompletedRef.current = true;
+      forceUpdate(v => v + 1);
+    }
+  }, [
+    sentTransmissions.length,
+    numPhotons,
+    channelNoisePercent,
+    stats.qberPercent
+  ]);
+  // ===== Graph scaling (bar graphs must scale to observed counts) =====
+  const yMax = Math.max(
+    reportStats.correct + reportStats.incorrect,
+    reportStats.match + reportStats.mismatch,
+    1
+  );
+
+  // usable vertical height = 200px (260 - 60)
+  const yScale = 200 / yMax;
+
+  const yTicks = [
+    0,
+    Math.round(yMax * 0.25),
+    Math.round(yMax * 0.5),
+    Math.round(yMax * 0.75),
+    yMax,
+  ];
 
 
   /* ---------- ScientificBar (title outside + svg fills card) ---------- */
@@ -680,7 +1082,15 @@ const yTicks = [
               y2={margin.top + innerH}
               className="chart-axis-main"
             />
-
+            {/* Y ARROW */}
+            <polyline
+              points={`${margin.left},${margin.top}
+           ${margin.left - 12},${margin.top + 18}
+           ${margin.left + 12},${margin.top + 18}`}
+              stroke="#fff"
+              strokeWidth="2"
+              fill="none"
+            />
             {/* ===== X AXIS ===== */}
             <line
               x1={margin.left}
@@ -689,7 +1099,15 @@ const yTicks = [
               y2={margin.top + innerH}
               className="chart-axis-main"
             />
-
+            {/* X ARROW */}
+            <polyline
+              points={`${margin.left + innerW},${margin.top + innerH}
+           ${margin.left + innerW - 16},${margin.top + innerH - 12}
+           ${margin.left + innerW - 16},${margin.top + innerH + 12}`}
+              stroke="#fff"
+              strokeWidth="2"
+              fill="none"
+            />
             {(() => {
               const TICK_COUNT = 5; // ← adjust to 6 or 7 if you want
               const step = Math.ceil(maxNoise / TICK_COUNT);
@@ -789,9 +1207,9 @@ const yTicks = [
                   {/* Value label above dot */}
                   <text
                     x={x}
-                    y={y - 10}          // slightly above the dot
-                    textAnchor="middle"
-                    className="chart-tick-label"
+                    y={Math.max(y - 12, margin.top + 14)}
+                    textAnchor={x > margin.left + innerW - 30 ? "end" : "middle"}
+                    dx={x > margin.left + innerW - 30 ? -6 : 0}
                     style={{
                       fontSize: 14,
                       fill: "#ddd",
@@ -1456,19 +1874,19 @@ const yTicks = [
             </div>
 
             {/* Distance */}
+            {/* Eve Level (Frozen at 0%) */}
             <div className="control-row">
-              <label>Distance (km)</label>
+              <label>Distance(km)</label>
               <div className="slider-row">
                 <input
                   type="range"
                   min="0"
-                  max="200"
-                  value={tempChannelDistanceKm}
-                  onChange={handleDistanceChange}
+                  max="100"
+                  value={0}
                   className="exp-slider"
-                  title="Approx. channel distance"
+                  disabled
                 />
-                <span className="slider-value">{tempChannelDistanceKm} km</span>
+                <span className="slider-value">0% (Frozen)</span>
               </div>
             </div>
 

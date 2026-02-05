@@ -79,9 +79,14 @@ const CertificatePage = () => {
             {/* -------- Certificate Template -------- */}
             <div id="certificate-template" className="certificate-template">
                 <div className="certificate-border">
-                    <p className="cert-header">Certificate of Successful Completion</p>
-                    <p className="cert-awarded-to">This Certificate Is Awarded To</p>
 
+                    <p className="cert-header">
+                        CERTIFICATE OF SUCCESSFUL COMPLETION OF QKD_XPLORE VIRTUAL LAB
+                    </p>
+
+                    <p className="cert-awarded-to">
+                        This certificate is awarded to
+                    </p>
 
                     <p className="cert-user-name">
                         {userName || "Recipient Name"}
@@ -90,13 +95,14 @@ const CertificatePage = () => {
                     <div className="cert-line"></div>
 
                     <p className="cert-recognition-text">
-                        For successfully completing the interactive simulation of the
+                        For successfully completing the interactive certification of the
                         <span className="cert-highlight">
-                            {" "}BB84 Quantum Key Distribution Protocol
+                            {" "}QKD_XPLORE Virtual Lab
                         </span>,
-                        demonstrating proficiency in quantum state encoding, key sifting,
-                        and Quantum Bit Error Rate (QBER) analysis.
+                        demonstrating understanding of quantum state encoding,
+                        key sifting, and Quantum Bit Error Rate (QBER) analysis.
                     </p>
+
 
                     <div className="cert-footers">
                         <div className="cert-signature-block">

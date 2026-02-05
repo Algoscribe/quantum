@@ -205,8 +205,8 @@ const yTicks = [
 
 <button class="print-btn" onclick="window.print()">Print Report</button>
 
-<h1>BB84 Quantum Key Distribution</h1>
-<h2>Experiment 2 — Quantum Bases & Polarization States Visualizer</h2>
+<h1>LAB REPORT - EXPERIMENT 2</h1>
+<h2>Quantum Bases & Polarization Intuition Experiment</h2>
 
 <h3>1. Aim</h3>
 <p>
