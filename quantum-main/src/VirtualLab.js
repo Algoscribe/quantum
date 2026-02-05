@@ -125,7 +125,7 @@ export default function VirtualLab() {
         {/* Header */}
         <header className="lab-header">
           <h1 className="lab-title">
-            Physics <br />
+            Physics of <br />
             <span className="title-connector">of</span> Privacy
           </h1>
           <p className="lab-subtitle">
