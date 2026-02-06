@@ -934,7 +934,7 @@ to infer the presence of an eavesdropper using QBER alone.
             }}
 
           >
-            Non-zero QBER arises from basis mismatch, not eavesdropping
+            
           </div>
 
           <svg viewBox={`0 0 ${vbW} ${vbH}`} className="chart-svg" preserveAspectRatio="none" aria-hidden>

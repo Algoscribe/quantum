@@ -1146,7 +1146,7 @@ but practically limited by physical channel properties.
                 <div className="experiment-theory-wrapper">
                     <div className="experiment-theory-box" role="region" aria-label="Experiment 7 theory">
                         <div className="theory-top">
-                            <h2 className="theory-title">Distance Effects on Key Generation in BB84n</h2>
+                            <h2 className="theory-title">Distance Effects on Key Generation in BB84</h2>
                         </div>
 
                         <div className="theory-body">
