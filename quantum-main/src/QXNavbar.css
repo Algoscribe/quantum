@@ -162,3 +162,90 @@ body { overflow-y: scroll; }
   list-style: none;
 }
 .qx-nav-logo { text-transform: none !important; }
+/* Ensure the main dropdown items that hold nested lists are positioned relatively */
+.nested-dropdown-trigger {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  color: #ccc;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nested-dropdown-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.qx-nav-caret-right {
+  font-size: 0.8rem;
+  margin-left: 10px;
+}
+
+/* Position the sub-menus out to the right side */
+/* Ensure the sub-menu container matches the dark theme and uses forced single-line layout */
+.qx-nav-sub-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%; /* Spits it out precisely to the right side of the current item */
+  background-color: #0f0f11; 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  min-width: 180px;         /* Keeps "EXPERIMENT X" safely on one line */
+  white-space: nowrap;      /* Guarantees zero text wrapping */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  flex-direction: column;
+}
+
+/* Display the sub-menu when active state is true */
+.qx-nav-sub-menu.active {
+  display: flex;
+}
+
+/* 🛠️ YOUR EXACT TYPOGRAPHY INTEGRATED BELOW */
+
+.nested-dropdown-trigger {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  color: #ccc;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nested-dropdown-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.qx-nav-caret-right {
+  font-size: 0.8rem;
+  margin-left: 10px;
+}
+
+.qx-nav-sub-menu a {
+  padding: 10px 20px;
+  color: #ccc;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-align: left;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.qx-nav-sub-menu a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}

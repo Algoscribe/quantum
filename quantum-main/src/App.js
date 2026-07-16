@@ -1,4 +1,6 @@
 // src/App.js
+
+
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -12,10 +14,6 @@ import LearnBB84 from "./LearnBB84";
 import LabBB84 from "./LabBB84";
 
 import Theory from "./Theory";
-//import Ideal from "./Ideal";
-//import NonIdeal from "./NonIdeal";
-
-
 
 import Virtuallab from './VirtualLab';
 import Experiment1 from './Experiment1';
@@ -29,6 +27,16 @@ import Experiment8 from './Experiment8';
 import Experiment9 from './Experiment9';
 import Experiment10 from './Experiment10';
 
+// Make sure this line is near the top of your src/App.js
+import B92Overview from "./B92"; // Change to "./B92" if your file is named B92.js
+
+// Add these near the top of src/App.js
+import B92Experiment1 from "./B92Experiment1";
+import B92Experiment2 from "./B92Experiment2";
+import B92Experiment3 from "./B92Experiment3";
+import B92Experiment4 from "./B92Experiment4";
+import B92Experiment5 from "./B92Experiment5";
+
 import LabEquipment from "./LabEquipment";
 import BB84sim from './BB84Sim';
 import CodeExplorer from './CodeExplorer';
@@ -37,24 +45,21 @@ import PostQuiz from './PostQuiz';
 import CertificatePage from "./Certification";
 import Credits from "./Credits";
 
-
 // navbar
 import QXNavbar from "./QXNavbar";
 
-function App() {
 
+function App() {
   const [geminiOpen, setGeminiOpen] = useState(false);
 
   return (
     <Router>
-
       {/* Top navigation always visible */}
       <QXNavbar onOpenGemini={() => setGeminiOpen(true)} />
 
       {/* Gemini Panel */}
       {geminiOpen && (
         <div className="gemini-panel">
-
           {/* HORIZONTAL RESIZE */}
           <div
             className="gemini-resizer-x"
@@ -117,12 +122,10 @@ function App() {
             <p style={{ marginBottom: "12px" }}>
               Gemini is available as your Quantum Lab Assistant.
             </p>
-
             <p style={{ marginBottom: "16px", opacity: 0.8 }}>
               It understands BB84, QBER, eavesdropping detection, and what you are
               seeing in the QKD-Xplore simulations.
             </p>
-
             <button
               onClick={() =>
                 window.open(
@@ -144,11 +147,8 @@ function App() {
               Launch Gemini Assistant →
             </button>
           </div>
-
         </div>
       )}
-
-
 
       <Routes>
         {/* Home */}
@@ -177,6 +177,15 @@ function App() {
         <Route path="/lab/equipment" element={<LabEquipment />} />
         <Route path="/lab/bb84" element={<LabBB84 />} />
 
+        {/* ------------------ NEW B92 VIRTUAL LAB ROUTES ------------------ */}
+        {/* Ensure this route is sitting inside your <Routes> block */}
+        <Route path="/lab/b92-overview" element={<B92Overview />} />
+        <Route path="/lab/b92-experiment-1" element={<B92Experiment1 />} />
+        <Route path="/lab/b92-experiment-2" element={<B92Experiment2 />} />
+        <Route path="/lab/b92-experiment-3" element={<B92Experiment3 />} />
+        <Route path="/lab/b92-experiment-4" element={<B92Experiment4 />} />
+        <Route path="/lab/b92-experiment-5" element={<B92Experiment5 />} />
+
         {/* BB84 Simulation + Theory/Ideal/Non-Ideal */}
         <Route path="/bb84-simulation" element={<BB84sim />} />
         <Route path="/bb84-theory" element={<Theory />} />
@@ -187,6 +196,7 @@ function App() {
         <Route path="/postquiz" element={<PostQuiz />} />
         <Route path="/certification" element={<CertificatePage />} />
         <Route path="/credits" element={<Credits />} />
+
         {/* 404 fallback */}
         <Route
           path="*"

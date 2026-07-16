@@ -4,11 +4,11 @@ import { Link, useLocation } from "react-router-dom";
 import "./QXNavbar.css";
 import GeminiIcon from "./assets/gemini.svg";
 
-
 export default function QXNavbar({ onOpenGemini }) {
   const location = useLocation();
 
   const [isLabDropdownOpen, setIsLabDropdownOpen] = useState(false);
+  const [activeSubMenu, setActiveSubMenu] = useState(null); // Tracks 'bb84' or 'b92' nested hover
   const [isBB84DropdownOpen, setIsBB84DropdownOpen] = useState(false);
 
   const isActive = (path) =>
@@ -42,7 +42,7 @@ export default function QXNavbar({ onOpenGemini }) {
           </Link>
         </li>
 
-        {/* ------------------ BB84 DROPDOWN ------------------ */}
+        {/* ------------------ BB84 SIMULATION DROPDOWN ------------------ */}
         <li
           className="qx-nav-dropdown"
           onMouseEnter={() => setIsBB84DropdownOpen(true)}
@@ -56,23 +56,21 @@ export default function QXNavbar({ onOpenGemini }) {
             BB84 Simulation <span className="qx-nav-caret">▾</span>
           </button>
 
-          <div
-            className={`qx-nav-dropdown-menu ${isBB84DropdownOpen ? "active" : ""
-              }`}
-          >
+          <div className={`qx-nav-dropdown-menu ${isBB84DropdownOpen ? "active" : ""}`}>
             <Link to="/bb84-theory">Theory</Link>
             <a href="/IDEAL.html" className="dropdown-item">Ideal</a>
-
-           <a href="/NONIDEAL.html" className="dropdown-item">NonIdeal</a>
-
+            <a href="/NONIDEAL.html" className="dropdown-item">NonIdeal</a>
           </div>
         </li>
 
-        {/* ------------------ VIRTUAL LAB DROPDOWN ------------------ */}
+        {/* ------------------ NESTED VIRTUAL LAB DROPDOWN ------------------ */}
         <li
           className="qx-nav-dropdown"
           onMouseEnter={() => setIsLabDropdownOpen(true)}
-          onMouseLeave={() => setIsLabDropdownOpen(false)}
+          onMouseLeave={() => {
+            setIsLabDropdownOpen(false);
+            setActiveSubMenu(null);
+          }}
         >
           <button
             type="button"
@@ -82,22 +80,51 @@ export default function QXNavbar({ onOpenGemini }) {
             Virtual Lab <span className="qx-nav-caret">▾</span>
           </button>
 
-          <div
-            className={`qx-nav-dropdown-menu ${isLabDropdownOpen ? "active" : ""
-              }`}
-          >
-            <Link to="/virtual-lab">Overview</Link>
-            <Link to="/lab/experiment-1">Experiment 1</Link>
-            <Link to="/lab/experiment-2">Experiment 2</Link>
-            <Link to="/lab/experiment-3">Experiment 3</Link>
-            <Link to="/lab/experiment-4">Experiment 4</Link>
-            <Link to="/lab/experiment-5">Experiment 5</Link>
-            <Link to="/lab/experiment-6">Experiment 6</Link>
-            <Link to="/lab/experiment-7">Experiment 7</Link>
-            <Link to="/lab/experiment-8">Experiment 8</Link>
-            {/* <Link to="/lab/experiment-9">Experiment 9</Link>
-            <Link to="/lab/experiment-10">Experiment10</Link> */}
-            <Link to="/lab/equipment">Lab Equipment</Link>
+          <div className={`qx-nav-dropdown-menu ${isLabDropdownOpen ? "active" : ""}`}>
+
+            {/* BB84 Cascading Item */}
+            <div
+              className="nested-dropdown-trigger"
+              onMouseEnter={() => setActiveSubMenu('bb84')}
+            >
+              <span className="menu-label">BB84 Protocols</span>
+              <span className="qx-nav-caret-right">▸</span>
+
+              <div className={`qx-nav-sub-menu ${activeSubMenu === 'bb84' ? "active" : ""}`}>
+                <Link to="/virtual-lab">BB84 Overview</Link>
+                <Link to="/lab/experiment-1">Experiment 1</Link>
+                <Link to="/lab/experiment-2">Experiment 2</Link>
+                <Link to="/lab/experiment-3">Experiment 3</Link>
+                <Link to="/lab/experiment-4">Experiment 4</Link>
+                <Link to="/lab/experiment-5">Experiment 5</Link>
+                <Link to="/lab/experiment-6">Experiment 6</Link>
+                <Link to="/lab/experiment-7">Experiment 7</Link>
+                <Link to="/lab/experiment-8">Experiment 8</Link>
+              </div>
+            </div>
+
+            {/* B92 Cascading Item */}
+            <div
+              className="nested-dropdown-trigger"
+              onMouseEnter={() => setActiveSubMenu('b92')}
+            >
+              <span className="menu-label">B92 Protocols</span>
+              <span className="qx-nav-caret-right">▸</span>
+
+              <div className={`qx-nav-sub-menu ${activeSubMenu === 'b92' ? "active" : ""}`}>
+                <Link to="/lab/b92-overview">B92 Overview</Link>
+                <Link to="/lab/b92-experiment-1">Experiment 1</Link>
+                <Link to="/lab/b92-experiment-2">Experiment 2</Link>
+                <Link to="/lab/b92-experiment-3">Experiment 3</Link>
+                <Link to="/lab/b92-experiment-4">Experiment 4</Link>
+                <Link to="/lab/b92-experiment-5">Experiment 5</Link>
+              </div>
+            </div>
+
+            {/* Lab Equipment remains at the bottom of the main dropdown */}
+            <Link to="/lab/equipment" onMouseEnter={() => setActiveSubMenu(null)}>
+              Lab Equipment
+            </Link>
           </div>
         </li>
 
@@ -120,31 +147,25 @@ export default function QXNavbar({ onOpenGemini }) {
         </li>
 
         <li>
-    <Link
-  to="/credits"
-  className={`qx-nav-link ${location.pathname === "/credits" ? "active" : ""}`}
->
-  Credits
-</Link>
+          <Link
+            to="/credits"
+            className={`qx-nav-link ${location.pathname === "/credits" ? "active" : ""}`}
+          >
+            Credits
+          </Link>
+        </li>
 
-  </li>
-
-  {/* ✅ GEMINI GOES HERE */}
-  <li className="gemini-nav-item">
-    <button
-      className="qx-nav-link-btn gemini-btn"
-      onClick={onOpenGemini}
-      title="Gemini"
-    >
-      <img
-        src={GeminiIcon}
-        alt="Gemini"
-        className="gemini-icon"
-      />
-    </button>
-  </li>
-</ul>
-
+        {/* GEMINI */}
+        <li className="gemini-nav-item">
+          <button
+            className="qx-nav-link-btn gemini-btn"
+            onClick={onOpenGemini}
+            title="Gemini"
+          >
+            <img src={GeminiIcon} alt="Gemini" className="gemini-icon" />
+          </button>
+        </li>
+      </ul>
 
       {/* START BUTTON */}
       <button
